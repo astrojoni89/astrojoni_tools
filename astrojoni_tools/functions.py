@@ -114,6 +114,29 @@ def moment_0(fitsfile,velocity_start,velocity_end):
         print('Something wrong with the header.')
     moment_0_map = moment_0_map *header['CDELT3']/1000
     header['BUNIT'] = header['BUNIT']+'.KM/S'
-    fits.writeto(name.split('.fits')[0]+'_mom-0_'+str(velocity_start)+'_to_'+str(velocity_end)+'km-s.fits', moment_0_map, header=header, overwrite=True)
-    print(name.split('.fits')[0]+'_mom-0_'+str(velocity_start)+'_to_'+str(velocity_end)+'km-s.fits')
-    return [name.split('.fits')[0]+'_mom-0_'+str(velocity_start)+'_to_'+str(velocity_end)+'km-s.fits',lower_channel,upper_channel]
+    fits.writeto(fitsfile.split('.fits')[0]+'_mom-0_'+str(velocity_start)+'_to_'+str(velocity_end)+'km-s.fits', moment_0_map, header=header, overwrite=True)
+    print(fitsfile.split('.fits')[0]+'_mom-0_'+str(velocity_start)+'_to_'+str(velocity_end)+'km-s.fits')
+    return [fitsfile.split('.fits')[0]+'_mom-0_'+str(velocity_start)+'_to_'+str(velocity_end)+'km-s.fits',lower_channel,upper_channel]
+
+def add_up_channels(fitsfile,velocity_start,velocity_end):
+    image = fits.getdata(fitsfile)
+    header = fits.getheader(fitsfile)
+    velocity = velocity_axes(fitsfile)
+    velocity = velocity.round(decimals=4)
+    lower_channel = find_nearest(velocity,velocity_start)
+    upper_channel = find_nearest(velocity,velocity_end)
+    print('channel-range: '+str(lower_channel)+' - '+str(upper_channel))
+    print('velocity-range: '+str(velocity[lower_channel])+' - '+str(velocity[upper_channel]))
+    if header['NAXIS']==4:
+        moment_0_map = np.zeros((1,header['NAXIS2'],header['NAXIS1']))
+        for i in range(lower_channel,upper_channel+1,1):
+            moment_0_map = moment_0_map + image[0,i,:,:]
+    elif header['NAXIS']==3:
+        moment_0_map = np.zeros((1,header['NAXIS2'],header['NAXIS1']))
+        for i in range(lower_channel,upper_channel+1,1):
+            moment_0_map = moment_0_map + image[i,:,:]
+    else:
+        print('Something wrong with the header.')
+    fits.writeto(fitsfile.split('.fits')[0]+'_sum_'+str(velocity[lower_channel])+'_to_'+str(velocity[upper_channel])+'km-s.fits', moment_0_map, header=header, overwrite=True)
+    print(fitsfile.split('.fits')[0]+'_sum_'+str(velocity[lower_channel])+'_to_'+str(velocity[upper_channel])+'km-s.fits')
+    return [fitsfile.split('.fits')[0]+'_sum_'+str(velocity[lower_channel])+'_to_'+str(velocity[upper_channel])+'km-s.fits',lower_channel,upper_channel]
