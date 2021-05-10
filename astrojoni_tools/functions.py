@@ -35,7 +35,7 @@ def longitude_axes(name):
     return longitude
 
 
-#convert world coordinates to pixel values from .FITS
+#convert world/pixel coords to pixel/world coords from .FITS
 def world_to_pixel(fitsfile,longtitude,latitude,velocity=0):
     w = WCS(fitsfile)
     if w.wcs.naxis == 3:
@@ -72,6 +72,7 @@ def calculate_spectrum(fitsfile,pixel_array):
             spectrum_add = spectrum_add + spectrum_i
     spectrum_average = spectrum_add / (len(pixel_array)-n)
     return spectrum_average
+
 
 def calculate_average_value_pixelArray(fitsfile,pixel_array): #nan treatment?
     image = fits.getdata(fitsfile)
@@ -118,6 +119,7 @@ def moment_0(fitsfile,velocity_start,velocity_end):
     print(fitsfile.split('.fits')[0]+'_mom-0_'+str(velocity_start)+'_to_'+str(velocity_end)+'km-s.fits')
     return [fitsfile.split('.fits')[0]+'_mom-0_'+str(velocity_start)+'_to_'+str(velocity_end)+'km-s.fits',lower_channel,upper_channel]
 
+
 def add_up_channels(fitsfile,velocity_start,velocity_end):
     image = fits.getdata(fitsfile)
     header = fits.getheader(fitsfile)
@@ -140,6 +142,7 @@ def add_up_channels(fitsfile,velocity_start,velocity_end):
     fits.writeto(fitsfile.split('.fits')[0]+'_sum_'+str(velocity[lower_channel])+'_to_'+str(velocity[upper_channel])+'km-s.fits', moment_0_map, header=header, overwrite=True)
     print(fitsfile.split('.fits')[0]+'_sum_'+str(velocity[lower_channel])+'_to_'+str(velocity[upper_channel])+'km-s.fits')
     return [fitsfile.split('.fits')[0]+'_sum_'+str(velocity[lower_channel])+'_to_'+str(velocity[upper_channel])+'km-s.fits',lower_channel,upper_channel]
+
 
 def channel_averaged(fitsfile,velocity_start,velocity_end):
     image = fits.getdata(fitsfile)
@@ -167,3 +170,67 @@ def channel_averaged(fitsfile,velocity_start,velocity_end):
     fits.writeto(fitsfile.split('.fits')[0]+'_averaged-channel_'+str(velocity_start)+'_to_'+str(velocity_end)+'km-s.fits', moment_0_map, header=header, overwrite=True)
     print(fitsfile.split('.fits')[0]+'_mom-0_'+str(velocity_start)+'_to_'+str(velocity_end)+'km-s.fits')
     return [fitsfile.split('.fits')[0]+'_mom-0_'+str(velocity_start)+'_to_'+str(velocity_end)+'km-s.fits',lower_channel,upper_channel]
+
+
+def pixel_circle_calculation(fitsfile,longitude,latitude,radius):
+    #longitude and latitude in degree
+    #radius in arcsec
+    #give central coordinates, size of circle and fitsfile and it returns array with the corresponding pixels 
+    header = fits.getheader(fitsfile)
+    w = WCS(fitsfile)
+    delta = abs(header['CDELT1']) #in degree
+    pixel_array = []
+    if header['NAXIS']==3:
+        central_px = w.all_world2pix(longitude,latitude,0,1)
+    elif header['NAXIS']==2:
+        central_px = w.all_world2pix(longitude,latitude,1)
+    else:
+        raise Exception('Something wrong with the header.')
+    central_px = [int(np.round(central_px[0],decimals=0))-1,int(np.round(central_px[1],decimals=0))-1]
+    if radius is not 'single':
+        circle_size_px = 2*radius/3600. / delta
+        circle_size_px = int(round(circle_size_px))
+        px_start = [central_px[0]-circle_size_px/2,central_px[1]-circle_size_px/2]
+        px_end = [central_px[0]+circle_size_px/2,central_px[1]+circle_size_px/2]
+        px_start = [int(np.round(px_start[0],decimals=0)),int(np.round(px_start[1],decimals=0))]
+        px_end = [int(np.round(px_end[0],decimals=0)),int(np.round(px_end[1],decimals=0))]
+        for i_x in trange(px_start[0]-1,px_end[0]+1):
+            for i_y in range(px_start[1]-1,px_end[1]+1):
+                if sqrt((i_x-central_px[0])**2+(i_y-central_px[1])**2) < circle_size_px/2.:
+                    pixel_array.append((i_x,i_y))
+    else:
+        pixel_array.append((central_px[0],central_px[1]))
+    return pixel_array
+
+
+def pixel_box_calculation(fitsfile,longitude,latitude,a,b):
+    #longitude and latitude in degree
+    #a,b: total size of longitude,latitude box in arcsec
+    #give central coordinates, size of box and fitsfile and it returns array with the corresponding pixels 
+    header = fits.getheader(fitsfile)
+    w = WCS(fitsfile)
+    delta = abs(header['CDELT1']) #in degree
+    pixel_array = []
+    if header['NAXIS']==3:
+        central_px = w.all_world2pix(longitude,latitude,0,1)
+    elif header['NAXIS']==2:
+        central_px = w.all_world2pix(longitude,latitude,1)
+    else:
+        raise Exception('Something wrong with the header.')
+    central_px = [int(np.round(central_px[0],decimals=0))-1,int(np.round(central_px[1],decimals=0))-1]
+    if a is not 'single':
+        box_size_px_a = a/3600. / delta
+        box_size_px_a = int(round(box_size_px_a))
+        box_size_px_b = b/3600. / delta
+        box_size_px_b = int(round(box_size_px_b))
+        px_start = [central_px[0]-box_size_px_a/2,central_px[1]-box_size_px_b/2]
+        px_end = [central_px[0]+box_size_px_a/2,central_px[1]+box_size_px_b/2]
+        px_start = [int(np.round(px_start[0],decimals=0)),int(np.round(px_start[1],decimals=0))]
+        px_end = [int(np.round(px_end[0],decimals=0)),int(np.round(px_end[1],decimals=0))]
+        for i_x in trange(px_start[0],px_end[0]):
+            for i_y in range(px_start[1],px_end[1]):
+                pixel_array.append((i_x,i_y))
+    else:
+        pixel_array.append((central_px[0],central_px[1]))
+    return pixel_array
+
