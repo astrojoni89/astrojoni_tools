@@ -7,7 +7,7 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
  
  
  
-## GNU GENERAL PUBLIC LICENSE
+##GNU GENERAL PUBLIC LICENSE
 ### Version 3, 29 June 2007
 
 Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
