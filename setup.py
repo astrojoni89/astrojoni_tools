@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# Licensed under a GPLv3 license - see LICENSE.rst
 
 import glob
 import os
