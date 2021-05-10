@@ -199,6 +199,28 @@ def pixel_circle_calculation(fitsfile,longitude,latitude,radius):
     return pixel_array
 
 
+def pixel_circle_calculation_px(fitsfile,longitude,latitude,radius):
+    #longitude and latitude in degree
+    #radius in arcsec
+    #give central px, size of circle and fitsfile and it returns array with the corresponding pixels 
+    header = fits.getheader(fitsfile)
+    delta = abs(header['CDELT1']) #in degree
+    circle_size_px = 2*r/3600. / delta
+    circle_size_px = int(round(circle_size_px))
+    central_px = [longitude,latitude]
+    central_px = [int(np.round(central_px[0],decimals=0)),int(np.round(central_px[1],decimals=0))]
+    px_start = [central_px[0]-circle_size_px/2,central_px[1]-circle_size_px/2]
+    px_end = [central_px[0]+circle_size_px/2,central_px[1]+circle_size_px/2]
+    px_start = [int(np.round(px_start[0],decimals=0)),int(np.round(px_start[1],decimals=0))]
+    px_end = [int(np.round(px_end[0],decimals=0)),int(np.round(px_end[1],decimals=0))]
+    pixel_array = []
+    for i_x in trange(px_start[0]-1,px_end[0]+1):
+        for i_y in range(px_start[1]-1,px_end[1]+1):
+            if sqrt((i_x-central_px[0])**2+(i_y-central_px[1])**2) < circle_size_px/2.:
+                pixel_array.append((i_x,i_y))
+    return pixel_array
+
+
 def pixel_box_calculation(fitsfile,longitude,latitude,a,b):
     #longitude and latitude in degree
     #a,b: total size of longitude,latitude box in arcsec
@@ -228,6 +250,81 @@ def pixel_box_calculation(fitsfile,longitude,latitude,a,b):
                 pixel_array.append((i_x,i_y))
     else:
         pixel_array.append((central_px[0],central_px[1]))
+    return pixel_array
+
+
+def pixel_annulus_calculation(fitsfile,longitude,latitude,r_in,r_out):
+    #longitude and latitude in degree
+    #r_in and r_out: inner and outer radius in arcsec
+    #give central coordinates, inner and outer radius of annulus and fitsfile and it returns array with the corresponding pixels 
+    header = fits.getheader(fitsfile)
+    w = WCS(fitsfile)
+    delta = abs(header['CDELT1']) #in degree
+    circle_in_px = 2*r_in/3600. / delta
+    circle_in_px = int(round(circle_in_px))
+    circle_out_px = 2*r_out/3600. / delta
+    circle_out_px = int(round(circle_out_px))
+    if header['NAXIS']==3:
+        central_px = w.all_world2pix(longitude,latitude,0,1)
+    elif header['NAXIS']==2:
+        central_px = w.all_world2pix(longitude,latitude,1)
+    else:
+        raise Exception('Something wrong with the header.')
+    central_px = [int(np.round(central_px[0],decimals=0))-1,int(np.round(central_px[1],decimals=0))-1]
+    px_start = [central_px[0]-circle_out_px/2,central_px[1]-circle_out_px/2]
+    px_end = [central_px[0]+circle_out_px/2,central_px[1]+circle_out_px/2]
+    pixel_array = []
+    for i_x in trange(int(np.round(px_start[0],decimals=0)-1),int(np.round(px_end[0],decimals=0)+1)):
+        for i_y in range(int(np.round(px_start[1],decimals=0)-1),int(np.round(px_end[1],decimals=0)+1)):
+            if (sqrt((i_x-central_px[0])**2+(i_y-central_px[1])**2) > circle_in_px/2.) and (sqrt((i_x-central_px[0])**2+(i_y-central_px[1])**2)) < circle_out_px/2.:
+                pixel_array.append((i_x,i_y))
+    return pixel_array
+
+
+#Calculate ellipse pixel:
+#TODO
+def pixel_ellipse_calculation(central_pixel_x,central_pixel_y,a_pixel,b_pixel):
+    header = fits.getheader(fits_file)
+    delta = -1*header['CDELT1'] #in degree
+    circle_size_px = 2*r/3600. / delta
+    circle_size_px = int(round(circle_size_px))
+    figure = aplpy.FITSFigure(fits_file, dimensions=[0,1], slices=[0],convention='wells')
+    central_px = figure.world2pixel(ra,dec)
+    central_px = [int(round(central_px[0]))-1,int(round(central_px[1]))-1]
+    close()
+    px_start = [central_pixel_x-2*a_pixel,central_pixel_y-2*b_pixel]    #2*a and 2*b just to be sure, that I cover the entire area
+    px_end = [central_pixel_x+2*a_pixel,central_pixel_y+2*b_pixel]
+    pixel_array = []
+    print('pixel_start: '+str(px_start)+'   pixel_end: '+str(px_end))
+    for i_x in range(px_start[0],px_end[0]):
+        for i_y in range(px_start[1],px_end[1]):
+            if (((i_x-central_pixel_x)**2 / float(a_pixel)**2) + ((i_y-central_pixel_y)**2 / float(b_pixel)**2) < 1 ):
+                pixel_array.append((i_x,i_y))
+            else:
+                u = 1
+    return pixel_array
+
+#Calculate ellipse pixel annulus:
+#TODO
+def pixel_ellipse_annulus_calculation(central_pixel_x,central_pixel_y,a_pixel_out,b_pixel_out,a_pixel_in,b_pixel_in):
+    px_start = [int(central_pixel_x-1.1*a_pixel_out),int(central_pixel_y-1.1*b_pixel_out)]    #1.1*a and 1.1*b just to be sure, that I cover the entire area
+    px_end = [int(central_pixel_x+1.1*a_pixel_out),int(central_pixel_y+1.1*b_pixel_out)]
+    pixel_array = []
+    print('pixel_start: '+str(px_start)+'   pixel_end: '+str(px_end))
+    if (a_pixel_in == 0):
+        for i_x in range(px_start[0],px_end[0]):
+            for i_y in range(px_start[1],px_end[1]):
+                if ((((i_x-central_pixel_x)**2 / float(a_pixel_out)**2) + ((i_y-central_pixel_y)**2 / float(b_pixel_out)**2) < 1 )):
+                    pixel_array.append((i_x,i_y))
+                else:
+                    u = 1        
+    else:
+        for i_x in range(px_start[0],px_end[0]):
+            for i_y in range(px_start[1],px_end[1]):
+                if ((((i_x-central_pixel_x)**2 / float(a_pixel_out)**2) + ((i_y-central_pixel_y)**2 / float(b_pixel_out)**2) < 1 ) and (((i_x-central_pixel_x)**2 / float(a_pixel_in)**2) + ((i_y-central_pixel_y)**2 / float(b_pixel_in)**2) > 1 )):
+                    pixel_array.append((i_x,i_y))
+                else:
+                    u = 1
     return pixel_array
 
 
@@ -276,3 +373,285 @@ def make_subcube(filename, longitudes=None, latitudes=None, velo_range=None, suf
         newname = filename.split('.fits')[0] + 'lon{}to{}_lat{}to{}'.format(longitudes[0], longitudes[1], latitudes[0], latitudes[1]) + '.fits'
     sub_cube.write(newname, format='fits', overwrite=True)
     print("\n\033[92mSAVED FILE:\033[0m '{}'".format(newname))
+
+
+def smooth_1d(x,window_len=11,window='hanning'):
+    """smooth the data using a window with requested size.
+    
+    This method is based on the convolution of a scaled window with the signal.
+    The signal is prepared by introducing reflected copies of the signal 
+    (with the window size) in both ends so that transient parts are minimized
+    in the begining and end part of the output signal.
+    
+    input:
+        x: the input signal 
+        window_len: the dimension of the smoothing window; should be an odd integer
+        window: the type of window from 'flat', 'hanning', 'hamming', 'bartlett', 'blackman'
+            flat window will produce a moving average smoothing.
+
+    output:
+        the smoothed signal
+        
+    example:
+
+    t=linspace(-2,2,0.1)
+    x=sin(t)+randn(len(t))*0.1
+    y=smooth(x)
+    
+    see also: 
+    
+    numpy.hanning, numpy.hamming, numpy.bartlett, numpy.blackman, numpy.convolve
+    scipy.signal.lfilter
+ 
+    TODO: the window parameter could be the window itself if an array instead of a string
+    NOTE: length(output) != length(input), to correct this: return y[(window_len/2-1):-(window_len/2)] instead of just y.
+    """
+    import numpy
+
+    if x.ndim != 1:
+        raise ValueError("smooth only accepts 1 dimension arrays.")
+
+    if x.size < window_len:
+        raise ValueError("Input vector needs to be bigger than window size.")
+
+
+    if window_len<3:
+        return x
+
+
+    if not window in ['flat', 'hanning', 'hamming', 'bartlett', 'blackman']:
+        raise ValueError("Window is on of 'flat', 'hanning', 'hamming', 'bartlett', 'blackman'")
+
+
+    s=numpy.r_[x[window_len-1:0:-1],x,x[-2:-window_len-1:-1]]
+    #print(len(s))
+    if window == 'flat': #moving average
+        w=numpy.ones(window_len,'d')
+    else:
+        w=eval('numpy.'+window+'(window_len)')
+
+    y=numpy.convolve(w/w.sum(),s,mode='valid')
+    return y[(round(window_len/2-1)):-(round(window_len/2))]
+
+
+def calculate_pixelArray_along_filament(filename,filamentdata,halfwidth_pc,distance_of_source):
+    #filamentdata in px coordinates ; halfwidth_pc and distance in unit pc
+    #find the tangent curve
+    intensity = fits.getdata(filename)
+    header = fits.getheader(filename)
+    pixel_scale = math.tan(np.abs(header['CDELT1']) * math.pi/180) * distance_of_source #pc per px
+    halfwidth = int(np.round(halfwidth_pc / pixel_scale,decimals=0))
+    filament_coords = np.loadtxt(filamentdata)
+    
+    x = filament_coords[:,0]
+    y = filament_coords[:,1]
+    z = filament_coords[:,2]
+    
+    pixel_list = []
+
+    for n in trange(1,len(filament_coords)-1):
+        
+        line_perpList = []
+        line_perpList2 = []
+
+        x0 = int(x[n])
+        y0 = int(y[n])
+        z0 = int(z[n])
+        r0 = np.array([x0,y0], dtype=float) # point on the filament
+
+        a = x[n+1] - x[n-1]
+        b = y[n+1] - y[n-1]
+        normal = np.array([a,b], dtype=float)
+        #print a, b	
+        #plt.plot(normal)
+        #equation of normal plane: ax+by=const
+
+        const = np.sum(normal*r0)
+					
+        # defining lists an array to be used below
+        if header['NAXIS'] == 2:
+            distance = np.zeros_like(intensity)
+            distance2 = np.zeros_like(intensity)
+
+            line_perp = np.zeros_like(intensity) #
+            line_perp2 = np.zeros_like(intensity) #
+        elif header['NAXIS'] == 3:
+            distance = np.zeros_like(intensity[0])
+            distance2 = np.zeros_like(intensity[0])
+
+            line_perp = np.zeros_like(intensity[0]) #
+            line_perp2 = np.zeros_like(intensity[0]) #
+        else:
+            raise Exception('FITS file must be 2D or 3D. Instead, file has shape {}'.format(intensity.shape))		
+			
+		
+        # Loop 1: if the slope is negative
+        if -float(b)/a > 0:
+            npix = halfwidth
+            #print(distance.shape)
+            if y0+npix < distance.shape[0] and x0+npix < distance.shape[1]:
+                npix = npix
+                #print('npix unmodified: ', npix)
+            elif y0+npix < distance.shape[0] and x0+npix >= distance.shape[1]:
+                npix = distance.shape[1]-1- x0
+                #print('npix modified: ', npix)
+            elif y0+npix >= distance.shape[0] and x0+npix < distance.shape[1]:
+                npix = distance.shape[0]-1- y0
+                #print('npix modified: ', npix)
+            elif y0+npix >= distance.shape[0] and x0+npix >= distance.shape[1]:
+                npix_x = distance.shape[1]-1- x0
+                npix_y = distance.shape[0]-1- y0
+                if npix_x < npix_y:
+                    npix = npix_x
+                else: 
+                    npix = npix_y
+				
+            for ii in range(y0-npix,y0+1):
+                for jj in range(x0-npix,x0+1):
+			
+                    distance[ii,jj] = ((jj-x0)**2.+(ii-y0)**2.)**0.5 #distance between point (i,j) and filament
+                    if (distance[ii,jj] <  npix-1):
+                        dist_normal = (np.fabs(a*jj+b*ii-const))/(a**2+b**2)**0.5 #distance between point (i,j) and the normal 
+                        #take the point if it is in the vicinity of the normal (distance < 2 pix)
+                        if (dist_normal < 1):
+                            line_perp[ii,jj] = distance[ii,jj] #storing the nearby points
+                            line_perpList.extend((ii,jj,distance[ii,jj]))
+
+
+
+            for ii in range(y0,y0+npix):
+                for jj in range(x0,x0+npix):
+	     
+                    distance2[ii,jj] = ((jj-x0)**2.+(ii-y0)**2.)**0.5 
+                    if (distance2[ii,jj] <  npix-1):
+                        dist_normal2 = (np.fabs(a*jj+b*ii-const))/(np.sum(normal*normal))**0.5 
+							
+                        if (dist_normal2 < 1): 
+                            line_perp2[ii,jj] = distance2[ii,jj] 
+                            line_perpList2.extend((ii,jj,distance2[ii,jj]))			
+							
+	
+        #Loop 2_ if the slope is positive
+        elif -float(b)/a < 0:
+            npix = halfwidth
+				
+				
+            if y0+npix < distance.shape[0] and x0+npix < distance.shape[1]:
+                npix = npix
+                #print('npix unmodified: ', npix)
+            elif y0+npix < distance.shape[0] and x0+npix >= distance.shape[1]:
+                npix = distance.shape[1]-1- x0
+                #print('npix modified: ', npix)
+            elif y0+npix >= distance.shape[0] and x0+npix < distance.shape[1]:
+                npix = distance.shape[0]-1- y0
+                #print('npix modified: ', npix)
+            elif y0+npix >= distance.shape[0] and x0+npix >= distance.shape[1]:
+                npix_x = distance.shape[1]-1- x0
+                npix_y = distance.shape[0]-1- y0
+                if npix_x < npix_y:
+                    npix = npix_x
+                else: 
+                    npix = npix_y
+                #print('npix modified: ', npix)	
+			
+	
+            for ii in range(y0,y0+npix):
+                for jj in range(x0-npix,x0+1):
+                    distance[ii,jj] = ((jj-x0)**2.+(ii-y0)**2.)**0.5
+                    if (distance[ii,jj] <  npix-1):
+                        dist_normal = (np.fabs(a*jj+b*ii-const))/(np.sum(normal*normal))**0.5
+                        if (dist_normal < 1):
+                            line_perp[ii,jj] = distance[ii,jj]
+                            line_perpList.extend((ii,jj,distance[ii,jj]))
+
+
+            for ii in range(y0-npix,y0+1):
+                for jj in range(x0, x0+npix):
+                    distance2[ii,jj] = ((jj-x0)**2.+(ii-y0)**2.)**0.5
+                    if (distance2[ii,jj] <  npix-1):
+                        dist_normal2 = (np.fabs(a*jj+b*ii-const))/(np.sum(normal*normal))**0.5
+                        if (dist_normal2 < 1):
+                            line_perp2[ii,jj] = distance2[ii,jj]
+                            line_perpList2.extend((ii,jj,distance2[ii,jj]))
+
+        perpendicularLine = np.array(line_perpList).reshape(-1,3)
+        perpendicularLine2 = np.array(line_perpList2).reshape(-1,3)
+        total_array = np.vstack((perpendicularLine2,perpendicularLine))
+    
+        pixel_list.append(total_array)
+        pixel_array = np.array(pixel_list) 
+    print('Filament positions selected over '+str(2*halfwidth_pc)+' pc slices perpendicular to filament')
+
+    return pixel_array
+
+
+#WORLD COORDS, adapted from filchap (Suri 2018)
+def calculateLength_worldcoords(filamentDatafile,distance):
+    #distance in pc
+    filamentData = np.loadtxt(filamentDatafile)
+    length = 0
+    for ii in range(len(filamentData)-1):
+        x_1 = filamentData[ii,0]
+        y_1 = filamentData[ii,1]
+        x_2 = filamentData[ii+1,0]
+        y_2 = filamentData[ii+1,1]
+        delta_x = (x_2 - x_1)**2
+        delta_y = (y_2 - y_1)**2
+        delta = math.sqrt(delta_x + delta_y)	
+        theta = delta*math.pi/180 #convert degree to radians.
+        R = math.tan(theta)*distance		
+        length = length + R	
+    return length
+
+###ORIGINAL script, pixel coords
+def calculateLength(filamentDatafile,distance,pix_size):
+    #px size in arcsec per px, distance in pc
+    filamentData = np.loadtxt(filamentDatafile)
+    length = 0
+    for ii in range(len(filamentData)-1):
+        x_1 = filamentData[ii,0]
+        y_1 = filamentData[ii,1]
+        x_2 = filamentData[ii+1,0]
+        y_2 = filamentData[ii+1,1]
+        delta_x = (x_2 - x_1)**2
+        delta_y = (y_2 - y_1)**2
+        delta = math.sqrt(delta_x + delta_y)	
+        theta = (delta*pix_size)/206265 #convert arcsec to radians.
+        R = math.tan(theta)*distance		
+        length = length + R	
+    return length
+
+#with file already read in
+def calculateLength_from_array(filamentData,distance,pix_size):
+    #px size in arcsec per px, distance in pc
+    length = 0
+    for ii in range(len(filamentData)-1):
+        x_1 = filamentData[ii,0]
+        y_1 = filamentData[ii,1]
+        x_2 = filamentData[ii+1,0]
+        y_2 = filamentData[ii+1,1]
+        delta_x = (x_2 - x_1)**2
+        delta_y = (y_2 - y_1)**2
+        delta = math.sqrt(delta_x + delta_y)	
+        theta = (delta*pix_size)/206265 #convert arcsec to radians.
+        R = math.tan(theta)*distance		
+        length = length + R	
+    return length
+
+
+#calculate Galactocentric radius from distance
+def calculate_gal_radius_from_distance(distance,longitude,latitude,R_sun):
+    R_hel_x = distance * np.cos(np.radians(latitude)) * np.cos(np.radians(longitude))
+    R_hel_y = distance * np.cos(np.radians(latitude)) * np.sin(np.radians(longitude))
+    R_hel_z = distance * np.sin(np.radians(latitude))
+
+    R_sun_x = R_sun
+    R_sun_y = 0
+    R_sun_z = 0
+
+    R_gal_x = R_hel_x - R_sun_x
+    R_gal_y = R_hel_y - R_sun_y
+    R_gal_z = R_hel_z - R_sun_z
+
+    R_gal_distance = np.sqrt(R_gal_x**2 + R_gal_y**2 + R_gal_z**2)
+    return R_gal_distance
