@@ -1,3 +1,5 @@
+# Licensed under a GPLv3 license - see LICENSE.rst
+
 # Enforce Python version check during package import.
 # This is the same check as the one at the top of setup.py
 import sys
