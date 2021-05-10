@@ -1,0 +1,6 @@
+include README.md
+include setup.cfg
+
+recursive-include astrojoni_tools *.pyx *.c *.pxd
+
+global-exclude *.pyc *.o
