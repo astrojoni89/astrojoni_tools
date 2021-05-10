@@ -2,10 +2,6 @@ import numpy as np
 from tqdm import trange
 from astropy.io import fits
 from astropy.wcs import WCS
-from astropy import units as u
-from astropy.coordinates import Galactic
-from spectral_cube import SpectralCube
-
 
 
 
@@ -234,3 +230,49 @@ def pixel_box_calculation(fitsfile,longitude,latitude,a,b):
         pixel_array.append((central_px[0],central_px[1]))
     return pixel_array
 
+
+#make subcube of ppv cube
+def make_subcube(filename, longitudes=None, latitudes=None, velo_range=None, suffix=None):
+    import astropy.units as u
+    from astropy.io import fits
+    from spectral_cube import SpectralCube
+
+    data = fits.open(filename)  # Open the FITS file for reading
+    cube = SpectralCube.read(data)  # Initiate a SpectralCube
+    data.close()  # Close the FITS file - we already read it in and don't need it anymore!
+
+    print(cube)
+
+    #extract coordinates
+    _, b, _ = cube.world[0, :, 0]  #extract latitude world coordinates from cube
+    _, _, l = cube.world[0, 0, :]  #extract longitude world coordinates from cube
+    v, _, _ = cube.world[:, 0, 0]  #extract velocity world coordinates from cube
+
+    # Define desired latitude and longitude range
+    if latitudes is not None:
+        lat_range = latitudes * u.deg
+        lat_range_idx = sorted([find_nearest(b, lat_range[0]), find_nearest(b, lat_range[1])])
+    else:
+        lat_range_idx = [None, None]
+    if longitudes is not None:
+        lon_range = longitudes * u.deg
+        lon_range_idx = sorted([find_nearest(l, lon_range[0]), find_nearest(l, lon_range[1])])
+    else:
+        lon_range_idx = [None, None]
+    if velo_range is not None:
+        vel_range = velo_range * u.km/u.s
+        vel_range_idx = sorted([find_nearest(v, vel_range[0]), find_nearest(v, vel_range[1])])
+    else:
+        vel_range_idx = [None, None]
+    
+    # Create a sub_cube cut to these coordinates
+    sub_cube = cube[vel_range_idx[0]:vel_range_idx[1], lat_range_idx[0]:lat_range_idx[1], lon_range_idx[0]:lon_range_idx[1]]
+
+    print(sub_cube)
+    
+    if suffix is not None:
+        newname = filename.split('.fits')[0] + 'lon{}to{}_lat{}to{}'.format(longitudes[0], longitudes[1], latitudes[0], latitudes[1]) + suffix + '.fits'
+    else:
+        newname = filename.split('.fits')[0] + 'lon{}to{}_lat{}to{}'.format(longitudes[0], longitudes[1], latitudes[0], latitudes[1]) + '.fits'
+    sub_cube.write(newname, format='fits', overwrite=True)
+    print("\n\033[92mSAVED FILE:\033[0m '{}'".format(newname))
