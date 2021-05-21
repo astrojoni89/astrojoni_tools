@@ -416,7 +416,25 @@ def convert_jybeam_to_kelvin(filename, path_to_output='.', suffix=None):
     print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
 
 
-def smooth_1d(x,window_len=11,window='hanning'):
+def spatial_smooth(filename, major=None, minor=None, pa=0, path_to_output='.', suffix=None): # smooth image with 2D Gaussian
+    import radio_beam
+    from spectral_cube import SpectralCube
+    from astropy import units as u
+
+    cube = SpectralCube.read(filename)
+    beam = radio_beam.Beam(major=major*u.arcsec, minor=minor*u.arcsec, pa=pa*u.deg)
+    smoothcube = cube.convolve_to(beam)
+	
+    if suffix is not None:
+        newname = filename.split('/')[-1].split('.fits')[0] + '_smooth' + str(major) + '_arcsec' + suffix + '.fits'
+    else:
+        newname = filename.split('/')[-1].split('.fits')[0] + '_smooth_' + str(major) + '_arcsec' + '.fits'
+    pathname = os.path.join(path_to_output, newname)
+    smoothcube.write(pathname, format='fits', overwrite=True)
+    print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
+
+
+def smooth_1d(x,window_len=11,window='hanning'): # smooth spectrum
     """smooth the data using a window with requested size.
     
     This method is based on the convolution of a scaled window with the signal.
