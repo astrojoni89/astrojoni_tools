@@ -371,9 +371,9 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
     print(sub_cube)
     
     if suffix is not None:
-        newname = filename.split('/')[-1].split('.fits')[0] + 'lon{}to{}_lat{}to{}'.format(longitudes[0], longitudes[1], latitudes[0], latitudes[1]) + suffix + '.fits'
+        newname = filename.split('/')[-1].split('.fits')[0] + '_lon{}to{}_lat{}to{}'.format(longitudes[0], longitudes[1], latitudes[0], latitudes[1]) + suffix + '.fits'
     else:
-        newname = filename.split('/')[-1].split('.fits')[0] + 'lon{}to{}_lat{}to{}'.format(longitudes[0], longitudes[1], latitudes[0], latitudes[1]) + '.fits'
+        newname = filename.split('/')[-1].split('.fits')[0] + '_lon{}to{}_lat{}to{}'.format(longitudes[0], longitudes[1], latitudes[0], latitudes[1]) + '.fits'
     pathname = os.path.join(path_to_output, newname)
     sub_cube.write(pathname, format='fits', overwrite=True)
     print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
