@@ -329,7 +329,7 @@ def pixel_ellipse_annulus_calculation(central_pixel_x,central_pixel_y,a_pixel_ou
 
 
 #make subcube of ppv cube
-def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_range=None, path_to_data='.', suffix=None):
+def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_range=None, path_to_output='.', suffix=None):
     import os
     import astropy.units as u
     from astropy.io import fits
@@ -374,9 +374,9 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
         newname = filename.split('/')[-1].split('.fits')[0] + 'lon{}to{}_lat{}to{}'.format(longitudes[0], longitudes[1], latitudes[0], latitudes[1]) + suffix + '.fits'
     else:
         newname = filename.split('/')[-1].split('.fits')[0] + 'lon{}to{}_lat{}to{}'.format(longitudes[0], longitudes[1], latitudes[0], latitudes[1]) + '.fits'
-    pathname = os.path.join(path_to_data, newname)
+    pathname = os.path.join(path_to_output, newname)
     sub_cube.write(pathname, format='fits', overwrite=True)
-    print("\n\033[92mSAVED FILE:\033[0m '{}' in {}".format(newname,path_to_data))
+    print("\n\033[92mSAVED FILE:\033[0m '{}' in {}".format(newname,path_to_output))
 
 
 def smooth_1d(x,window_len=11,window='hanning'):
