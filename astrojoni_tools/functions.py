@@ -329,15 +329,18 @@ def pixel_ellipse_annulus_calculation(central_pixel_x,central_pixel_y,a_pixel_ou
 
 
 #make subcube of ppv cube
-def make_subcube(filename, longitudes=None, latitudes=None, velo_range=None, suffix=None):
+def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_range=None, path_to_data='.', suffix=None):
+    import os
     import astropy.units as u
     from astropy.io import fits
     from spectral_cube import SpectralCube
 
-    data = fits.open(filename)  # Open the FITS file for reading
-    cube = SpectralCube.read(data)  # Initiate a SpectralCube
-    data.close()  # Close the FITS file - we already read it in and don't need it anymore!
-
+    if cube is None:
+        data = fits.open(filename)  # Open the FITS file for reading
+        cube = SpectralCube.read(data)  # Initiate a SpectralCube
+        data.close()  # Close the FITS file - we already read it in and don't need it anymore!
+    else:
+	cube = cubedata
     print(cube)
 
     #extract coordinates
@@ -371,8 +374,9 @@ def make_subcube(filename, longitudes=None, latitudes=None, velo_range=None, suf
         newname = filename.split('.fits')[0] + 'lon{}to{}_lat{}to{}'.format(longitudes[0], longitudes[1], latitudes[0], latitudes[1]) + suffix + '.fits'
     else:
         newname = filename.split('.fits')[0] + 'lon{}to{}_lat{}to{}'.format(longitudes[0], longitudes[1], latitudes[0], latitudes[1]) + '.fits'
-    sub_cube.write(newname, format='fits', overwrite=True)
-    print("\n\033[92mSAVED FILE:\033[0m '{}'".format(newname))
+    pathname = os.path.join(path_to_data, newname)
+    sub_cube.write(pathname, format='fits', overwrite=True)
+    print("\n\033[92mSAVED FILE:\033[0m '{}' in {}".format(newname,path_to_data))
 
 
 def smooth_1d(x,window_len=11,window='hanning'):
