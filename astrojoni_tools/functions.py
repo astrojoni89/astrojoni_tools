@@ -379,6 +379,18 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
     print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
 
 
+def jansky_to_kelvin(frequency,theta_1,theta_2): #in units of (GHz,arcsec,arcsec)
+    from astropy import constants as const
+    c = const.c
+    k = const.k_B
+    theta_1 = theta_1*2*pi/360./3600.
+    theta_2 = theta_2*2*pi/360./3600.
+    S = 2*k*(frequency*10**9)**2/c**2 / (10**(-26)) * 2*pi/(2*sqrt(2*log(2)))**2 * theta_1* theta_2
+    temp = 1/S
+    print('Jy/K = {:.5e}'.format(S))
+    print('K/Jy = {:.5e}'.format(temp))
+
+
 def convert_jybeam_to_kelvin(filename, path_to_output='.', suffix=None):
     import os
     from astropy.io import fits
