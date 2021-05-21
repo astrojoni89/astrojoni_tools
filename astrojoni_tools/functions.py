@@ -379,6 +379,31 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
     print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
 
 
+def convert_jybeam_to_kelvin(filename, path_to_output='.', suffix=None):
+    import os
+    from astropy.io import fits
+    from spectral_cube import SpectralCube
+    import astropy.units as u
+
+    data = fits.open(filename) # Open the FITS file for reading
+    cube = SpectralCube.read(data)  # Initiate a SpectralCube
+    data.close()  # Close the FITS file - we already read it in and don't need it anymore!
+
+    cube.allow_huge_operations=True
+    cube.unit  
+
+    kcube = cube.to(u.K)  
+    kcube.unit 
+    
+    if suffix is not None:
+        newname = filename.split('/')[-1].split('.fits')[0] + '_unit_Tb' + suffix + '.fits'
+    else:
+        newname = filename.split('/')[-1].split('.fits')[0] + '_unit_Tb' + '.fits'
+    pathname = os.path.join(path_to_output, newname)
+    kcube.write(pathname, format='fits', overwrite=True)
+    print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
+
+
 def smooth_1d(x,window_len=11,window='hanning'):
     """smooth the data using a window with requested size.
     
