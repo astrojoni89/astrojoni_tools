@@ -340,7 +340,7 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
         cube = SpectralCube.read(data)  # Initiate a SpectralCube
         data.close()  # Close the FITS file - we already read it in and don't need it anymore!
     else:
-	cube = cubedata
+        cube = cubedata
     print(cube)
 
     #extract coordinates
