@@ -100,11 +100,11 @@ def moment_0(fitsfile,velocity_start,velocity_end,path_to_output='.',save_file=T
     upper_channel = find_nearest(velocity,velocity_end)
     print('channel-range: '+str(lower_channel)+' - '+str(upper_channel))
     print('velocity-range: '+str(velocity[lower_channel])+' - '+str(velocity[upper_channel]))
-    if header['NAXIS']==4:
+    if headerm0['NAXIS']==4:
         moment_0_map = np.zeros((headerm0['NAXIS2'],headerm0['NAXIS1']))
         for i in range(lower_channel,upper_channel+1,1):
             moment_0_map = moment_0_map + image[0,i,:,:]
-    elif header['NAXIS']==3:
+    elif headerm0['NAXIS']==3:
         moment_0_map = np.zeros((headerm0['NAXIS2'],headerm0['NAXIS1']))
         for i in range(lower_channel,upper_channel+1,1):
             moment_0_map = moment_0_map + image[i,:,:]
@@ -131,11 +131,11 @@ def moment_1(fitsfile,velocity_start,velocity_end,path_to_output='.',save_file=T
     upper_channel = find_nearest(velocity,velocity_end)
     print('channel-range: '+str(lower_channel)+' - '+str(upper_channel))
     print('velocity-range: '+str(velocity[lower_channel])+' - '+str(velocity[upper_channel]))
-    if header['NAXIS']==4:
+    if headerm1['NAXIS']==4:
         moment_1_map = np.zeros((headerm1['NAXIS2'],headerm1['NAXIS1']))
         for i in range(lower_channel,upper_channel+1,1):
             moment_1_map = moment_1_map + image[0,i,:,:] * velocity[i]
-    elif header['NAXIS']==3:
+    elif headerm1['NAXIS']==3:
         moment_1_map = np.zeros((headerm1['NAXIS2'],headerm1['NAXIS1']))
         for i in range(lower_channel,upper_channel+1,1):
             moment_1_map = moment_1_map + image[i,:,:] * velocity[i]
@@ -149,6 +149,8 @@ def moment_1(fitsfile,velocity_start,velocity_end,path_to_output='.',save_file=T
     if save_file is True:
         fits.writeto(pathname, moment_1_map, header=headerm1, overwrite=True)
         print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
+    else:
+        print(newname.split('.fits')[0])
     return moment_1_map
 
 def add_up_channels(fitsfile,velocity_start,velocity_end):
