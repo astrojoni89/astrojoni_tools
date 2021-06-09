@@ -132,11 +132,11 @@ def moment_1(fitsfile,velocity_start,velocity_end,path_to_output='.',save_file=T
     print('channel-range: '+str(lower_channel)+' - '+str(upper_channel))
     print('velocity-range: '+str(velocity[lower_channel])+' - '+str(velocity[upper_channel]))
     if header['NAXIS']==4:
-	moment_1_map = np.zeros((headerm1['NAXIS2'],headerm1['NAXIS1']))
+        moment_1_map = np.zeros((headerm1['NAXIS2'],headerm1['NAXIS1']))
         for i in range(lower_channel,upper_channel+1,1):
             moment_1_map = moment_1_map + image[0,i,:,:] * velocity[i]
     elif header['NAXIS']==3:
-	moment_1_map = np.zeros((headerm1['NAXIS2'],headerm1['NAXIS1']))
+        moment_1_map = np.zeros((headerm1['NAXIS2'],headerm1['NAXIS1']))
         for i in range(lower_channel,upper_channel+1,1):
             moment_1_map = moment_1_map + image[i,:,:] * velocity[i]
     else:
