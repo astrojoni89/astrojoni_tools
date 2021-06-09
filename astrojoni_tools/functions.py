@@ -112,7 +112,7 @@ def moment_0(fitsfile,velocity_start,velocity_end,path_to_output='.',save_file=T
         print('Something wrong with the header.')
     moment_0_map = moment_0_map * headerm0['CDELT3']/1000
     headerm0['BUNIT'] = headerm0['BUNIT']+'.KM/S'
-    newname = filename.split('/')[-1].split('.fits')[0] + '_mom-0_' + str(velocity_start) + '_to_' + str(velocity_end) + 'km-s.fits'
+    newname = fitsfile.split('/')[-1].split('.fits')[0] + '_mom-0_' + str(velocity_start) + '_to_' + str(velocity_end) + 'km-s.fits'
     pathname = os.path.join(path_to_output,newname)
     if save_file is True:
         fits.writeto(pathname, moment_0_map, header=headerm0, overwrite=True)
@@ -144,7 +144,7 @@ def moment_1(fitsfile,velocity_start,velocity_end,path_to_output='.',save_file=T
     moment_0_map = moment_0(fitsfile,velocity_start,velocity_end,save_file=False)
     moment_1_map = (moment_1_map * headerm1['CDELT3']/1000) / moment_0_map
     headerm1['BUNIT'] = 'KM/S'
-    newname = filename.split('/')[-1].split('.fits')[0] + '_mom-1_' + str(velocity_start) + '_to_' + str(velocity_end) + 'km-s.fits'
+    newname = fitsfile.split('/')[-1].split('.fits')[0] + '_mom-1_' + str(velocity_start) + '_to_' + str(velocity_end) + 'km-s.fits'
     pathname = os.path.join(path_to_output,newname)
     if save_file is True:
         fits.writeto(pathname, moment_1_map, header=headerm1, overwrite=True)
