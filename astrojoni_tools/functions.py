@@ -90,9 +90,10 @@ def calculate_average_value_pixelArray(fitsfile,pixel_array): #nan treatment?
     return value_average
  
 
-def moment_0(fitsfile,velocity_start,velocity_end):
+def moment_0(fitsfile,velocity_start,velocity_end,path_to_output='.',save_file=True):
+    import os
     image = fits.getdata(fitsfile)
-    header = fits.getheader(fitsfile)
+    headerm0 = fits.getheader(fitsfile)
     velocity = velocity_axes(fitsfile)
     velocity = velocity.round(decimals=4)
     lower_channel = find_nearest(velocity,velocity_start)
@@ -100,21 +101,55 @@ def moment_0(fitsfile,velocity_start,velocity_end):
     print('channel-range: '+str(lower_channel)+' - '+str(upper_channel))
     print('velocity-range: '+str(velocity[lower_channel])+' - '+str(velocity[upper_channel]))
     if header['NAXIS']==4:
-        moment_0_map = np.zeros((1,1,header['NAXIS2'],header['NAXIS1']))
+        moment_0_map = np.zeros((headerm0['NAXIS2'],headerm0['NAXIS1']))
         for i in range(lower_channel,upper_channel+1,1):
             moment_0_map = moment_0_map + image[0,i,:,:]
     elif header['NAXIS']==3:
-        moment_0_map = np.zeros((1,header['NAXIS2'],header['NAXIS1']))
+        moment_0_map = np.zeros((headerm0['NAXIS2'],headerm0['NAXIS1']))
         for i in range(lower_channel,upper_channel+1,1):
             moment_0_map = moment_0_map + image[i,:,:]
     else:
         print('Something wrong with the header.')
-    moment_0_map = moment_0_map *header['CDELT3']/1000
-    header['BUNIT'] = header['BUNIT']+'.KM/S'
-    fits.writeto(fitsfile.split('.fits')[0]+'_mom-0_'+str(velocity_start)+'_to_'+str(velocity_end)+'km-s.fits', moment_0_map, header=header, overwrite=True)
-    print(fitsfile.split('.fits')[0]+'_mom-0_'+str(velocity_start)+'_to_'+str(velocity_end)+'km-s.fits')
-    return [fitsfile.split('.fits')[0]+'_mom-0_'+str(velocity_start)+'_to_'+str(velocity_end)+'km-s.fits',lower_channel,upper_channel]
+    moment_0_map = moment_0_map * headerm0['CDELT3']/1000
+    headerm0['BUNIT'] = headerm0['BUNIT']+'.KM/S'
+    newname = filename.split('/')[-1].split('.fits')[0] + '_mom-0_' + str(velocity_start) + '_to_' + str(velocity_end) + 'km-s.fits'
+    pathname = os.path.join(path_to_output,newname)
+    if save_file is True:
+        fits.writeto(pathname, moment_0_map, header=headerm0, overwrite=True)
+        print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
+    else:
+        print(newname.split('.fits')[0])
+    return moment_0_map
 
+def moment_1(fitsfile,velocity_start,velocity_end,path_to_output='.',save_file=True):
+    import os
+    image = fits.getdata(fitsfile)
+    headerm1 = fits.getheader(fitsfile)
+    velocity = velocity_axes(fitsfile)
+    velocity = velocity.round(decimals=4)
+    lower_channel = find_nearest(velocity,velocity_start)
+    upper_channel = find_nearest(velocity,velocity_end)
+    print('channel-range: '+str(lower_channel)+' - '+str(upper_channel))
+    print('velocity-range: '+str(velocity[lower_channel])+' - '+str(velocity[upper_channel]))
+    if header['NAXIS']==4:
+	moment_1_map = np.zeros((headerm1['NAXIS2'],headerm1['NAXIS1']))
+        for i in range(lower_channel,upper_channel+1,1):
+            moment_1_map = moment_1_map + image[0,i,:,:] * velocity[i]
+    elif header['NAXIS']==3:
+	moment_1_map = np.zeros((headerm1['NAXIS2'],headerm1['NAXIS1']))
+        for i in range(lower_channel,upper_channel+1,1):
+            moment_1_map = moment_1_map + image[i,:,:] * velocity[i]
+    else:
+        print('Something wrong with the header.')
+    moment_0_map = moment_0(fitsfile,velocity_start,velocity_end,save_file=False)
+    moment_1_map = (moment_1_map * headerm1['CDELT3']/1000) / moment_0_map
+    headerm1['BUNIT'] = 'KM/S'
+    newname = filename.split('/')[-1].split('.fits')[0] + '_mom-1_' + str(velocity_start) + '_to_' + str(velocity_end) + 'km-s.fits'
+    pathname = os.path.join(path_to_output,newname)
+    if save_file is True:
+        fits.writeto(pathname, moment_1_map, header=headerm1, overwrite=True)
+        print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
+    return moment_1_map
 
 def add_up_channels(fitsfile,velocity_start,velocity_end):
     image = fits.getdata(fitsfile)
