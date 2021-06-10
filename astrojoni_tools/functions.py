@@ -205,8 +205,8 @@ def channel_averaged(fitsfile,velocity_start,velocity_end):
     return [fitsfile.split('.fits')[0]+'_mom-0_'+str(velocity_start)+'_to_'+str(velocity_end)+'km-s.fits',lower_channel,upper_channel]
 
 
-def pixel_circle_calculation(fitsfile,longitude,latitude,radius):
-    #longitude and latitude in degree
+def pixel_circle_calculation(fitsfile,glon,glat,radius):
+    #glon and glat in degree
     #radius in arcsec
     #give central coordinates, size of circle and fitsfile and it returns array with the corresponding pixels 
     header = fits.getheader(fitsfile)
@@ -236,8 +236,8 @@ def pixel_circle_calculation(fitsfile,longitude,latitude,radius):
     return pixel_array
 
 
-def pixel_circle_calculation_px(fitsfile,longitude,latitude,radius):
-    #longitude and latitude in degree
+def pixel_circle_calculation_px(fitsfile,glon,glat,radius):
+    #glon and glat in degree
     #radius in arcsec
     #give central px, size of circle and fitsfile and it returns array with the corresponding pixels 
     header = fits.getheader(fitsfile)
