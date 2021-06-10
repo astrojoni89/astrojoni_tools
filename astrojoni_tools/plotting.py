@@ -8,8 +8,8 @@ from astropy.io import fits
 from astropy import units as u
 from tqdm import trange
 
-from .functions import pixel_circle_calculation, pixel_circle_calculation_px, calculate_spectrum
-from .functions import find_nearest, velocity_axes
+from .functions import find_nearest, velocity_axes, pixel_to_world, pixel_circle_calculation, pixel_circle_calculation_px, calculate_spectrum
+
 
 def styles():
     color_list = ['k', 'b', 'b', 'r', 'g']
@@ -149,6 +149,8 @@ def plot_spectra(fitsfiles, outfile='spectra.pdf', coordinates=None, radius=None
                     velo_min, velo_max = find_nearest(velocity,np.amin(velocity_range)), find_nearest(velocity,np.amax(velocity_range))
                     ax.plot(velocity[velo_min:velo_max], spectrum[velo_min:velo_max], drawstyle=draw_list[idx], color=color_list[idx], linestyle=line_list[idx])
                 add_figure_properties(ax, header=header, fontsize=fontsize, velocity_range=velocity_range, vel_unit=vel_unit)
+                coordinate = pixel_to_world(fitsfiles[0],xValue,yValue)
+                plt.annotate('Glon: {} deg\nGlat: {} deg'.format(round(coordinate[0].item(0),2),round(coordinate[1].item(0),2)), xy=(0.05, 0.85), xycoords='axes fraction', fontsize=fontsize)
 
         else:
             for i in trange(n_spectra):
@@ -170,6 +172,8 @@ def plot_spectra(fitsfiles, outfile='spectra.pdf', coordinates=None, radius=None
                     velo_min, velo_max = find_nearest(velocity,np.amin(velocity_range)), find_nearest(velocity,np.amax(velocity_range))
                     ax.plot(velocity[velo_min:velo_max], spectrum[velo_min:velo_max], drawstyle=draw_list[idx], color=color_list[idx], linestyle=line_list[idx])
                 add_figure_properties(ax, header=header, fontsize=fontsize, velocity_range=velocity_range, vel_unit=vel_unit)
+                coordinate = pixel_to_world(fitsfiles[0],xValue,yValue)
+                plt.annotate('Glon: {} deg\nGlat: {} deg'.format(round(coordinate[0].item(0),2),round(coordinate[1].item(0),2)), xy=(0.05, 0.85), xycoords='axes fraction', fontsize=fontsize)
 
     #for axs in fig.axes:
         #axs.label_outer()
