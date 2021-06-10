@@ -8,8 +8,8 @@ from astropy.io import fits
 from astropy import units as u
 from tqdm import trange
 
-from .utils.spectrum_utils import pixel_circle_calculation, pixel_circle_calculation_px, calculate_spectrum
-from .utils.aslsq_helper import find_nearest, velocity_axes
+from .functions import pixel_circle_calculation, pixel_circle_calculation_px, calculate_spectrum
+from .functions import find_nearest, velocity_axes
 
 def styles():
     color_list = ['k', 'b', 'b', 'r', 'g']
