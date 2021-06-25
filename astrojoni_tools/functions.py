@@ -10,6 +10,20 @@ def find_nearest(array,value):
     return idx
 
 
+def md_header_2d(fitsfile):
+    header_2d = fits.getheader(fitsfile)
+    del header_2d['NAXIS3']
+    del header_2d['CRPIX3']
+    del header_2d['CDELT3']
+    del header_2d['CUNIT3']
+    del header_2d['CTYPE3']
+    del header_2d['CRVAL3']
+
+    header_2d['NAXIS'] = 2
+    header_2d['WCSAXES'] = 2
+    return header_2d
+
+
 #convert axes indices to world coordinates
 def velocity_axes(name):
     header = fits.getheader(name)
