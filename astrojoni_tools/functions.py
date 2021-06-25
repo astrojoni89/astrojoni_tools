@@ -763,7 +763,7 @@ def calculateLength_from_array(filamentData,distance,pix_size):
 
 
 #calculate Galactocentric radius from distance
-def calculate_gal_radius_from_distance(distance,longitude,latitude,R_sun):
+def calculate_gal_radius_from_distance(distance,longitude,latitude,R_sun=8.15): # 8.15 kpc from Reid et al. (2019)
     R_hel_x = distance * np.cos(np.radians(latitude)) * np.cos(np.radians(longitude))
     R_hel_y = distance * np.cos(np.radians(latitude)) * np.sin(np.radians(longitude))
     R_hel_z = distance * np.sin(np.radians(latitude))
