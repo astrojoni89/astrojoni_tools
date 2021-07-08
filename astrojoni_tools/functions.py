@@ -76,7 +76,7 @@ def calculate_spectrum(fitsfile,pixel_array):
     spectrum_add = np.zeros(number_of_channels)
     n=0
     idxs = []
-    for i in range(0,len(pixel_array)):
+    for i in trange(0,len(pixel_array)):
         x_1,y_1 = pixel_array[i]
         spectrum_i = image[:,y_1,x_1]
         if any([np.isnan(spectrum_i[k]) for k in range(len(spectrum_i))]):
@@ -97,7 +97,7 @@ def calculate_average_value_pixelArray(fitsfile,pixel_array): #nan treatment?
     value_add = 0
     n=0
     idxs = []
-    for i in range(0,len(pixel_array)):
+    for i in trange(0,len(pixel_array)):
         x_1,y_1 = pixel_array[i]
         value_i = image[y_1,x_1]
         if np.isnan(value_i):
@@ -256,7 +256,7 @@ def pixel_circle_calculation(fitsfile,glon,glat,r):
         px_end = [central_px[0]+circle_size_px/2,central_px[1]+circle_size_px/2]
         px_start = [int(np.round(px_start[0],decimals=0)),int(np.round(px_start[1],decimals=0))]
         px_end = [int(np.round(px_end[0],decimals=0)),int(np.round(px_end[1],decimals=0))]
-        for i_x in range(px_start[0]-1,px_end[0]+1):
+        for i_x in trange(px_start[0]-1,px_end[0]+1):
             for i_y in range(px_start[1]-1,px_end[1]+1):
                 if np.sqrt((i_x-central_px[0])**2+(i_y-central_px[1])**2) < circle_size_px/2.:
                     pixel_array.append((i_x,i_y))
