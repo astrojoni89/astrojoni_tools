@@ -87,7 +87,7 @@ def calculate_spectrum(fitsfile,pixel_array):
         else:
             spectrum_add = spectrum_add + spectrum_i
     spectrum_average = spectrum_add / (len(pixel_array)-n)
-    pixel_array_without_nan_values = np.delete(pixel_array, indices, axis=0)
+    pixel_array_without_nan_values = [i for i in pixel_array if pixel_array[i].index() != indices[i]]
     return spectrum_average, pixel_array_without_nan_values
 
 
@@ -110,7 +110,7 @@ def calculate_average_value_pixelArray(fitsfile,pixel_array): #nan treatment?
         value_average = value_add / (len(pixel_array)-n)
     else:
         value_average = np.nan
-    pixel_array_without_nan_values = np.delete(pixel_array, indices, axis=0)
+    pixel_array_without_nan_values = [i for i in pixel_array if pixel_array[i].index() != indices[i]]
     return value_average, pixel_array_without_nan_values
  
 
