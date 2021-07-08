@@ -79,7 +79,7 @@ def calculate_spectrum(fitsfile,pixel_array):
     for i in range(0,len(pixel_array)):
         x_1,y_1 = pixel_array[i]
         spectrum_i = image[:,y_1,x_1]
-        if any([np.isnan(spectrum_i[i]) for i in range(len(spectrum_i))]):
+        if any([np.isnan(spectrum_i[k]) for k in range(len(spectrum_i))]):
             print('Warning: region contains NaNs!')
             idxs.append(i)
             spectrum_add = spectrum_add + 0
@@ -87,7 +87,8 @@ def calculate_spectrum(fitsfile,pixel_array):
         else:
             spectrum_add = spectrum_add + spectrum_i
     spectrum_average = spectrum_add / (len(pixel_array)-n)
-    pixel_array_without_nan_values = list(map(tuple, np.delete(pixel_array, idxs, axis=0)))
+    temp_array = np.delete(pixel_array, idxs, axis=0)
+    pixel_array_without_nan_values = list(map(tuple, temp_array))
     return spectrum_average, pixel_array_without_nan_values, idxs
 
 
@@ -110,7 +111,8 @@ def calculate_average_value_pixelArray(fitsfile,pixel_array): #nan treatment?
         value_average = value_add / (len(pixel_array)-n)
     else:
         value_average = np.nan
-    pixel_array_without_nan_values = list(map(tuple, np.delete(pixel_array, idxs, axis=0)))
+    temp_array = np.delete(pixel_array, idxs, axis=0)
+    pixel_array_without_nan_values = list(map(tuple, temp_array))
     return value_average, pixel_array_without_nan_values, idxs
  
 
