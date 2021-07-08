@@ -75,10 +75,10 @@ def calculate_spectrum(fitsfile,pixel_array):
     number_of_channels = header['NAXIS3']
     spectrum_add = np.zeros(number_of_channels)
     n=0
+    indices = []
     for i in range(0,len(pixel_array)):
         x_1,y_1 = pixel_array[i]
         spectrum_i = image[:,y_1,x_1]
-	indices = []
         if any([np.isnan(spectrum_i[i]) for i in range(len(spectrum_i))]):
             print('Warning: region contains NaNs!')
 	    indices.append(i)
@@ -95,11 +95,13 @@ def calculate_average_value_pixelArray(fitsfile,pixel_array): #nan treatment?
     image = fits.getdata(fitsfile)
     value_add = 0
     n=0
+    indices = []
     for i in range(0,len(pixel_array)):
         x_1,y_1 = pixel_array[i]
         value_i = image[y_1,x_1]
         if np.isnan(value_i):
             print('Warning: region contains NaNs!')
+	    indices.append(i)
             value_add = value_add + 0
             n+=1
         else:
@@ -108,7 +110,8 @@ def calculate_average_value_pixelArray(fitsfile,pixel_array): #nan treatment?
         value_average = value_add / (len(pixel_array)-n)
     else:
         value_average = np.nan
-    return value_average
+    pixel_array_without_nan_values = np.delete(pixel_array, indices, axis=0)
+    return value_average, pixel_array_without_nan_values
  
 
 def moment_0(fitsfile,velocity_start,velocity_end,path_to_output='.',save_file=True):
