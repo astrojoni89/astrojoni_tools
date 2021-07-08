@@ -107,10 +107,7 @@ def calculate_average_value_pixelArray(fitsfile,pixel_array): #nan treatment?
             n+=1
         else:
             value_add = value_add + value_i
-    if n<(len(pixel_array)/3.):
-        value_average = value_add / (len(pixel_array)-n)
-    else:
-        value_average = np.nan
+    value_average = value_add / (len(pixel_array)-n)
     temp_array = np.delete(pixel_array, idxs, axis=0)
     pixel_array_without_nan_values = list(map(tuple, temp_array))
     return value_average, pixel_array_without_nan_values, idxs
