@@ -88,7 +88,7 @@ def calculate_spectrum(fitsfile,pixel_array):
             spectrum_add = spectrum_add + spectrum_i
     spectrum_average = spectrum_add / (len(pixel_array)-n)
     pixel_array_without_nan_values = list(map(tuple, np.delete(pixel_array, idxs, axis=0)))
-    return spectrum_average, pixel_array_without_nan_values
+    return spectrum_average, pixel_array_without_nan_values, idxs
 
 
 def calculate_average_value_pixelArray(fitsfile,pixel_array): #nan treatment?
@@ -111,7 +111,7 @@ def calculate_average_value_pixelArray(fitsfile,pixel_array): #nan treatment?
     else:
         value_average = np.nan
     pixel_array_without_nan_values = list(map(tuple, np.delete(pixel_array, idxs, axis=0)))
-    return value_average, pixel_array_without_nan_values
+    return value_average, pixel_array_without_nan_values, idxs
  
 
 def moment_0(fitsfile,velocity_start,velocity_end,path_to_output='.',save_file=True):
