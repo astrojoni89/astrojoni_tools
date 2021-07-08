@@ -81,7 +81,7 @@ def calculate_spectrum(fitsfile,pixel_array):
         spectrum_i = image[:,y_1,x_1]
         if any([np.isnan(spectrum_i[i]) for i in range(len(spectrum_i))]):
             print('Warning: region contains NaNs!')
-	    indices.append(i)
+            indices.append(i)
             spectrum_add = spectrum_add + 0
             n+=1
         else:
@@ -101,7 +101,7 @@ def calculate_average_value_pixelArray(fitsfile,pixel_array): #nan treatment?
         value_i = image[y_1,x_1]
         if np.isnan(value_i):
             print('Warning: region contains NaNs!')
-	    indices.append(i)
+            indices.append(i)
             value_add = value_add + 0
             n+=1
         else:
