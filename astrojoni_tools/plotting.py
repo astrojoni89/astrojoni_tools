@@ -14,9 +14,9 @@ from .functions import find_nearest, velocity_axes, pixel_to_world, pixel_circle
 ### SCALEBAR PLOTTING IMSHOW
 def plot_scalebar(length, fitsfile, distance_of_source, loc='bottom right', c='white', lw=0.8, labelsize='small'):
     loc_dict = {
-        'bottom left': [0.05,0.1],
+        'bottom left': [0.05,0.15],
         'top left': [0.05,0.95],
-        'bottom right': [0.95,0.1],
+        'bottom right': [0.95,0.15],
         'top right': [0.95,0.95]
     }
     
@@ -39,11 +39,17 @@ def plot_scalebar(length, fitsfile, distance_of_source, loc='bottom right', c='w
     points_data = axis_to_data.transform(points_axis)
     offset_label_data = axis_to_data.transform(offset_label)
     
-    x = np.arange(points_data[0]-pxscalebar, points_data[0])
+    if loc is 'bottom right' or 'top right':
+        x = np.arange(points_data[0]-pxscalebar, points_data[0])
+        x_label = points_data[0]-pxscalebar/2.
+    elif loc is 'bottom left' or 'top left':
+        x = np.arange(points_data[0], points_data[0]+pxscalebar)
+        x_label = points_data[0]+pxscalebar/2.
     y = np.ones_like(x) * points_data[1]
     
     ax.plot(x,y,c=c, lw=lw)
-    ax.text(points_data[0]+pxscalebar/2., offset_label_data[1], '{} pc'.format(length), color='white', horizontalalignment='center', family='serif', size=labelsize)
+    #label depends on loc
+    ax.text(x_label, offset_label_data[1], '{} pc'.format(length), color='white', horizontalalignment='center', family='serif', size=labelsize)
 
 
 
