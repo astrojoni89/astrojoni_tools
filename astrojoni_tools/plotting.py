@@ -39,7 +39,7 @@ def plot_scalebar(length, fitsfile, distance_of_source, loc='bottom right', c='w
     points_data = axis_to_data.transform(points_axis)
     offset_label_data = axis_to_data.transform(offset_label)
     
-    x = np.arange(points_data[0],points_data[0]-pxscalebar)
+    x = np.arange(points_data[0]-pxscalebar, points_data[0])
     y = np.ones_like(x) * points_data[1]
     
     ax.plot(x,y,c=c, lw=lw)
