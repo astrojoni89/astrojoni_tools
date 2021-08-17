@@ -10,9 +10,16 @@ from tqdm import trange
 
 from .functions import find_nearest, velocity_axes, pixel_to_world, pixel_circle_calculation, pixel_circle_calculation_px, calculate_spectrum
 
-'''
-### SCALEBAR PLOTTING
-def plot_scalebar(length, fitsfile, distance_of_source, loc='bottom right'):
+
+### SCALEBAR PLOTTING IMSHOW
+def plot_scalebar(length, fitsfile, distance_of_source, loc='bottom right', c='white', lw=0.8, labelsize='small'):
+    loc_dict = {
+        'bottom left': [0.05,0.1],
+        'top left': [0.05,0.95],
+        'bottom right': [0.95,0.1],
+        'top right': [0.95,0.95]
+    }
+    
     header = fits.getheader(fitsfile)
     #pixel scale
     degppx = abs(header['CDELT1']) #deg per pixel
@@ -21,14 +28,22 @@ def plot_scalebar(length, fitsfile, distance_of_source, loc='bottom right'):
     pxscale = np.sin(np.radians(degppx)) * distance
     #length of scalebar
     pxscalebar = int(np.around(length / pxscale,decimals=0))
-
-    start = 3000
-    x = np.arange(start,start+pxscalebar)
-    y = np.ones_like(x) * 100
     
-    ax.plot(x,y,c='white', lw=0.8)
-    ax.text(start+pxscalebar/2., 50., '{} pc'.format(length), color='white', horizontalalignment='center', family='serif', size='small')
-'''
+    ax = plt.gca()
+    axis_to_data = ax.transAxes + ax.transData.inverted()
+    
+    if loc not in loc_dict:
+        raise KeyError('Possible locations are "bottom left", "top left", "bottom right", "top right."')
+    points_axis = loc_dict[loc]
+    offset_label = points_axis[1] - 0.05
+    points_data = axis_to_data.transform(points_axis)
+    offset_label_data = axis_to_data.transform(offset_label)
+    
+    x = np.arange(points_data[0],points_data[0]-pxscalebar)
+    y = np.ones_like(x) * points_data[1]
+    
+    ax.plot(x,y,c=c, lw=lw)
+    ax.text(points_data[0]+pxscalebar/2., offset_label_data, '{} pc'.format(length), color='white', horizontalalignment='center', family='serif', size=labelsize)
 
 
 
