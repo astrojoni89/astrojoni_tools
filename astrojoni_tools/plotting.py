@@ -35,7 +35,7 @@ def plot_scalebar(length, fitsfile, distance_of_source, loc='bottom right', c='w
     if loc not in loc_dict:
         raise KeyError('Possible locations are "bottom left", "top left", "bottom right", "top right."')
     points_axis = loc_dict[loc]
-    offset_label = [points_axis[0], points_axis[1] - 0.05]
+    offset_label = [points_axis[0], points_axis[1] - 0.1]
     points_data = axis_to_data.transform(points_axis)
     offset_label_data = axis_to_data.transform(offset_label)
     
