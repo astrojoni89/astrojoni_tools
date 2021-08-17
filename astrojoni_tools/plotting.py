@@ -10,7 +10,29 @@ from tqdm import trange
 
 from .functions import find_nearest, velocity_axes, pixel_to_world, pixel_circle_calculation, pixel_circle_calculation_px, calculate_spectrum
 
+'''
+### SCALEBAR PLOTTING
+def plot_scalebar(length, fitsfile, distance_of_source, loc='bottom right'):
+    header = fits.getheader(fitsfile)
+    #pixel scale
+    degppx = abs(header['CDELT1']) #deg per pixel
+    distance = distance_of_source #pc
+    #parsec per pixel
+    pxscale = np.sin(np.radians(degppx)) * distance
+    #length of scalebar
+    pxscalebar = int(np.around(length / pxscale,decimals=0))
 
+    start = 3000
+    x = np.arange(start,start+pxscalebar)
+    y = np.ones_like(x) * 100
+    
+    ax.plot(x,y,c='white', lw=0.8)
+    ax.text(start+pxscalebar/2., 50., '{} pc'.format(length), color='white', horizontalalignment='center', family='serif', size='small')
+'''
+
+
+
+### PLOTTING TOOL FOR AVERAGED SPECTRA
 def styles():
     color_list = ['k', 'b', 'b', 'r', 'g']
     draw_list = ['steps-mid', 'default', 'steps-mid', 'steps-mid', 'steps-mid']
