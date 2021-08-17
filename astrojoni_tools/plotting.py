@@ -39,10 +39,10 @@ def plot_scalebar(length, fitsfile, distance_of_source, loc='bottom right', c='w
     points_data = axis_to_data.transform(points_axis)
     offset_label_data = axis_to_data.transform(offset_label)
     
-    if loc is 'bottom right' or 'top right':
+    if loc in ['bottom right', 'top right']:
         x = np.arange(points_data[0]-pxscalebar, points_data[0])
         x_label = points_data[0]-pxscalebar/2.
-    elif loc is 'bottom left' or 'top left':
+    elif loc in ['bottom left', 'top left']:
         x = np.arange(points_data[0], points_data[0]+pxscalebar)
         x_label = points_data[0]+pxscalebar/2.
     y = np.ones_like(x) * points_data[1]
