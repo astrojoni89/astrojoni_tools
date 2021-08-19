@@ -12,7 +12,7 @@ from .functions import find_nearest, velocity_axes, pixel_to_world, pixel_circle
 
 
 ### SCALEBAR PLOTTING IMSHOW
-def plot_scalebar(length, fitsfile, distance_of_source, loc='bottom right', c='white', lw=0.8, labelsize='small', offset=0.1):
+def plot_scalebar(length, fitsfile, distance_of_source, loc='bottom right', c='white', lw=0.8, labelsize='small', offset=0.05):
     loc_dict = {
         'bottom left': [0.05,0.15],
         'top left': [0.05,0.95],
