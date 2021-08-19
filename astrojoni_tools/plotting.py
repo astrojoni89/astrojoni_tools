@@ -49,7 +49,7 @@ def plot_scalebar(length, fitsfile, distance_of_source, loc='bottom right', c='w
     
     ax.plot(x,y,c=c, lw=lw)
     #label depends on loc
-    ax.text(x_label, offset_label_data[1], '{} pc'.format(length), color=c, horizontalalignment='center', family='serif', size=labelsize)
+    ax.text(x_label, offset_label_data[1], '{} pc'.format(length), color=c, ha='center', va='top', family='serif', size=labelsize)
 
 
 
