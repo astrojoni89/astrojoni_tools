@@ -562,6 +562,31 @@ def smooth_1d(x,window_len=11,window='hanning'): # smooth spectrum
     return y[(round(window_len/2-1)):-(round(window_len/2))]
 
 
+#smooth spectrum by averaging adjacent channels
+def smooth_ave(spectrum):
+    '''spectrum has to be of shape (N, 2)'''
+    if spectrum.ndim == 2:
+        if spectrum.shape[1] == 2: 
+            y = np.nanmean(np.pad(spectrum[:,1].astype(float), ( 0, ((2 - spectrum[:,1].size%2) % 2) ), mode='edge').reshape(-1, 2), axis=1) #pad with edge_values at the end if odd number of channels
+            x = np.nanmean(np.pad(spectrum[:,0].astype(float), ( 0, ((2 - spectrum[:,0].size%2) % 2) ), mode='edge').reshape(-1, 2), axis=1)
+            return np.column_stack((x,y))
+        else:
+            raise ValueError('Array needs to be of shape (N, 2) but instead has shape {}'.format(spectrum.shape))
+    else:
+        raise ValueError('Array needs to be 2-D.')
+
+	
+#this works only once since values are repeated to keep the same shape
+def smooth_2(spectrum):
+    new_spectrum = np.repeat(np.nanmean(np.pad(spectrum.astype(float), ( 0, ((2 - spectrum.size%2) % 2) ), mode='edge').reshape(-1, 2), axis=1), repeats=2) #pad with edge_values at the end if odd number of channels
+    if spectrum.size%2 == 0:
+        return y
+    elif spectrum.size%2 == 1:
+        return new_spectrum[:-1]
+    else:
+        raise ValueError('Something wrong with dimensions of array.')
+
+
 def calculate_pixelArray_along_filament(filename,filamentdata,halfwidth_pc,distance_of_source):
     #filamentdata in px coordinates ; halfwidth_pc and distance in unit pc
     #find the tangent curve
