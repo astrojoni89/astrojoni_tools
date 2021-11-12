@@ -438,7 +438,7 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
         raise ValueError('Have to specify coordinate ranges!')
     
     # Create a sub_cube cut to these coordinates
-    sub_cube = cube[vel_range_idx[0]:vel_range_idx[1], lat_range_idx[0]:lat_range_idx[1], lon_range_idx[0]:lon_range_idx[1]]
+    sub_cube = cube[vel_range_idx[0]:vel_range_idx[1]+1, lat_range_idx[0]:lat_range_idx[1]+1, lon_range_idx[0]:lon_range_idx[1]+1]
 
     print(sub_cube)
     
