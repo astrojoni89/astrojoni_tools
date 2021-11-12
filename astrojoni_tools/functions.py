@@ -445,7 +445,7 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
     if suffix is not None:
         if not any(x is None for x in longitudes+latitudes):
             newname = filename.split('/')[-1].split('.fits')[0] + '_lon{}to{}_lat{}to{}'.format(longitudes[0], longitudes[1], latitudes[0], latitudes[1]) + suffix + '.fits'
-	else:
+        else:
             newname = filename.split('/')[-1].split('.fits')[0] + '_vel{}to{}'.format(velo_range[0], velo_range[1]) + suffix + '.fits'
     else:
         if not any(x is None for x in longitudes+latitudes):
