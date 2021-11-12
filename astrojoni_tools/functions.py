@@ -434,7 +434,7 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
     else:
         vel_range_idx = [None, None]
 
-    if all(x is None for x in longitudes+latitudes+velo_range):
+    if all(x is None for x in lat_range_idx+lon_range_idx+vel_range_idx):
         raise ValueError('Have to specify coordinate ranges!')
     
     # Create a sub_cube cut to these coordinates
@@ -443,12 +443,12 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
     print(sub_cube)
     
     if suffix is not None:
-        if not any(x is None for x in longitudes+latitudes):
+        if not any(x is None for x in lat_range_idx+lon_range_idx):
             newname = filename.split('/')[-1].split('.fits')[0] + '_lon{}to{}_lat{}to{}'.format(longitudes[0], longitudes[1], latitudes[0], latitudes[1]) + suffix + '.fits'
         else:
             newname = filename.split('/')[-1].split('.fits')[0] + '_vel{}to{}'.format(velo_range[0], velo_range[1]) + suffix + '.fits'
     else:
-        if not any(x is None for x in longitudes+latitudes):
+        if not any(x is None for x in lat_range_idx+lon_range_idx):
             newname = filename.split('/')[-1].split('.fits')[0] + '_lon{}to{}_lat{}to{}'.format(longitudes[0], longitudes[1], latitudes[0], latitudes[1]) + '.fits'
         else:
             newname = filename.split('/')[-1].split('.fits')[0] + '_vel{}to{}'.format(velo_range[0], velo_range[1]) + '.fits'
