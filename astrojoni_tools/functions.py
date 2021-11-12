@@ -433,6 +433,9 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
         vel_range_idx = sorted([find_nearest(v, vel_range[0]), find_nearest(v, vel_range[1])])
     else:
         vel_range_idx = [None, None]
+
+    if all(x is None for x in longitudes+latitudes+velo_range):
+        raise ValueError('Have to specify coordinate ranges!')
     
     # Create a sub_cube cut to these coordinates
     sub_cube = cube[vel_range_idx[0]:vel_range_idx[1], lat_range_idx[0]:lat_range_idx[1], lon_range_idx[0]:lon_range_idx[1]]
@@ -440,9 +443,15 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
     print(sub_cube)
     
     if suffix is not None:
-        newname = filename.split('/')[-1].split('.fits')[0] + '_lon{}to{}_lat{}to{}'.format(longitudes[0], longitudes[1], latitudes[0], latitudes[1]) + suffix + '.fits'
+	if not any(x is None for x in longitudes+latitudes):	
+            newname = filename.split('/')[-1].split('.fits')[0] + '_lon{}to{}_lat{}to{}'.format(longitudes[0], longitudes[1], latitudes[0], latitudes[1]) + suffix + '.fits'
+	else:
+	    newname = filename.split('/')[-1].split('.fits')[0] + '_vel{}to{}'.format(velo_range[0], velo_range[1]) + suffix + '.fits'
     else:
-        newname = filename.split('/')[-1].split('.fits')[0] + '_lon{}to{}_lat{}to{}'.format(longitudes[0], longitudes[1], latitudes[0], latitudes[1]) + '.fits'
+        if not any(x is None for x in longitudes+latitudes):	
+            newname = filename.split('/')[-1].split('.fits')[0] + '_lon{}to{}_lat{}to{}'.format(longitudes[0], longitudes[1], latitudes[0], latitudes[1]) + '.fits'
+	else:
+	    newname = filename.split('/')[-1].split('.fits')[0] + '_vel{}to{}'.format(velo_range[0], velo_range[1]) + '.fits'
     pathname = os.path.join(path_to_output, newname)
     sub_cube.write(pathname, format='fits', overwrite=True)
     print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
