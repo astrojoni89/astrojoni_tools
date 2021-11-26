@@ -23,10 +23,10 @@ def plot_scalebar(length, fitsfile, distance_of_source, loc='bottom right', c='w
     header = fits.getheader(fitsfile)
     #pixel scale
     degppx = abs(header['CDELT1']) #deg per pixel
-    distance = distance_of_source #pc
+    distance = distance_of_source #arbitrary unit u
     #parsec per pixel
     pxscale = np.sin(np.radians(degppx)) * distance
-    #length of scalebar
+    #length of scalebar (as well in unit u)
     pxscalebar = int(np.around(length / pxscale,decimals=0))
     
     ax = plt.gca()
@@ -49,8 +49,12 @@ def plot_scalebar(length, fitsfile, distance_of_source, loc='bottom right', c='w
     
     ax.plot(x,y,c=c, lw=lw)
     #label depends on loc
-    ax.text(x_label, offset_label_data[1], '{} pc'.format(length), color=c, ha='center', va='top', family='serif', size=labelsize)
-
+    if unit == 'pc' or unit == 'parsec':
+        ax.text(x_label, offset_label_data[1], '{} pc'.format(length), color=c, ha='center', va='top', family='serif', size=labelsize)
+    elif unit == 'ly' or unit == 'lightyear':
+        ax.text(x_label, offset_label_data[1], '{} ly'.format(length), color=c, ha='center', va='top', family='serif', size=labelsize)
+    elif unit == 'Lichtjahr':
+        ax.text(x_label, offset_label_data[1], '{} Lichtjahre'.format(length), color=c, ha='center', va='top', family='serif', size=labelsize)
 
 
 ### PLOTTING TOOL FOR AVERAGED SPECTRA
