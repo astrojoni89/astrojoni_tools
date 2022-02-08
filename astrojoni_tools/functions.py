@@ -538,12 +538,13 @@ def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_ou
 
 def reproject_cube(filename, template, path_to_output='.', suffix=None, **kwargs):
     from spectral_cube import SpectralCube
+    from astropy.io import fits
     from astropy.wcs import WCS
-    from astropy import units as u
     
     cube = SpectralCube.read(filename)
     cube_template = SpectralCube.read(template)
-    data = np.ones(shape=(cube.header['NAXIS3'],cube_template.header['NAXIS2'],cube_template.header['NAXIS1']))
+    header = fits.getheader(template)
+    cube_reproj = np.ones(shape=(cube.header['NAXIS3'],cube_template.header['NAXIS2'],cube_template.header['NAXIS1']))
     cube_header_spatial = cube_template.wcs.celestial.to_header()
     if not 'NAXIS' in cube_header_spatial.keys():
         cube_header_spatial['NAXIS'] = 2
@@ -552,15 +553,13 @@ def reproject_cube(filename, template, path_to_output='.', suffix=None, **kwargs
     if not 'NAXIS2' in cube_header_spatial.keys():
         cube_header_spatial['NAXIS2'] = cube_template.header['NAXIS2']
     for i in range(cube.shape[0]):
-        data[i,:,:] = cube[i].reproject(cube_header_spatial, **kwargs)
-    wcs = WCS(cube_template.header)
-    cube_reproj = SpectralCube(data=data, wcs=wcs)
+        cube_reproj[i,:,:] = cube[i].reproject(cube_header_spatial, **kwargs)
     if suffix is not None:
         newname = filename.split('/')[-1].split('.fits')[0] + '_reproject' + suffix + '.fits'
     else:
         newname = filename.split('/')[-1].split('.fits')[0] + '_reproject' + '.fits'
     pathname = os.path.join(path_to_output, newname)
-    cube_reproj.write(pathname, format='fits', overwrite=True)
+    fits.writeto(pathname, data=cube_reproj, header=header, overwrite=True)
     print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
     
 
