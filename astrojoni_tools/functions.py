@@ -521,17 +521,38 @@ def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_ou
 	if major is None or minor is None:
 	    raise ValueError('Need to specify beam size if no beam is given.')
         beam = radio_beam.Beam(major=major*u.arcsec, minor=minor*u.arcsec, pa=pa*u.deg)
+	if suffix is not None:
+            newname = filename.split('/')[-1].split('.fits')[0] + '_smooth' + str(major) + '_arcsec' + suffix + '.fits'
+        else:
+            newname = filename.split('/')[-1].split('.fits')[0] + '_smooth_' + str(major) + '_arcsec' + '.fits'
+    elif beam is not None:
+        if suffix is not None:
+            newname = filename.split('/')[-1].split('.fits')[0] + '_smooth_to_beam' + str(beam) + '_arcsec' + suffix + '.fits'
+        else:
+            newname = filename.split('/')[-1].split('.fits')[0] + '_smooth_to_beam' + str(beam) + '_arcsec' + '.fits'
     
     smoothcube = cube.convolve_to(beam)
-	
-    if suffix is not None:
-        newname = filename.split('/')[-1].split('.fits')[0] + '_smooth' + str(major) + '_arcsec' + suffix + '.fits'
-    else:
-        newname = filename.split('/')[-1].split('.fits')[0] + '_smooth_' + str(major) + '_arcsec' + '.fits'
+    
     pathname = os.path.join(path_to_output, newname)
     smoothcube.write(pathname, format='fits', overwrite=True)
     print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
 
+
+def reproject_cube(filename, template, path_to_output='.', suffix=None):
+    from spectral_cube import SpectralCube
+    from astropy import units as u
+    
+    cube = SpectralCube.read(filename)
+    cube_template = SpectralCube.read(template)
+    cube_reproj = cube.reproject(cube_template.header)
+    if suffix is not None:
+        newname = filename.split('/')[-1].split('.fits')[0] + '_reproject' + suffix + '.fits'
+    else:
+        newname = filename.split('/')[-1].split('.fits')[0] + '_reproject' + '.fits'
+    pathname = os.path.join(path_to_output, newname)
+    cube_reproj.write(pathname, format='fits', overwrite=True)
+    print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
+    
 
 def smooth_1d(x,window_len=11,window='hanning'): # smooth spectrum
     """smooth the data using a window with requested size.
