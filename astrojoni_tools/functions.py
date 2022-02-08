@@ -523,7 +523,7 @@ def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_ou
         beam = radio_beam.Beam(major=major*u.arcsec, minor=minor*u.arcsec, pa=pa*u.deg)
     elif beam is not None:
         beam = beam
-	major = np.around(beam.major.value * 3600, decimals=0)
+        major = np.around(beam.major.value * 3600, decimals=0)
     if suffix is not None:
         newname = filename.split('/')[-1].split('.fits')[0] + '_smooth' + str(major) + '_arcsec' + suffix + '.fits'
     else:
