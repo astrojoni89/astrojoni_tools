@@ -541,6 +541,7 @@ def reproject_cube(filename, template, path_to_output='.', suffix=None, **kwargs
     from astropy import units as u
     
     cube = SpectralCube.read(filename)
+    cube_reproj = cube.unmasked_copy()
     cube_template = SpectralCube.read(template)
     cube_header_spatial = cube_template.wcs.celestial.to_header()
     if not 'NAXIS' in cube_header_spatial.keys():
@@ -549,7 +550,8 @@ def reproject_cube(filename, template, path_to_output='.', suffix=None, **kwargs
         cube_header_spatial['NAXIS1'] = cube_template.header['NAXIS1']
     if not 'NAXIS2' in cube_header_spatial.keys():
         cube_header_spatial['NAXIS2'] = cube_template.header['NAXIS2']
-    cube_reproj = cube.reproject(cube_header_spatial, **kwargs)
+    for i in range(cube.shape[0]):
+        cube_reproj[i] = cube[i].reproject(cube_header_spatial, **kwargs)
     if suffix is not None:
         newname = filename.split('/')[-1].split('.fits')[0] + '_reproject' + suffix + '.fits'
     else:
