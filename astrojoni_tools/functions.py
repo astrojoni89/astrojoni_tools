@@ -559,6 +559,8 @@ def reproject_cube(filename, template, axis='spatial', path_to_output='.', suffi
         newname = filename.split('/')[-1].split('.fits')[0] + '_reproject' + '.fits'
     pathname = os.path.join(path_to_output, newname)
     fits.writeto(pathname, data=array, header=hdu2.header, overwrite=True)
+    hdu1.close()
+    hdu2.close()
     print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
     
 
