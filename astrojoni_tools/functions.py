@@ -543,6 +543,12 @@ def reproject_cube(filename, template, path_to_output='.', suffix=None, **kwargs
     cube = SpectralCube.read(filename)
     cube_template = SpectralCube.read(template)
     cube_header_spatial = cube_template.wcs.celestial.to_header()
+    if not 'NAXIS' in cube_header_spatial.keys():
+        cube_header_spatial['NAXIS'] = 2
+    if not 'NAXIS1' in cube_header_spatial.keys():
+        cube_header_spatial['NAXIS1'] = cube_template.header['NAXIS1']
+    if not 'NAXIS2' in cube_header_spatial.keys():
+        cube_header_spatial['NAXIS2'] = cube_template.header['NAXIS2']
     cube_reproj = cube.reproject(cube_header_spatial, **kwargs)
     if suffix is not None:
         newname = filename.split('/')[-1].split('.fits')[0] + '_reproject' + suffix + '.fits'
