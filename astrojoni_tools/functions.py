@@ -497,13 +497,31 @@ def convert_jybeam_to_kelvin(filename, path_to_output='.', suffix=None):
     print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
 
 
-def spatial_smooth(filename, major=None, minor=None, pa=0, path_to_output='.', suffix=None): # smooth image with 2D Gaussian
+def find_common_beam(filenames):
+    import radio_beam
+    from spectral_cube import SpectralCube
+    from astropy import units as u
+    if not isinstance(filenames, list):
+        raise TypeError("'filenames' needs to be a list of len=2")
+    if not len(filenames)==2:
+        raise ValueError("'filenames' needs to be a list of len=2")
+    cube1 = SpectralCube.read(filenames[0])
+    cube2 = SpectralCube.read(filenames[1])
+    common_beam = radio_beam.commonbeam.common_2beams(radio_beam.Beams(beams=[cube1.beam, cube2.beam]))
+    return common_beam
+
+
+def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_output='.', suffix=None): # smooth image with 2D Gaussian
     import radio_beam
     from spectral_cube import SpectralCube
     from astropy import units as u
 
     cube = SpectralCube.read(filename)
-    beam = radio_beam.Beam(major=major*u.arcsec, minor=minor*u.arcsec, pa=pa*u.deg)
+    if beam is None:
+	if major is None or minor is None:
+	    raise ValueError('Need to specify beam size if no beam is given.')
+        beam = radio_beam.Beam(major=major*u.arcsec, minor=minor*u.arcsec, pa=pa*u.deg)
+    
     smoothcube = cube.convolve_to(beam)
 	
     if suffix is not None:
