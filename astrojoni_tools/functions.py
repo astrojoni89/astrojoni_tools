@@ -1,3 +1,4 @@
+import os
 import numpy as np
 from tqdm import trange
 from astropy.io import fits
