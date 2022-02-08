@@ -519,9 +519,9 @@ def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_ou
     cube = SpectralCube.read(filename)
     if beam is None:
 	if major is None or minor is None:
-	    raise ValueError('Need to specify beam size if no beam is given.')
+            raise ValueError('Need to specify beam size if no beam is given.')
         beam = radio_beam.Beam(major=major*u.arcsec, minor=minor*u.arcsec, pa=pa*u.deg)
-	if suffix is not None:
+        if suffix is not None:
             newname = filename.split('/')[-1].split('.fits')[0] + '_smooth' + str(major) + '_arcsec' + suffix + '.fits'
         else:
             newname = filename.split('/')[-1].split('.fits')[0] + '_smooth_' + str(major) + '_arcsec' + '.fits'
