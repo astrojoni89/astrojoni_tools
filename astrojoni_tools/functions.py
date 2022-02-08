@@ -542,7 +542,10 @@ def reproject_cube(filename, template, path_to_output='.', suffix=None, **kwargs
     
     cube = SpectralCube.read(filename)
     cube_template = SpectralCube.read(template)
-    cube_reproj = cube.reproject(cube_template.header, **kwargs)
+    #only reproject spatial axes; can't find a good way to do this other than that
+    cube_reproj = cube.unmasked_copy()
+    for i in range(cube.shape[0]):
+        cube_reproj[i] = cube[i].reproject(cube_template.header, **kwargs)
     if suffix is not None:
         newname = filename.split('/')[-1].split('.fits')[0] + '_reproject' + suffix + '.fits'
     else:
