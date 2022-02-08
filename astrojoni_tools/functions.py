@@ -516,6 +516,7 @@ def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_ou
     import radio_beam
     from spectral_cube import SpectralCube
     from astropy import units as u
+    from astropy import convolution
 
     cube = SpectralCube.read(filename)
     if beam is None:
@@ -529,7 +530,7 @@ def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_ou
         newname = filename.split('/')[-1].split('.fits')[0] + '_smooth' + str(major) + '_arcsec' + suffix + '.fits'
     else:
         newname = filename.split('/')[-1].split('.fits')[0] + '_smooth_' + str(major) + '_arcsec' + '.fits' 
-    smoothcube = cube.convolve_to(beam, preserve_nan=True)
+    smoothcube = cube.convolve_to(beam, convolve=convolution.convolve, boundary='extend', preserve_nan=True)
     pathname = os.path.join(path_to_output, newname)
     smoothcube.write(pathname, format='fits', overwrite=True)
     print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
