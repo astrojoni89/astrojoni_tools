@@ -536,30 +536,29 @@ def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_ou
     print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
 
 
-def reproject_cube(filename, template, path_to_output='.', suffix=None, **kwargs):
-    from spectral_cube import SpectralCube
+def reproject_cube(filename, template, axis='spatial', path_to_output='.', suffix=None):
+    from reproject import reproject_interp
     from astropy.io import fits
     from astropy.wcs import WCS
     
-    cube = SpectralCube.read(filename)
-    cube_template = SpectralCube.read(template)
-    header = fits.getheader(template)
-    cube_reproj = np.ones(shape=(cube.header['NAXIS3'],cube_template.header['NAXIS2'],cube_template.header['NAXIS1']))
-    cube_header_spatial = cube_template.wcs.celestial.to_header()
-    if not 'NAXIS' in cube_header_spatial.keys():
-        cube_header_spatial['NAXIS'] = 2
-    if not 'NAXIS1' in cube_header_spatial.keys():
-        cube_header_spatial['NAXIS1'] = cube_template.header['NAXIS1']
-    if not 'NAXIS2' in cube_header_spatial.keys():
-        cube_header_spatial['NAXIS2'] = cube_template.header['NAXIS2']
-    for i in range(cube.shape[0]):
-        cube_reproj[i,:,:] = cube[i].reproject(cube_header_spatial, **kwargs)
+    hdu1 = fits.open(filename)[0]
+    wcs1 = WCS(hdu1.header).celestial
+    n_spectral = hdu1.shape[0]
+    hdu2 = fits.open(template)[0]
+    wcs2 = WCS(hdu2.header).celestial
+    shape = {'spatial' : (n_spectral, hdu2.shape[1], hdu2.shape[2])}
+    if axis=='spatial':
+        array = np.ones(shape=shape[axis])
+        for i in range(n_spectral):
+            array[i,:,:] = reproject_interp((hdu1.data[i,:,:], wcs1), wcs2, shape_out=(hdu2.shape[1], hdu2.shape[2]), return_footprint=False)
+    else:
+        array = reproject_interp(hdu1, hdu2.header, return_footprint=False)
     if suffix is not None:
         newname = filename.split('/')[-1].split('.fits')[0] + '_reproject' + suffix + '.fits'
     else:
         newname = filename.split('/')[-1].split('.fits')[0] + '_reproject' + '.fits'
     pathname = os.path.join(path_to_output, newname)
-    fits.writeto(pathname, data=cube_reproj, header=header, overwrite=True)
+    fits.writeto(pathname, data=array, header=hdu2.header, overwrite=True)
     print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
     
 
