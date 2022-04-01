@@ -621,6 +621,17 @@ def smooth_1d(x,window_len=11,window='hanning'): # smooth spectrum
     return y[(round(window_len/2-1)):-(round(window_len/2))]
 
 
+def rebin(a, newshape):
+    '''Rebin an array to a new shape.
+    '''
+    assert len(a.shape) == len(newshape)
+
+    slices = [slice(0,old, float(old)/new) for old,new in zip(a.shape,newshape)]
+    coordinates = mgrid[slices]
+    indices = coordinates.astype('i') #choose the biggest smaller integer index
+    return a[tuple(indices)]
+
+
 #smooth spectrum by averaging adjacent channels
 def smooth_ave(spectrum):
     '''spectrum has to be of shape (N, 2)'''
