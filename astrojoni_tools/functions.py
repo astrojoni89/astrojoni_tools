@@ -465,9 +465,9 @@ def jansky_to_kelvin(frequency,theta_1,theta_2): #in units of (GHz,arcsec,arcsec
     from astropy import constants as const
     c = const.c
     k = const.k_B
-    theta_1 = theta_1*2*pi/360./3600.
-    theta_2 = theta_2*2*pi/360./3600.
-    S = 2*k*(frequency*10**9)**2/c**2 / (10**(-26)) * 2*pi/(2*sqrt(2*log(2)))**2 * theta_1* theta_2
+    theta_1 = theta_1*2*np.pi/360./3600.
+    theta_2 = theta_2*2*np.pi/360./3600.
+    S = 2*k*(frequency*10**9)**2/c**2 / (10**(-26)) * 2*np.pi/(2*np.sqrt(2*np.log(2)))**2 * theta_1* theta_2
     temp = 1/S
     print('Jy/K = {:.5e}'.format(S))
     print('K/Jy = {:.5e}'.format(temp))
