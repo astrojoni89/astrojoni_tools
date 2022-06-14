@@ -535,7 +535,32 @@ def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_ou
     smoothcube.write(pathname, format='fits', overwrite=True)
     print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
 
+	
+def reproject_cube(filename, template, path_to_output='.', suffix=None):
+    from spectral_cube import SpectralCube, Projection
+    from astropy.io import fits
 
+    try:
+        cube1 = SpectralCube.read(filename)
+    except:
+        cube1 = Projection.from_hdu(fits.open(filename)[0])	
+    try:
+        cube2 = SpectralCube.read(template)
+    except:
+        cube2 = Projection.from_hdu(fits.open(filename)[0])
+
+    cube1_reproj = cube1.reproject(cube2.header)
+
+    if suffix is not None:
+        newname = filename.split('/')[-1].split('.fits')[0] + '_reproject' + suffix + '.fits'
+    else:
+        newname = filename.split('/')[-1].split('.fits')[0] + '_reproject' + '.fits'
+    pathname = os.path.join(path_to_output, newname)
+    cube1_reproj.write(pathname, overwrite=True)
+    print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
+
+
+'''
 def reproject_cube(filename, template, axis='spatial', path_to_output='.', suffix=None):
     from reproject import reproject_interp
     from astropy.io import fits
@@ -560,38 +585,18 @@ def reproject_cube(filename, template, axis='spatial', path_to_output='.', suffi
     pathname = os.path.join(path_to_output, newname)
     fits.writeto(pathname, data=array, header=hdu2.header, overwrite=True)
     print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
-    
+''' 
+
 
 def smooth_1d(x,window_len=11,window='hanning'): # smooth spectrum
     """smooth the data using a window with requested size.
-    
-    This method is based on the convolution of a scaled window with the signal.
-    The signal is prepared by introducing reflected copies of the signal 
-    (with the window size) in both ends so that transient parts are minimized
-    in the begining and end part of the output signal.
-    
     input:
         x: the input signal 
         window_len: the dimension of the smoothing window; should be an odd integer
         window: the type of window from 'flat', 'hanning', 'hamming', 'bartlett', 'blackman'
             flat window will produce a moving average smoothing.
-
     output:
         the smoothed signal
-        
-    example:
-
-    t=linspace(-2,2,0.1)
-    x=sin(t)+randn(len(t))*0.1
-    y=smooth(x)
-    
-    see also: 
-    
-    numpy.hanning, numpy.hamming, numpy.bartlett, numpy.blackman, numpy.convolve
-    scipy.signal.lfilter
- 
-    TODO: the window parameter could be the window itself if an array instead of a string
-    NOTE: length(output) != length(input), to correct this: return y[(window_len/2-1):-(window_len/2)] instead of just y.
     """
     import numpy
 
@@ -601,14 +606,11 @@ def smooth_1d(x,window_len=11,window='hanning'): # smooth spectrum
     if x.size < window_len:
         raise ValueError("Input vector needs to be bigger than window size.")
 
-
     if window_len<3:
         return x
 
-
     if not window in ['flat', 'hanning', 'hamming', 'bartlett', 'blackman']:
         raise ValueError("Window is on of 'flat', 'hanning', 'hamming', 'bartlett', 'blackman'")
-
 
     s=numpy.r_[x[window_len-1:0:-1],x,x[-2:-window_len-1:-1]]
     #print(len(s))
