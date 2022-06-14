@@ -476,11 +476,14 @@ def jansky_to_kelvin(frequency,theta_1,theta_2): #in units of (GHz,arcsec,arcsec
 def convert_jybeam_to_kelvin(filename, path_to_output='.', suffix=None):
     import os
     from astropy.io import fits
-    from spectral_cube import SpectralCube
+    from spectral_cube import SpectralCube, Projection
     import astropy.units as u
 
     data = fits.open(filename) # Open the FITS file for reading
-    cube = SpectralCube.read(data)  # Initiate a SpectralCube
+    try:
+        cube = SpectralCube.read(data)  # Initiate a SpectralCube
+    except:
+        cube = Projection.from_hdu(data[0]) # as a fallback if fits is a 2d image
     data.close()  # Close the FITS file - we already read it in and don't need it anymore!
 
     cube.allow_huge_operations=True
