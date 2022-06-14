@@ -558,7 +558,7 @@ def reproject_cube(filename, template, path_to_output='.', suffix=None):
     try:
         cube2 = SpectralCube.read(template)
     except:
-        cube2 = Projection.from_hdu(fits.open(filename)[0])
+        cube2 = Projection.from_hdu(fits.open(template)[0])
 
     cube1_reproj = cube1.reproject(cube2.header)
 
