@@ -598,6 +598,10 @@ def reproject_cube(filename, template, axis='spatial', path_to_output='.', suffi
     print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
 ''' 
 
+#TODO
+'''
+subcube_from_region using spectral cube
+'''
 
 def smooth_1d(x,window_len=11,window='hanning'): # smooth spectrum
     """smooth the data using a window with requested size.
