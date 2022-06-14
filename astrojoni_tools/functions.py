@@ -541,7 +541,6 @@ def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_ou
         newname = filename.split('/')[-1].split('.fits')[0] + '_smooth' + str(major) + '_arcsec' + suffix + '.fits'
     else:
         newname = filename.split('/')[-1].split('.fits')[0] + '_smooth_' + str(major) + '_arcsec' + '.fits'
-    cube.allow_huge_operations=True
     smoothcube = cube.convolve_to(beam, **kwargs)
     pathname = os.path.join(path_to_output, newname)
     smoothcube.write(pathname, format='fits', overwrite=True)
