@@ -407,7 +407,7 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
 
     if cubedata is None:
         data = fits.open(filename)  # Open the FITS file for reading
-	try:
+        try:
             cube = SpectralCube.read(data)  # Initiate a SpectralCube
         except:
             cube = Projection.from_hdu(data)
