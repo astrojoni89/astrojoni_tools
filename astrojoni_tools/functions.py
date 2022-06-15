@@ -403,20 +403,27 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
     import os
     import astropy.units as u
     from astropy.io import fits
-    from spectral_cube import SpectralCube
+    from spectral_cube import SpectralCube, Projection
 
     if cubedata is None:
         data = fits.open(filename)  # Open the FITS file for reading
-        cube = SpectralCube.read(data)  # Initiate a SpectralCube
+	try:
+            cube = SpectralCube.read(data)  # Initiate a SpectralCube
+        except:
+            cube = Projection.from_hdu(data)
         data.close()  # Close the FITS file - we already read it in and don't need it anymore!
     else:
         cube = cubedata
     print(cube)
 
     #extract coordinates
-    _, b, _ = cube.world[0, :, 0]  #extract latitude world coordinates from cube
-    _, _, l = cube.world[0, 0, :]  #extract longitude world coordinates from cube
-    v, _, _ = cube.world[:, 0, 0]  #extract velocity world coordinates from cube
+    if cube.ndim == 3:
+        _, b, _ = cube.world[0, :, 0]  #extract latitude world coordinates from cube
+        _, _, l = cube.world[0, 0, :]  #extract longitude world coordinates from cube
+        v, _, _ = cube.world[:, 0, 0]  #extract velocity world coordinates from cube
+    elif cube.ndim == 2:
+        b, _ = cube.world[:, 0]  #extract latitude world coordinates from 2d image
+        _, l = cube.world[0, :]  #extract longitude world coordinates from 2d image
 
     # Define desired latitude and longitude range
     if latitudes is not None:
@@ -431,10 +438,12 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
         lon_range_idx[-1] = lon_range_idx[-1] + 1
     else:
         lon_range_idx = [None, None]
-    if velo_range is not None:
-        vel_range = velo_range * u.km/u.s
-        vel_range_idx = sorted([find_nearest(v, vel_range[0]), find_nearest(v, vel_range[1])])
-        vel_range_idx[-1] = vel_range_idx[-1] + 1
+	
+    if cube.ndim == 3:
+        if velo_range is not None:
+            vel_range = velo_range * u.km/u.s
+            vel_range_idx = sorted([find_nearest(v, vel_range[0]), find_nearest(v, vel_range[1])])
+            vel_range_idx[-1] = vel_range_idx[-1] + 1
     else:
         vel_range_idx = [None, None]
 
@@ -442,7 +451,10 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
         raise ValueError('Have to specify coordinate ranges!')
     
     # Create a sub_cube cut to these coordinates
-    sub_cube = cube[vel_range_idx[0]:vel_range_idx[1], lat_range_idx[0]:lat_range_idx[1], lon_range_idx[0]:lon_range_idx[1]]
+    if cube.ndim == 3:
+        sub_cube = cube[vel_range_idx[0]:vel_range_idx[1], lat_range_idx[0]:lat_range_idx[1], lon_range_idx[0]:lon_range_idx[1]]
+    elif cube.ndim == 2:
+        sub_cube = cube[lat_range_idx[0]:lat_range_idx[1], lon_range_idx[0]:lon_range_idx[1]]
 
     print(sub_cube)
     
@@ -574,37 +586,11 @@ def reproject_cube(filename, template, axes='spatial', path_to_output='.', suffi
     print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
 
 
-'''
-def reproject_cube(filename, template, axis='spatial', path_to_output='.', suffix=None):
-    from reproject import reproject_interp
-    from astropy.io import fits
-    from astropy.wcs import WCS
-    
-    hdu1 = fits.open(filename)[0]
-    wcs1 = WCS(hdu1.header).celestial
-    n_spectral = hdu1.shape[0]
-    hdu2 = fits.open(template)[0]
-    wcs2 = WCS(hdu2.header).celestial
-    shape = {'spatial' : (n_spectral, hdu2.shape[1], hdu2.shape[2])}
-    if axis=='spatial':
-        array = np.ones(shape=shape[axis])
-        for i in range(n_spectral):
-            array[i,:,:] = reproject_interp((hdu1.data[i,:,:], wcs1), wcs2, shape_out=(hdu2.shape[1], hdu2.shape[2]), return_footprint=False)
-    else:
-        array = reproject_interp(hdu1, hdu2.header, return_footprint=False)
-    if suffix is not None:
-        newname = filename.split('/')[-1].split('.fits')[0] + '_reproject' + suffix + '.fits'
-    else:
-        newname = filename.split('/')[-1].split('.fits')[0] + '_reproject' + '.fits'
-    pathname = os.path.join(path_to_output, newname)
-    fits.writeto(pathname, data=array, header=hdu2.header, overwrite=True)
-    print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
-''' 
-
 #TODO
 '''
 subcube_from_region using spectral cube
 '''
+
 
 def smooth_1d(x,window_len=11,window='hanning'): # smooth spectrum
     """smooth the data using a window with requested size.
