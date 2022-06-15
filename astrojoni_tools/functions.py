@@ -547,7 +547,7 @@ def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_ou
     print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
 
 	
-def reproject_cube(filename, template, path_to_output='.', suffix=None):
+def reproject_cube(filename, template, axes='spatial', path_to_output='.', suffix=None):
     from spectral_cube import SpectralCube, Projection
     from astropy.io import fits
 
@@ -559,8 +559,11 @@ def reproject_cube(filename, template, path_to_output='.', suffix=None):
         cube2 = SpectralCube.read(template)
     except:
         cube2 = Projection.from_hdu(fits.open(template)[0])
-
-    cube1_reproj = cube1.reproject(cube2.header)
+    if axes=='spatial':
+        header_template = cube2.wcs.celestial.to_header()
+    elif axes=='all':
+        header_template = cube2.header
+    cube1_reproj = cube1.reproject(header_template)
 
     if suffix is not None:
         newname = filename.split('/')[-1].split('.fits')[0] + '_reproject' + suffix + '.fits'
