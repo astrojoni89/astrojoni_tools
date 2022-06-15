@@ -560,8 +560,7 @@ def reproject_cube(filename, template, axes='spatial', path_to_output='.', suffi
     except:
         cube2 = Projection.from_hdu(fits.open(template)[0])
     if axes=='spatial':
-        header_template = cube2.wcs.celestial.to_header()
-        header_template['NAXIS'] = 2
+        header_template = md_header_2d(template)
     elif axes=='all':
         header_template = cube2.header
     cube1_reproj = cube1.reproject(header_template)
