@@ -444,6 +444,8 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
             vel_range = velo_range * u.km/u.s
             vel_range_idx = sorted([find_nearest(v, vel_range[0]), find_nearest(v, vel_range[1])])
             #vel_range_idx[-1] = vel_range_idx[-1] + 1
+        else:
+            vel_range_idx = [None, None]
     else:
         vel_range_idx = [None, None]
 
