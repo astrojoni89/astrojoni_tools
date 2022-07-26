@@ -1,10 +1,10 @@
 import numpy as np
 
-def tau_hisa(T_hisa, p, T_on, T_off, T_cont):
-    return -np.log(1-((T_on-T_off)/(T_hisa-T_cont-p*T_off)))
+def tau_hisa(t_hisa, p, t_on, t_off, t_cont):
+    return -np.log(1-((t_on-t_off)/(t_hisa-t_cont-p*t_off)))
 
-def hi_coldens(T_s, tau, dv):
-    return 1.8224 * 10**18 * T_s * tau * dv
+def hi_coldens(t_s, tau, dv):
+    return 1.8224 * 10**18 * t_s * tau * dv
 
-def t_hisa_max(p, T_on, T_off, T_cont):
-    return T_on + T_cont - (1-p) * T_off
+def t_hisa_max(p, t_on, t_off, t_cont):
+    return t_on + t_cont - (1-p) * t_off
