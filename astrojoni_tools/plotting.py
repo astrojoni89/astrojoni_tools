@@ -12,7 +12,7 @@ from .functions import find_nearest, velocity_axes, pixel_to_world, pixel_circle
 
 
 ### SCALEBAR PLOTTING IMSHOW
-def plot_scalebar(length, fitsfile, distance_of_source, loc='bottom right', c='white', lw=0.8, labelsize='small', offset=0.05, unit='pc'):
+def plot_scalebar(length, fitsfile, distance_of_source, loc='bottom right', labelcolor='white', labelsize='small', offset=0.05, unit='pc', **kwargs):
     loc_dict = {
         'bottom left': [0.03,0.15],
         'top left': [0.03,0.95],
@@ -47,14 +47,14 @@ def plot_scalebar(length, fitsfile, distance_of_source, loc='bottom right', c='w
         x_label = points_data[0]+pxscalebar/2.
     y = np.ones_like(x) * points_data[1]
     
-    ax.plot(x,y,c=c, lw=lw)
+    ax.plot(x,y,**kwargs)
     #label depends on loc
     if unit == 'pc' or unit == 'parsec':
-        ax.text(x_label, offset_label_data[1], '{} pc'.format(length), color=c, ha='center', va='top', family='serif', size=labelsize)
+        ax.text(x_label, offset_label_data[1], '{} pc'.format(length), color=labelcolor, ha='center', va='top', family='serif', size=labelsize)
     elif unit == 'ly' or unit == 'lightyear':
-        ax.text(x_label, offset_label_data[1], '{} ly'.format(length), color=c, ha='center', va='top', family='serif', size=labelsize)
+        ax.text(x_label, offset_label_data[1], '{} ly'.format(length), color=labelcolor, ha='center', va='top', family='serif', size=labelsize)
     elif unit == 'Lichtjahr':
-        ax.text(x_label, offset_label_data[1], '{} Lichtjahre'.format(length), color=c, ha='center', va='top', family='serif', size=labelsize)
+        ax.text(x_label, offset_label_data[1], '{} Lichtjahre'.format(length), color=labelcolor, ha='center', va='top', family='serif', size=labelsize)
 
 
 ### PLOTTING TOOL FOR AVERAGED SPECTRA
