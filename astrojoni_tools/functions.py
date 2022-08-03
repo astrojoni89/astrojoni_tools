@@ -247,7 +247,7 @@ def pixel_circle_calculation(fitsfile,glon,glat,r):
     else:
         raise Exception('Something wrong with the header!')
     central_px = [int(np.round(central_px[0],decimals=0))-1,int(np.round(central_px[1],decimals=0))-1]
-    if r is not 'single':
+    if r != 'single':
         circle_size_px = 2*r/3600. / delta
         circle_size_px = int(round(circle_size_px))
         px_start = [central_px[0]-circle_size_px/2,central_px[1]-circle_size_px/2]
@@ -275,7 +275,7 @@ def pixel_circle_calculation_px(fitsfile,x,y,r):
     delta = abs(header['CDELT1']) #in degree
     pixel_array = []
     central_px = [x,y]
-    if r is not 'single':
+    if r != 'single':
         circle_size_px = 2*r/3600. / delta
         circle_size_px = int(round(circle_size_px))
         px_start = [central_px[0]-circle_size_px/2,central_px[1]-circle_size_px/2]
@@ -306,7 +306,7 @@ def pixel_box_calculation(fitsfile,longitude,latitude,a,b):
     else:
         raise Exception('Something wrong with the header.')
     central_px = [int(np.round(central_px[0],decimals=0))-1,int(np.round(central_px[1],decimals=0))-1]
-    if a is not 'single':
+    if a != 'single':
         box_size_px_a = a/3600. / delta
         box_size_px_a = int(round(box_size_px_a))
         box_size_px_b = b/3600. / delta
