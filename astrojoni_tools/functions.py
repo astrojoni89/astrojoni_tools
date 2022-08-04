@@ -274,7 +274,7 @@ def pixel_circle_calculation(fitsfile,xcoord,ycoord,r):
     else:
         pixel_coords.append((central_px[1],central_px[0]))
     
-    indices_np = tuple(zip(*pixel_array))
+    indices_np = tuple(zip(*pixel_coords))
     
     return pixel_coords, indices_np
 
