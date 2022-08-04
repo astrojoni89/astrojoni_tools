@@ -230,7 +230,7 @@ def channel_averaged(fitsfile,velocity_start,velocity_end):
 
 
 def pixel_circle_calculation(fitsfile,xcoord,ycoord,r):
-    """This function returns array of pixels (y,x) corresponding to circle region with central coordinates xcoord, ycoord, and radius r.
+    """This function returns both a list of pixels (y,x) and a tuple ((y0,y1,...),(x0,x1,...)) corresponding to the circle region with central coordinates xcoord, ycoord, and radius r..
     
     Parameters
     ----------
