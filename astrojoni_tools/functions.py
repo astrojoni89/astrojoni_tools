@@ -230,7 +230,7 @@ def channel_averaged(fitsfile,velocity_start,velocity_end):
 
 
 def pixel_circle_calculation(fitsfile,xcoord,ycoord,r):
-    """This function returns both a list of pixels (y,x) and a tuple ((y0,y1,...),(x0,x1,...)) corresponding to the circle region with central coordinates xcoord, ycoord, and radius r..
+    """This function returns both a list of pixels [(y0,x0),(y1,x1),...] and a tuple ((y0,y1,...),(x0,x1,...)) corresponding to the circle region with central coordinates xcoord, ycoord, and radius r..
     
     Parameters
     ----------
@@ -245,9 +245,9 @@ def pixel_circle_calculation(fitsfile,xcoord,ycoord,r):
     Returns
     -------
     pixel_coords : list
-        List of pixel coordinates [(y_px,x_px), ...].
+        List of pixel coordinates [(y0,x0),(y1,x1),...].
     indices_np : tuple
-        Tuple of pixel indices to be passed to a numpy.ndarray.
+        Tuple of pixel indices ((y0,y1,...),(x0,x1,...)) to index a numpy.ndarray.
     """
     header = fits.getheader(fitsfile)
     w = WCS(fitsfile)
