@@ -230,12 +230,25 @@ def channel_averaged(fitsfile,velocity_start,velocity_end):
 
 
 def pixel_circle_calculation(fitsfile,xcoord,ycoord,r):
-    '''
-    This function returns array of pixels corresponding to circle region with central coordinates xcoord, ycoord, and radius r
-    xcoord: x-coordinate of central pixel in units given in the header
-    ycoord: y-coordinate of central pixel in units given in the header
-    r: radius of region in arcseconds
-    '''
+    """This function returns array of pixels (y,x) corresponding to circle region with central coordinates xcoord, ycoord, and radius r.
+    
+    Parameters
+    ----------
+    fitsfile : str
+        path to FITS file.
+    xcoord : numpy.ndarray or float
+        x-coordinate of central pixel in units given in the header.
+    ycoord : numpy.ndarray or float
+        y-coordinate of central pixel in units given in the header.
+    r : float
+        radius of region in units of arcseconds.
+    Returns
+    -------
+    pixel_coords : list
+        List of pixel coordinates [(y_px,x_px), ...].
+    indices_np : tuple
+        Tuple of pixel indices to be passed to a numpy.ndarray.
+    """
     header = fits.getheader(fitsfile)
     w = WCS(fitsfile)
     delta = abs(header['CDELT1']) #in degree
@@ -261,9 +274,9 @@ def pixel_circle_calculation(fitsfile,xcoord,ycoord,r):
     else:
         pixel_coords.append((central_px[1],central_px[0]))
     
-    idx_array = tuple(zip(*pixel_array))
+    indices_np = tuple(zip(*pixel_array))
     
-    return pixel_coords, idx_array
+    return pixel_coords, indices_np
 
 
 def pixel_circle_calculation_px(fitsfile,x,y,r):
