@@ -572,7 +572,7 @@ def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_ou
     else:
         newname = filename.split('/')[-1].split('.fits')[0] + '_smooth_' + str(major) + '_arcsec' + '.fits'
     if allow_huge_operations:
-	cube.allow_huge_operations = True
+        cube.allow_huge_operations = True
     smoothcube = cube.convolve_to(beam, **kwargs)
     pathname = os.path.join(path_to_output, newname)
     smoothcube.write(pathname, format='fits', overwrite=True)
@@ -596,7 +596,7 @@ def reproject_cube(filename, template, axes='spatial', path_to_output='.', suffi
     elif axes=='all':
         header_template = cube2.header
     if allow_huge_operations:
-	cube.allow_huge_operations = True
+        cube1.allow_huge_operations = True
     cube1_reproj = cube1.reproject(header_template)
 
     if suffix is not None:
