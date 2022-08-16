@@ -551,7 +551,7 @@ def find_common_beam(filenames):
     return common_beam
 
 
-def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_output='.', suffix=None, **kwargs): # smooth image with 2D Gaussian
+def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_output='.', suffix=None, allow_huge_operations=False, **kwargs): # smooth image with 2D Gaussian
     import radio_beam
     from spectral_cube import SpectralCube, Projection
     from astropy import units as u
@@ -571,13 +571,15 @@ def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_ou
         newname = filename.split('/')[-1].split('.fits')[0] + '_smooth' + str(major) + '_arcsec' + suffix + '.fits'
     else:
         newname = filename.split('/')[-1].split('.fits')[0] + '_smooth_' + str(major) + '_arcsec' + '.fits'
+    if allow_huge_operations:
+	cube.allow_huge_operations = True
     smoothcube = cube.convolve_to(beam, **kwargs)
     pathname = os.path.join(path_to_output, newname)
     smoothcube.write(pathname, format='fits', overwrite=True)
     print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
 
 	
-def reproject_cube(filename, template, axes='spatial', path_to_output='.', suffix=None):
+def reproject_cube(filename, template, axes='spatial', path_to_output='.', suffix=None, allow_huge_operations=False):
     from spectral_cube import SpectralCube, Projection
     from astropy.io import fits
 
@@ -593,6 +595,8 @@ def reproject_cube(filename, template, axes='spatial', path_to_output='.', suffi
         header_template = md_header_2d(template)
     elif axes=='all':
         header_template = cube2.header
+    if allow_huge_operations:
+	cube.allow_huge_operations = True
     cube1_reproj = cube1.reproject(header_template)
 
     if suffix is not None:
