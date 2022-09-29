@@ -593,7 +593,7 @@ def reproject_cube(filename, template, axes='spatial', path_to_output='.', suffi
         cube2 = Projection.from_hdu(fits.open(template)[0])
     if axes=='spatial':
         header_template = cube2.header
-	header_template['NAXIS3'] = cube1.header['NAXIS3']
+        header_template['NAXIS3'] = cube1.header['NAXIS3']
     elif axes=='all':
         header_template = cube2.header
     if allow_huge_operations:
