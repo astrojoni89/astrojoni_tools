@@ -390,28 +390,48 @@ def pixel_ellipse_calculation(central_pixel_x,central_pixel_y,a_pixel,b_pixel):
                 u = 1
     return pixel_array
 
+
 #Calculate ellipse pixel annulus:
-#TODO
-def pixel_ellipse_annulus_calculation(central_pixel_x,central_pixel_y,a_pixel_out,b_pixel_out,a_pixel_in,b_pixel_in):
-    px_start = [int(central_pixel_x-1.1*a_pixel_out),int(central_pixel_y-1.1*b_pixel_out)]    #1.1*a and 1.1*b just to be sure, that I cover the entire area
-    px_end = [int(central_pixel_x+1.1*a_pixel_out),int(central_pixel_y+1.1*b_pixel_out)]
-    pixel_array = []
-    print('pixel_start: '+str(px_start)+'   pixel_end: '+str(px_end))
-    if (a_pixel_in == 0):
-        for i_x in range(px_start[0],px_end[0]):
-            for i_y in range(px_start[1],px_end[1]):
-                if ((((i_x-central_pixel_x)**2 / float(a_pixel_out)**2) + ((i_y-central_pixel_y)**2 / float(b_pixel_out)**2) < 1 )):
-                    pixel_array.append((i_x,i_y))
-                else:
-                    u = 1        
+def pixel_ellipse_annulus_calculation(center_x,center_y,x_in,x_out,y_in,y_out):
+    """This function returns both a list of pixels [(y0,x0),(y1,x1),...] and a tuple ((y0,y1,...),(x0,x1,...)) corresponding to the ellipse annulus region with central coordinates center_x, center_y, and inner and outer semimajor/semiminor axes x_in, x_out/ y_in, y_out (or the other way around).
+    
+    Parameters
+    ----------
+    center_x : int
+        x-coordinate of central pixel in pixel units.
+    center_y : int
+        y-coordinate of central pixel in pixel units.
+    x_in : int
+        inner semimajor/minor axis of region along x-axis in pixel units.
+    x_out : int
+    	outer semimajor/minor axis of region along x-axis in pixel units.
+    y_in : int
+    	inner semimajor/minor axis of region along y-axis in pixel units.
+    y_out : int
+    	outer semimajor/minor axis of region along y-axis in pixel units.
+    Returns
+    -------
+    pixel_coords : list
+        List of pixel coordinates [(y0,x0),(y1,x1),...].
+    indices_np : tuple
+        Tuple of pixel indices ((y0,y1,...),(x0,x1,...)) to index a numpy.ndarray.
+    """
+    central_px = [int(np.round(center_x,decimals=0)),int(np.round(center_y,decimals=0))]
+    px_start = [central_px[0]-x_out,central_px[1]-y_out]
+    px_end = [central_px[0]+x_out,central_px[1]+y_out]
+    pixel_coords = []
+    if x_in==0 and y_in==0:
+        for i_x in trange(int(np.round(px_start[0],decimals=0)-1),int(np.round(px_end[0],decimals=0)+1)):
+            for i_y in range(int(np.round(px_start[1],decimals=0)-1),int(np.round(px_end[1],decimals=0)+1)):
+                if (((i_x - center_x) / float(x_out))**2 + ((i_y - center_y) / float(y_out))**2) < 1:
+                    pixel_coords.append((i_y,i_x))
     else:
-        for i_x in range(px_start[0],px_end[0]):
-            for i_y in range(px_start[1],px_end[1]):
-                if ((((i_x-central_pixel_x)**2 / float(a_pixel_out)**2) + ((i_y-central_pixel_y)**2 / float(b_pixel_out)**2) < 1 ) and (((i_x-central_pixel_x)**2 / float(a_pixel_in)**2) + ((i_y-central_pixel_y)**2 / float(b_pixel_in)**2) > 1 )):
-                    pixel_array.append((i_x,i_y))
-                else:
-                    u = 1
-    return pixel_array
+        for i_x in trange(int(np.round(px_start[0],decimals=0)-1),int(np.round(px_end[0],decimals=0)+1)):
+            for i_y in range(int(np.round(px_start[1],decimals=0)-1),int(np.round(px_end[1],decimals=0)+1)):
+                if (((i_x - center_x) / float(x_out))**2 + ((i_y - center_y) / float(y_out))**2) < 1 and (((i_x - center_x) / float(x_in))**2 + ((i_y - center_y) / float(y_in))**2) > 1:
+                    pixel_coords.append((i_y,i_x))
+    indices_np = tuple(zip(*pixel_coords))
+    return pixel_coords, indices_np
 
 
 #make subcube of ppv cube
