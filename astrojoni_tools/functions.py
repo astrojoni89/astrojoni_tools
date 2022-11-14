@@ -614,6 +614,8 @@ def reproject_cube(filename, template, axes='spatial', path_to_output='.', suffi
     if axes=='spatial':
         header_template = cube2.header
         header_template['NAXIS3'] = cube1.header['NAXIS3']
+	header_template['NAXIS'] = cube1.header['NAXIS']
+	header_template['WCSAXES'] = cube1.header['WCSAXES']
         header_template['CRPIX3'] = cube1.header['CRPIX3']
         header_template['CDELT3'] = cube1.header['CDELT3']
         header_template['CUNIT3'] = cube1.header['CUNIT3']
