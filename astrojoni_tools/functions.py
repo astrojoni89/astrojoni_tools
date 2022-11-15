@@ -393,7 +393,7 @@ def pixel_ellipse_calculation(central_pixel_x,central_pixel_y,a_pixel,b_pixel):
 
 #Calculate ellipse pixel annulus:
 def pixel_ellipse_annulus_calculation(center_x,center_y,x_in,x_out,y_in,y_out):
-    """This function returns both a list of pixels [(y0,x0),(y1,x1),...] and a tuple ((y0,y1,...),(x0,x1,...)) corresponding to the ellipse annulus region with central coordinates center_x, center_y, and inner and outer semimajor/semiminor axes x_in, x_out/ y_in, y_out (or the other way around).
+    """This function returns both a list of pixels [(y0,x0),(y1,x1),...,(yn,xn)] and a tuple ((y0,y1,...,yn),(x0,x1,...,xn)) corresponding to the ellipse annulus region with central coordinates center_x, center_y, and inner and outer semimajor/semiminor axes x_in, x_out/ y_in, y_out (or the other way around).
     
     Parameters
     ----------
@@ -412,9 +412,9 @@ def pixel_ellipse_annulus_calculation(center_x,center_y,x_in,x_out,y_in,y_out):
     Returns
     -------
     pixel_coords : list
-        List of pixel coordinates [(y0,x0),(y1,x1),...].
+        List of pixel coordinates [(y0,x0),(y1,x1),...,(yn,xn)].
     indices_np : tuple
-        Tuple of pixel indices ((y0,y1,...),(x0,x1,...)) to index a numpy.ndarray.
+        Tuple of pixel indices ((y0,y1,...,yn),(x0,x1,...,xn)) to index a numpy.ndarray.
     """
     central_px = [int(np.round(center_x,decimals=0)),int(np.round(center_y,decimals=0))]
     px_start = [central_px[0]-x_out,central_px[1]-y_out]
@@ -434,7 +434,37 @@ def pixel_ellipse_annulus_calculation(center_x,center_y,x_in,x_out,y_in,y_out):
     return pixel_coords, indices_np
 
 
-#make subcube of ppv cube
+# get all off diagonal pixels of a map
+def get_off_diagonal(name, offset=0):
+    """This function returns both a list of pixel coordinate tuples [(y0,x0),(y1,x1),...,(yn,xn)] and a tuple ((y0,y1,...,yn),(x0,x1,...,xn)) corresponding to off diagonal elements of a 2D numpy.ndarray
+    
+    Parameters
+    ----------
+    name : str
+        name of file.
+    offset : int
+        y-axis offset from diagonal in units of pixels.
+    Returns
+    -------
+    pixel_coords : list
+        List of pixel coordinates [(y0,x0),(y1,x1),...,(yn,xn)].
+    indices_np : tuple
+        Tuple of pixel indices ((y0,y1,...,yn),(x0,x1,...,xn)) to index a numpy.ndarray.
+    """
+    data = fits.getdata(name)
+    xsize = data.shape[1]
+    ysize = data.shape[0]
+    m = ysize/float(xsize)
+    pixel_coords = []
+    for x in range(xsize):
+        for y in range(ysize):
+            if y > m * x + offset or y < m * x - offset:
+                pixel_coords.append((y,x))
+    indices_np = tuple(zip(*pixel_coords))
+    return pixel_coords, indices_np
+
+
+# make subcube of ppv cube
 def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_range=None, path_to_output='.', suffix=None):
     import os
     import astropy.units as u
@@ -452,7 +482,7 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
         cube = cubedata
     print(cube)
 
-    #extract coordinates
+    # extract coordinates
     if cube.ndim == 3:
         _, b, _ = cube.world[0, :, 0]  #extract latitude world coordinates from cube
         _, _, l = cube.world[0, 0, :]  #extract longitude world coordinates from cube
