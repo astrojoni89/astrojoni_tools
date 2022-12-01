@@ -128,7 +128,7 @@ def moment_0(fitsfile,velocity_start,velocity_end,noise=None,path_to_output='.',
     print('velocity-range: '+str(velocity[lower_channel])+' - '+str(velocity[upper_channel]))
     if noise is not None:
         num_ch = int(upper_channel - lower_channel)
-	moment_0_noise = noise * np.sqrt(num_ch) * headerm0['CDELT3']/1000
+        moment_0_noise = noise * np.sqrt(num_ch) * headerm0['CDELT3']/1000
         print('Moment 0 noise at 1 sigma: {}'.format(moment_0_noise))
     if headerm0['NAXIS']==4:
         moment_0_map = np.zeros((headerm0['NAXIS2'],headerm0['NAXIS1']))
