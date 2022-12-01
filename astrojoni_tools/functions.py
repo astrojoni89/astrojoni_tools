@@ -114,16 +114,22 @@ def calculate_average_value_pixelArray(fitsfile,pixel_array): #nan treatment?
     return value_average, pixel_array_without_nan_values
  
 
-def moment_0(fitsfile,velocity_start,velocity_end,path_to_output='.',save_file=True):
+def moment_0(fitsfile,velocity_start,velocity_end,noise=None,path_to_output='.',save_file=True):
     import os
     image = fits.getdata(fitsfile)
     headerm0 = fits.getheader(fitsfile)
     velocity = velocity_axes(fitsfile)
     velocity = velocity.round(decimals=4)
-    lower_channel = find_nearest(velocity,velocity_start)
-    upper_channel = find_nearest(velocity,velocity_end)
+    velocity_low = min(velocity_start,velocity_end)
+    velocity_up = max(velocity_start,velocity_end)
+    lower_channel = find_nearest(velocity,velocity_low)
+    upper_channel = find_nearest(velocity,velocity_up)
     print('channel-range: '+str(lower_channel)+' - '+str(upper_channel))
     print('velocity-range: '+str(velocity[lower_channel])+' - '+str(velocity[upper_channel]))
+    if noise is not None:
+        num_ch = int(upper_channel - lower_channel)
+	moment_0_noise = noise * np.sqrt(num_ch) * headerm0['CDELT3']/1000
+        print('Moment 0 noise at 1 sigma: {}'.format(moment_0_noise))
     if headerm0['NAXIS']==4:
         moment_0_map = np.zeros((headerm0['NAXIS2'],headerm0['NAXIS1']))
         for i in range(lower_channel,upper_channel+1,1):
