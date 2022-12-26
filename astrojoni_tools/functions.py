@@ -471,7 +471,7 @@ def get_off_diagonal(name, offset=0):
 
 
 # make subcube of ppv cube
-def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_range=None, path_to_output='.', suffix=''):
+def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_range=None, path_to_output='.', suffix='', huge_operations=False):
     import os
     import astropy.units as u
     from astropy.io import fits
@@ -531,6 +531,9 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
         sub_cube = cube[lat_range_idx[0]:lat_range_idx[1], lon_range_idx[0]:lon_range_idx[1]]
 
     print(sub_cube)
+    
+    if huge_operations:
+        del cube # to free memory
     
     filename_wext = os.path.basename(filename)
     filename_base, file_extension = os.path.splitext(filename_wext)
