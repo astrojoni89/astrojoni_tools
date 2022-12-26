@@ -471,7 +471,7 @@ def get_off_diagonal(name, offset=0):
 
 
 # make subcube of ppv cube
-def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_range=None, path_to_output='.', suffix=None):
+def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_range=None, path_to_output='.', suffix=''):
     import os
     import astropy.units as u
     from astropy.io import fits
@@ -532,16 +532,9 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
 
     print(sub_cube)
     
-    if suffix is not None:
-        if not any(x is None for x in lat_range_idx+lon_range_idx):
-            newname = filename.split('/')[-1].split('.fits')[0] + '_lon{}to{}_lat{}to{}'.format(longitudes[0], longitudes[1], latitudes[0], latitudes[1]) + suffix + '.fits'
-        else:
-            newname = filename.split('/')[-1].split('.fits')[0] + '_vel{}to{}'.format(velo_range[0], velo_range[1]) + suffix + '.fits'
-    else:
-        if not any(x is None for x in lat_range_idx+lon_range_idx):
-            newname = filename.split('/')[-1].split('.fits')[0] + '_lon{}to{}_lat{}to{}'.format(longitudes[0], longitudes[1], latitudes[0], latitudes[1]) + '.fits'
-        else:
-            newname = filename.split('/')[-1].split('.fits')[0] + '_vel{}to{}'.format(velo_range[0], velo_range[1]) + '.fits'
+    filename_wext = os.path.basename(filename)
+    filename_base, file_extension = os.path.splitext(filename_wext)
+    newname = filename_base + '_subcube' + suffix + '.fits'
     pathname = os.path.join(path_to_output, newname)
     sub_cube.write(pathname, format='fits', overwrite=True)
     print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
