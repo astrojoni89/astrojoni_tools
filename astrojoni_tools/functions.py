@@ -583,7 +583,7 @@ def convert_jybeam_to_kelvin(filename, path_to_output='.', suffix=''):
 def convert_jtok_huge_dataset(filename, suffix=''):
     import os
     import shutil
-    import tqdm
+    from tqdm import tqdm
     from astropy.io import fits
     from spectral_cube import SpectralCube, Projection
     import astropy.units as u
