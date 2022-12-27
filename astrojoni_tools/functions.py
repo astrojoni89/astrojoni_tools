@@ -555,7 +555,7 @@ def jansky_to_kelvin(frequency,theta_1,theta_2): #in units of (GHz,arcsec,arcsec
     print('K/Jy = {:.5e}'.format(temp))
 
 
-def convert_jybeam_to_kelvin(filename, path_to_output='.', suffix=None):
+def convert_jybeam_to_kelvin(filename, path_to_output='.', suffix=''):
     import os
     from astropy.io import fits
     from spectral_cube import SpectralCube, Projection
@@ -574,13 +574,44 @@ def convert_jybeam_to_kelvin(filename, path_to_output='.', suffix=None):
     kcube = cube.to(u.K)  
     kcube.unit 
     
-    if suffix is not None:
-        newname = filename.split('/')[-1].split('.fits')[0] + '_unit_Tb' + suffix + '.fits'
-    else:
-        newname = filename.split('/')[-1].split('.fits')[0] + '_unit_Tb' + '.fits'
+    newname = filename.split('/')[-1].split('.fits')[0] + '_unit_Tb' + suffix + '.fits'
     pathname = os.path.join(path_to_output, newname)
     kcube.write(pathname, format='fits', overwrite=True)
     print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
+
+
+def convert_jtok_huge_dataset(filename, suffix=''):
+    import os
+    import shutil
+    import tqdm
+    from astropy.io import fits
+    from spectral_cube import SpectralCube, Projection
+    import astropy.units as u
+
+    filename_wext = os.path.basename(filename)
+    filename_base, file_extension = os.path.splitext(filename_wext)
+    newname = filename_base + '_unit_Tb' + suffix + '.fits'
+
+    try:
+        cube = SpectralCube.read(filename)  # Initiate a SpectralCube
+        jtok_factors = cube.beam.jtok(cube.with_spectral_unit(u.GHz).spectral_axis)
+        shutil.copy(filename, newname)
+        outfh = fits.open(newname, mode='update')
+    
+        with tqdm(total=len(jtok_factors)) as pbar:
+            for index,(slice,factor) in enumerate(zip(cube,jtok_factors)):
+                outfh[0].data[index] = slice * factor
+                outfh.flush() # write the data to disk
+                pbar.update(1)
+        outfh[0].header['BUNIT'] = 'K'
+        outfh.flush()
+        print("\n\033[92mSAVED FILE:\033[0m '{}'".format(newname))
+    except:
+        data = fits.open(filename) # Open the FITS file for reading
+        cube = Projection.from_hdu(data[0]) # as a fallback if fits is a 2d image
+        kcube = cube.to(u.K)
+        kcube.write(newname, format='fits', overwrite=True)
+        print("\n\033[92mSAVED FILE:\033[0m '{}'".format(newname))
 
 
 def find_common_beam(filenames):
