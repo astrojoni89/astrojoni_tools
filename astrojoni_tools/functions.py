@@ -490,14 +490,16 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
 
     # extract coordinates
     if cube.ndim == 3:
-        _, b, _ = cube.world[0, :, 0]  #extract latitude world coordinates from cube
-        _, _, l = cube.world[0, 0, :]  #extract longitude world coordinates from cube
+        _, b, _ = cube.world[0, :, 0]  #extract world coordinates from cube
+        _, _, l = cube.world[0, 0, :]  #extract world coordinates from cube
         v, _, _ = cube.world[:, 0, 0]  #extract velocity world coordinates from cube
     elif cube.ndim == 2:
-        b, _ = cube.world[:, 0]  #extract latitude world coordinates from 2d image
-        _, l = cube.world[0, :]  #extract longitude world coordinates from 2d image
+        b, _ = cube.world[:, 0]  #extract world coordinates from 2d image
+        _, l = cube.world[0, :]  #extract world coordinates from 2d image
 
-    # Define desired latitude and longitude range
+    # Define desired coordinate range
+    physical_types = cube.wcs.world_axis_physical_types
+    print('\nMake sure to give coordinates in the frame of the data header: {}\n'.format(physical_types))
     if latitudes is not None:
         lat_range = latitudes * u.deg
         lat_range_idx = sorted([find_nearest(b, lat_range[0]), find_nearest(b, lat_range[1])])
