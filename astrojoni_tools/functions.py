@@ -154,9 +154,10 @@ def moment_0(filename,velocity_start,velocity_end,noise=None,path_to_output='.',
     else:
         print(newname.split('.fits')[0])
     if output_noise is True:
+        noise_array = np.array([1, moment_0_noise])
         name_noise_file = filename_base + '_mom-0_noise.txt'
         path_noise_file = os.path.join(path_to_output, name_noise_file)
-        np.savetxt(path_noise_file, moment_0_noise)
+        np.savetxt(path_noise_file, noise_array)
     return moment_0_map
 
 def moment_1(filename,velocity_start,velocity_end,path_to_output='.',save_file=True,suffix=''):
