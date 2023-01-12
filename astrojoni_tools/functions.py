@@ -114,7 +114,7 @@ def calculate_average_value_pixelArray(fitsfile,pixel_array): #nan treatment?
     return value_average, pixel_array_without_nan_values
  
 
-def moment_0(fitsfile,velocity_start,velocity_end,noise=None,path_to_output='.',save_file=True,output_noise=True,suffix=''):
+def moment_0(filename,velocity_start,velocity_end,noise=None,path_to_output='.',save_file=True,output_noise=True,suffix=''):
     import os
     image = fits.getdata(fitsfile)
     headerm0 = fits.getheader(fitsfile)
@@ -159,7 +159,7 @@ def moment_0(fitsfile,velocity_start,velocity_end,noise=None,path_to_output='.',
         np.savetxt(path_noise_file, moment_0_noise)
     return moment_0_map
 
-def moment_1(fitsfile,velocity_start,velocity_end,path_to_output='.',save_file=True, suffix=''):
+def moment_1(filename,velocity_start,velocity_end,path_to_output='.',save_file=True,suffix=''):
     import os
     image = fits.getdata(fitsfile)
     headerm1 = fits.getheader(fitsfile)
