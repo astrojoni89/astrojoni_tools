@@ -114,7 +114,7 @@ def calculate_average_value_pixelArray(fitsfile,pixel_array): #nan treatment?
     return value_average, pixel_array_without_nan_values
  
 
-def moment_0(fitsfile,velocity_start,velocity_end,noise=None,path_to_output='.',save_file=True):
+def moment_0(fitsfile,velocity_start,velocity_end,noise=None,path_to_output='.',save_file=True,output_noise=True,suffix=''):
     import os
     image = fits.getdata(fitsfile)
     headerm0 = fits.getheader(fitsfile)
@@ -142,16 +142,24 @@ def moment_0(fitsfile,velocity_start,velocity_end,noise=None,path_to_output='.',
         print('Something wrong with the header.')
     moment_0_map = moment_0_map * headerm0['CDELT3']/1000
     headerm0['BUNIT'] = headerm0['BUNIT']+'.KM/S'
-    newname = fitsfile.split('/')[-1].split('.fits')[0] + '_mom-0_' + str(velocity_start) + '_to_' + str(velocity_end) + 'km-s.fits'
-    pathname = os.path.join(path_to_output,newname)
+
+    filename_wext = os.path.basename(filename)
+    filename_base, file_extension = os.path.splitext(filename_wext)
+    newname = filename_base + '_mom-0_' + str(velocity_start) + '_to_' + str(velocity_end) + 'km-s' + suffix + '.fits'
+    pathname = os.path.join(path_to_output, newname)
+
     if save_file is True:
         fits.writeto(pathname, moment_0_map, header=headerm0, overwrite=True)
         print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
     else:
         print(newname.split('.fits')[0])
+    if output_noise is True:
+        name_noise_file = filename_base + '_mom-0_noise.txt'
+        path_noise_file = os.path.join(path_to_output, name_noise_file)
+        np.savetxt(path_noise_file, moment_0_noise)
     return moment_0_map
 
-def moment_1(fitsfile,velocity_start,velocity_end,path_to_output='.',save_file=True):
+def moment_1(fitsfile,velocity_start,velocity_end,path_to_output='.',save_file=True, suffix=''):
     import os
     image = fits.getdata(fitsfile)
     headerm1 = fits.getheader(fitsfile)
@@ -174,8 +182,12 @@ def moment_1(fitsfile,velocity_start,velocity_end,path_to_output='.',save_file=T
     moment_0_map = moment_0(fitsfile,velocity_start,velocity_end,save_file=False)
     moment_1_map = (moment_1_map * headerm1['CDELT3']/1000) / moment_0_map
     headerm1['BUNIT'] = 'KM/S'
-    newname = fitsfile.split('/')[-1].split('.fits')[0] + '_mom-1_' + str(velocity_start) + '_to_' + str(velocity_end) + 'km-s.fits'
-    pathname = os.path.join(path_to_output,newname)
+
+    filename_wext = os.path.basename(filename)
+    filename_base, file_extension = os.path.splitext(filename_wext)
+    newname = filename_base + '_mom-1_' + str(velocity_start) + '_to_' + str(velocity_end) + 'km-s' + suffix + '.fits'
+    pathname = os.path.join(path_to_output, newname)
+
     if save_file is True:
         fits.writeto(pathname, moment_1_map, header=headerm1, overwrite=True)
         print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
