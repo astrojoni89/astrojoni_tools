@@ -116,9 +116,9 @@ def calculate_average_value_pixelArray(fitsfile,pixel_array): #nan treatment?
 
 def moment_0(filename,velocity_start,velocity_end,noise=None,path_to_output='.',save_file=True,output_noise=True,suffix=''):
     import os
-    image = fits.getdata(fitsfile)
-    headerm0 = fits.getheader(fitsfile)
-    velocity = velocity_axes(fitsfile)
+    image = fits.getdata(filename)
+    headerm0 = fits.getheader(filename)
+    velocity = velocity_axes(filename)
     velocity = velocity.round(decimals=4)
     velocity_low = min(velocity_start,velocity_end)
     velocity_up = max(velocity_start,velocity_end)
@@ -161,9 +161,9 @@ def moment_0(filename,velocity_start,velocity_end,noise=None,path_to_output='.',
 
 def moment_1(filename,velocity_start,velocity_end,path_to_output='.',save_file=True,suffix=''):
     import os
-    image = fits.getdata(fitsfile)
-    headerm1 = fits.getheader(fitsfile)
-    velocity = velocity_axes(fitsfile)
+    image = fits.getdata(filename)
+    headerm1 = fits.getheader(filename)
+    velocity = velocity_axes(filename)
     velocity = velocity.round(decimals=4)
     lower_channel = find_nearest(velocity,velocity_start)
     upper_channel = find_nearest(velocity,velocity_end)
