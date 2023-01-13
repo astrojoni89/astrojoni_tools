@@ -126,10 +126,7 @@ def moment_0(filename,velocity_start,velocity_end,noise=None,path_to_output='.',
     upper_channel = find_nearest(velocity,velocity_up)
     print('channel-range: '+str(lower_channel)+' - '+str(upper_channel))
     print('velocity-range: '+str(velocity[lower_channel])+' - '+str(velocity[upper_channel]))
-    if noise is not None:
-        num_ch = int(upper_channel - lower_channel)
-        moment_0_noise = noise * np.sqrt(num_ch) * headerm0['CDELT3']/1000
-        print('Moment 0 noise at 1 sigma: {}'.format(moment_0_noise))
+    
     if headerm0['NAXIS']==4:
         moment_0_map = np.zeros((headerm0['NAXIS2'],headerm0['NAXIS1']))
         for i in range(lower_channel,upper_channel+1,1):
@@ -153,12 +150,17 @@ def moment_0(filename,velocity_start,velocity_end,noise=None,path_to_output='.',
         print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
     else:
         print(newname.split('.fits')[0])
-    if output_noise is True:
-        noise_array = np.array([1, moment_0_noise])
-        name_noise_file = filename_base + '_mom-0_noise.txt'
-        path_noise_file = os.path.join(path_to_output, name_noise_file)
-        np.savetxt(path_noise_file, noise_array)
+    if noise is not None:
+        num_ch = int(upper_channel - lower_channel)
+        moment_0_noise = noise * np.sqrt(num_ch) * headerm0['CDELT3']/1000
+        print('Moment 0 noise at 1 sigma: {}'.format(moment_0_noise))
+        if output_noise is True:
+            noise_array = np.array([1, moment_0_noise])
+            name_noise_file = filename_base + '_mom-0_noise.txt'
+            path_noise_file = os.path.join(path_to_output, name_noise_file)
+            np.savetxt(path_noise_file, noise_array)
     return moment_0_map
+
 
 def moment_1(filename,velocity_start,velocity_end,path_to_output='.',save_file=True,suffix=''):
     import os
@@ -195,6 +197,7 @@ def moment_1(filename,velocity_start,velocity_end,path_to_output='.',save_file=T
     else:
         print(newname.split('.fits')[0])
     return moment_1_map
+
 
 def add_up_channels(fitsfile,velocity_start,velocity_end):
     image = fits.getdata(fitsfile)
