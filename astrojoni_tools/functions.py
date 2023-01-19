@@ -1014,8 +1014,12 @@ def calculate_gal_radius_from_distance(distance,longitude,latitude,R_sun=8.15): 
     return R_gal_distance
 
 
-def estimate_cont_noise(inner_pct=.80, outer_pct=.90):
+def estimate_cont_noise(data, inner_pct=.80, outer_pct=.90):
     #global inner_pct, outer_pct
+    y_size = data.shape[0]
+    x_size = data.shape[1]
+    central_px_x = x_size/2.
+    central_px_y = y_size/2.
     px_array, indices = pixel_ellipse_annulus_calculation(central_px_x, central_px_y, inner_pct*x_size/2., outer_pct*x_size/2., inner_pct*y_size/2., outer_pct*y_size/2.)
 
     # only select data within that annulus region
