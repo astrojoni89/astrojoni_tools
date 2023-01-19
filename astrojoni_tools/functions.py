@@ -1014,8 +1014,8 @@ def calculate_gal_radius_from_distance(distance,longitude,latitude,R_sun=8.15): 
     return R_gal_distance
 
 
-def estimate_cont_noise(data, inner_pct=.80, outer_pct=.90):
-    #global inner_pct, outer_pct
+def estimate_cont_noise(data):
+    global inner_pct, outer_pct
     y_size = data.shape[0]
     x_size = data.shape[1]
     central_px_x = x_size/2.
@@ -1030,7 +1030,7 @@ def estimate_cont_noise(data, inner_pct=.80, outer_pct=.90):
         print('\n\033[93mRegion contains NaNs!\033[0m\nMaking region smaller now...')
         inner_pct -= 0.05
         outer_pct -= 0.05
-        return estimate_cont_noise()
+        return estimate_cont_noise(data)
     else:
         # estimate rms and std in that region
         std = np.std(data_in_annulus)
