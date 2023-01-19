@@ -1012,3 +1012,25 @@ def calculate_gal_radius_from_distance(distance,longitude,latitude,R_sun=8.15): 
 
     R_gal_distance = np.sqrt(R_gal_x**2 + R_gal_y**2 + R_gal_z**2)
     return R_gal_distance
+
+
+def estimate_cont_noise(inner_pct=.80, outer_pct=.90):
+    #global inner_pct, outer_pct
+    px_array, indices = pixel_ellipse_annulus_calculation(central_px_x, central_px_y, inner_pct*x_size/2., outer_pct*x_size/2., inner_pct*y_size/2., outer_pct*y_size/2.)
+
+    # only select data within that annulus region
+    data_in_annulus = data[indices]
+
+    # check if annulus contains nan values. If so, decrease inner and outer radii by some value and estimate_cont_noise again
+    if np.any(np.isnan(data_in_annulus)):
+        print('\n\033[93mRegion contains NaNs!\033[0m\nMaking region smaller now...')
+        inner_pct -= 0.05
+        outer_pct -= 0.05
+        return estimate_cont_noise()
+    else:
+        # estimate rms and std in that region
+        std = np.std(data_in_annulus)
+        rms = np.sqrt(np.mean(data_in_annulus**2))
+        print('\nstd, rms = {}, {}'.format(std,rms))
+        print('\n\033[92mJONAS IS AWESOME\033[0m')
+        return std, rms
