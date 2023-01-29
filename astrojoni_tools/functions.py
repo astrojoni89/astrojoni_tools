@@ -2,7 +2,7 @@ import os
 import numpy as np
 from tqdm import trange
 from astropy.io import fits
-from astropy.wcs import WCS
+from astropy.wcs import WCS, WCSSUB_SPECTRAL
 
 
 
@@ -563,22 +563,10 @@ def make_lv(filename, path_to_output='.', suffix=''):
     header = fits.getheader(filename)
     
     pv_array = np.empty((header['NAXIS3'],header['NAXIS1']))
-    template_header = md_header_2d(filename)
-    new_header = template_header
-    if 'BMAJ' in new_header.keys():
-        del new_header['BMAJ']
-    if 'BMIN' in new_header.keys():
-        del new_header['BMIN']
-    if 'BPA' in new_header.keys():
-        del new_header['BPA']
-    if 'BTYPE' in new_header.keys():
-        del new_header['BTYPE']
-    if 'BUNIT' in new_header.keys():
-        del new_header['BUNIT']
-    if 'BEAM' in new_header.keys():
-        del new_header['BEAM']
-    if 'SLICE' in new_header.keys():
-        del new_header['SLICE']
+    wcs = WCS(header)
+    wcs_slice = wcs.sub([0, WCSSUB_SPECTRAL])
+    new_header = wcs_slice.to_header()
+    
     new_header['NAXIS1'] = header['NAXIS1']
     new_header.comments['NAXIS1'] = header.comments['NAXIS1']
     new_header['NAXIS2'] = header['NAXIS3']
