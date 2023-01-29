@@ -4,6 +4,8 @@ from tqdm import trange
 from astropy.io import fits
 from astropy.wcs import WCS, WCSSUB_SPECTRAL
 
+from .utils.wcs_utils import sanitize_wcs
+
 
 
 def find_nearest(array,value):
@@ -564,6 +566,8 @@ def make_lv(filename, path_to_output='.', suffix=''):
     
     pv_array = np.empty((header['NAXIS3'],header['NAXIS1']))
     wcs = WCS(header)
+    if wcs is not None:
+        wcs = sanitize_wcs(wcs)
     wcs_slice = wcs.sub([0, WCSSUB_SPECTRAL])
     try:
         wcs_slice.wcs.pc[1,0] = wcs_slice.wcs.pc[0,1] = 0
