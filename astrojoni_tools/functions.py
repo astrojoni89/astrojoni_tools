@@ -573,6 +573,11 @@ def make_lv(filename, path_to_output='.', suffix=''):
     new_header['CDELT2'] = header['CDELT3']
     new_header['CRVAL1'] = header['CRVAL1']
     new_header['CRVAL2'] = header['CRVAL3']
+    new_header['CTYPE2'] = header['CTYPE3']
+    new_header['CUNIT2'] = header['CUNIT3']
+
+    if 'BUNIT' in new_header.keys():
+        new_header.comments['BUNIT'] = 'Lat.avg brightness (pixel) unit'
 
     for vel in trange(data.shape[0]):
         for lon in range(data.shape[2]):
