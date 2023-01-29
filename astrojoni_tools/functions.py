@@ -567,26 +567,16 @@ def make_lv(filename, path_to_output='.', suffix=''):
     wcs_slice = wcs.sub([0, WCSSUB_SPECTRAL])
     new_header = wcs_slice.to_header()
     
-    new_header['NAXIS1'] = header['NAXIS1']
-    new_header.comments['NAXIS1'] = header.comments['NAXIS1']
-    new_header['NAXIS2'] = header['NAXIS3']
-    new_header.comments['NAXIS2'] = header.comments['NAXIS3']
+    new_header['CUNIT1'] = header['CUNIT1']
+    new_header.comments['CUNIT1'] = header.comments['CUNIT1']
+    new_header['CTYPE1'] = header['CTYPE1']
+    new_header.comments['CTYPE1'] = header.comments['CTYPE1']
     new_header['CRPIX1'] = header['CRPIX1']
     new_header.comments['CRPIX1'] = header.comments['CRPIX1']
-    new_header['CRPIX2'] = header['CRPIX3']
-    new_header.comments['CRPIX2'] = header.comments['CRPIX3']
     new_header['CDELT1'] = header['CDELT1']
     new_header.comments['CDELT1'] = header.comments['CDELT1']
-    new_header['CDELT2'] = header['CDELT3']
-    new_header.comments['CDELT2'] = header.comments['CDELT3']
     new_header['CRVAL1'] = header['CRVAL1']
     new_header.comments['CRVAL1'] = header.comments['CRVAL1']
-    new_header['CRVAL2'] = header['CRVAL3']
-    new_header.comments['CRVAL2'] = header.comments['CRVAL3']
-    new_header['CTYPE2'] = header['CTYPE3']
-    new_header.comments['CTYPE2'] = header.comments['CTYPE3']
-    new_header['CUNIT2'] = header['CUNIT3']
-    new_header.comments['CUNIT2'] = header.comments['CUNIT3']
 
     for vel in trange(data.shape[0]):
         for lon in range(data.shape[2]):
