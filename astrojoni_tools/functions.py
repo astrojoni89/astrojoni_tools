@@ -565,6 +565,20 @@ def make_lv(filename, path_to_output='.', suffix=''):
     pv_array = np.empty((header['NAXIS3'],header['NAXIS1']))
     template_header = md_header_2d(filename)
     new_header = template_header
+    if 'BMAJ' in new_header.keys():
+        del new_header['BMAJ']
+    if 'BMIN' in new_header.keys():
+        del new_header['BMIN']
+    if 'BPA' in new_header.keys():
+        del new_header['BPA']
+    if 'BTYPE' in new_header.keys():
+        del new_header['BTYPE']
+    if 'BUNIT' in new_header.keys():
+        del new_header['BUNIT']
+    if 'BEAM' in new_header.keys():
+        del new_header['BEAM']
+    if 'SLICE' in new_header.keys():
+        del new_header['SLICE']
     new_header['NAXIS1'] = header['NAXIS1']
     new_header.comments['NAXIS1'] = header.comments['NAXIS1']
     new_header['NAXIS2'] = header['NAXIS3']
@@ -585,9 +599,6 @@ def make_lv(filename, path_to_output='.', suffix=''):
     new_header.comments['CTYPE2'] = header.comments['CTYPE3']
     new_header['CUNIT2'] = header['CUNIT3']
     new_header.comments['CUNIT2'] = header.comments['CUNIT3']
-
-    if 'BUNIT' in new_header.keys():
-        new_header.comments['BUNIT'] = 'Lat.avg brightness (pixel) unit'
 
     for vel in trange(data.shape[0]):
         for lon in range(data.shape[2]):
