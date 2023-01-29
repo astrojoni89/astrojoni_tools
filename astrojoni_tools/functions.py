@@ -558,6 +558,36 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
     print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
 
 
+def make_lv(filename, path_to_output='.', suffix=''):
+    data = fits.getdata(filename)
+    header = fits.getheader(filename)
+    
+    pv_array = np.empty((header['NAXIS3'],header['NAXIS1']))
+    template_header = md_header_2d(filename)
+    new_header = template_header
+    new_header['NAXIS1'] = header['NAXIS1']
+    new_header['NAXIS2'] = header['NAXIS3']
+    new_header['CRPIX1'] = header['CRPIX1']
+    new_header['CRPIX2'] = header['CRPIX3']
+    new_header['CDELT1'] = header['CDELT1']
+    new_header['CDELT2'] = header['CDELT3']
+    new_header['CRVAL1'] = header['CRVAL1']
+    new_header['CRVAL2'] = header['CRVAL3']
+
+    for vel in trange(data.shape[0]):
+        for lon in range(data.shape[2]):
+            avg = np.nanmean(data[vel,:,lon])
+            pv_array[vel,lon] = avg
+
+    filename_wext = os.path.basename(filename)
+    filename_base, file_extension = os.path.splitext(filename_wext)
+    newname = filename_base + '_longitude_velocity_avg_lat' + suffix + '.fits'
+    pathname = os.path.join(path_to_output, newname)
+
+    fits.writeto(pathname, pv_array, header=new_header, overwrite=True)
+    print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
+
+
 def jansky_to_kelvin(frequency,theta_1,theta_2): #in units of (GHz,arcsec,arcsec)
     from astropy import constants as const
     c = const.c
