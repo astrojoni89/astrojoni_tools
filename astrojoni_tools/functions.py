@@ -566,15 +566,25 @@ def make_lv(filename, path_to_output='.', suffix=''):
     template_header = md_header_2d(filename)
     new_header = template_header
     new_header['NAXIS1'] = header['NAXIS1']
+    new_header.comments['NAXIS1'] = header.comments['NAXIS1']
     new_header['NAXIS2'] = header['NAXIS3']
+    new_header.comments['NAXIS2'] = header.comments['NAXIS3']
     new_header['CRPIX1'] = header['CRPIX1']
+    new_header.comments['CRPIX1'] = header.comments['CRPIX1']
     new_header['CRPIX2'] = header['CRPIX3']
+    new_header.comments['CRPIX2'] = header.comments['CRPIX3']
     new_header['CDELT1'] = header['CDELT1']
+    new_header.comments['CDELT1'] = header.comments['CDELT1']
     new_header['CDELT2'] = header['CDELT3']
+    new_header.comments['CDELT2'] = header.comments['CDELT3']
     new_header['CRVAL1'] = header['CRVAL1']
+    new_header.comments['CRVAL1'] = header.comments['CRVAL1']
     new_header['CRVAL2'] = header['CRVAL3']
+    new_header.comments['CRVAL2'] = header.comments['CRVAL3']
     new_header['CTYPE2'] = header['CTYPE3']
+    new_header.comments['CTYPE2'] = header.comments['CTYPE3']
     new_header['CUNIT2'] = header['CUNIT3']
+    new_header.comments['CUNIT2'] = header.comments['CUNIT3']
 
     if 'BUNIT' in new_header.keys():
         new_header.comments['BUNIT'] = 'Lat.avg brightness (pixel) unit'
