@@ -578,10 +578,12 @@ def make_lv(filename, path_to_output='.', suffix=''):
     wcs_slice.wcs.crpix[0] = header['CRPIX1']
     wcs_slice.wcs.cdelt[0] = header['CDELT1']
     wcs_slice.wcs.crval[0] = header['CRVAL1']
-    wcs_slice.wcs.ctype[0] = "GLON-CAR"
+    wcs_slice.wcs.ctype[0] = 'GLON'
     wcs_slice.wcs.cunit[0] = 'deg'
 
     new_header = wcs_slice.to_header()
+    new_header['BUNIT'] = header['BUNIT']
+    new_header.comments['BUNIT'] = 'Avg. brightness (pixel) unit'
     new_header.comments['CUNIT1'] = header.comments['CUNIT1']
     new_header.comments['CTYPE1'] = header.comments['CTYPE1']
     new_header.comments['CRPIX1'] = header.comments['CRPIX1']
