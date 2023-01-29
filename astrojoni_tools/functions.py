@@ -565,17 +565,23 @@ def make_lv(filename, path_to_output='.', suffix=''):
     pv_array = np.empty((header['NAXIS3'],header['NAXIS1']))
     wcs = WCS(header)
     wcs_slice = wcs.sub([0, WCSSUB_SPECTRAL])
+    try:
+        wcs_slice.wcs.pc[1,0] = wcs_slice.wcs.pc[0,1] = 0
+    except AttributeError:
+        pass
+
+    # Set spatial parameters
+    wcs_slice.wcs.crpix[0] = header['CRPIX1']
+    wcs_slice.wcs.cdelt[0] = header['CDELT1']
+    wcs_slice.wcs.crval[0] = header['CRVAL1']
+    wcs_slice.wcs.ctype[0] = "GLON-CAR"
+    wcs_slice.wcs.cunit[0] = 'deg'
+
     new_header = wcs_slice.to_header()
-    
-    new_header['CUNIT1'] = header['CUNIT1']
     new_header.comments['CUNIT1'] = header.comments['CUNIT1']
-    new_header['CTYPE1'] = header['CTYPE1']
     new_header.comments['CTYPE1'] = header.comments['CTYPE1']
-    new_header['CRPIX1'] = header['CRPIX1']
     new_header.comments['CRPIX1'] = header.comments['CRPIX1']
-    new_header['CDELT1'] = header['CDELT1']
     new_header.comments['CDELT1'] = header.comments['CDELT1']
-    new_header['CRVAL1'] = header['CRVAL1']
     new_header.comments['CRVAL1'] = header.comments['CRVAL1']
 
     for vel in trange(data.shape[0]):
