@@ -560,7 +560,7 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
     print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
 
 
-def make_lv(filename, path_to_output='.', suffix=''):
+def make_lv(filename, mode='avg', weights=None, path_to_output='.', suffix=''):
     data = fits.getdata(filename)
     header = fits.getheader(filename)
     
@@ -592,7 +592,11 @@ def make_lv(filename, path_to_output='.', suffix=''):
 
     for vel in trange(data.shape[0]):
         for lon in range(data.shape[2]):
-            avg = np.nanmean(data[vel,:,lon])
+            if mode=='avg':
+                avg = np.nanmean(data[vel,:,lon])
+            #TODO
+            elif mode=='weighted':
+                avg = np.nanmean(data[vel,:,lon])
             pv_array[vel,lon] = avg
 
     filename_wext = os.path.basename(filename)
