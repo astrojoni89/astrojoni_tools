@@ -490,6 +490,31 @@ def get_off_diagonal(name, offset=0):
 
 # make subcube of ppv cube
 def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_range=None, path_to_output='.', suffix=''):
+    """This function creates a subcube from an existing SpectralCube (or 2D Projection) given coordinate ranges.
+    
+    Parameters
+    ----------
+    filename : str
+        Path to file to create a subcube from.
+    cubedata : None or spectralcube.SpectralCube or spectralcube.Projection, optional
+        SpectralCube of data if data is already read in. This option avoids reading data into memory again.
+    longitudes : list
+        List of coordinate range of first world coordinate axis.
+    latitudes : list
+        List of coordinate range of second world coordinate axis.
+    velo_range : list
+        List of velocity range of spectral coordinate axis.
+    path_to_output : str, optional
+        Path to output where subcube will be saved. By default, the subcube will be saved in the working directory.
+    suffix : str, optional
+        Suffix that is appended to output filename.
+    Returns
+    -------
+    pixel_coords : list
+        List of pixel coordinates [(y0,x0),(y1,x1),...,(yn,xn)].
+    indices_np : tuple
+        Tuple of pixel indices ((y0,y1,...,yn),(x0,x1,...,xn)) to index a numpy.ndarray.
+    """
     import os
     import astropy.units as u
     from astropy.io import fits
