@@ -465,7 +465,7 @@ def get_off_diagonal(name, offset=0):
     Parameters
     ----------
     name : str
-        name of file.
+        Name of file.
     offset : int
         y-axis offset from diagonal in units of pixels.
     Returns
@@ -490,7 +490,7 @@ def get_off_diagonal(name, offset=0):
 
 # make subcube of ppv cube
 def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_range=None, path_to_output='.', suffix=''):
-    """This function creates a subcube from an existing SpectralCube (or 2D Projection) given coordinate ranges.
+    """This function creates a subcube from an existing SpectralCube (or 2D Projection) given some coordinate ranges.
     
     Parameters
     ----------
@@ -508,12 +508,6 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
         Path to output where subcube will be saved. By default, the subcube will be saved in the working directory.
     suffix : str, optional
         Suffix that is appended to output filename.
-    Returns
-    -------
-    pixel_coords : list
-        List of pixel coordinates [(y0,x0),(y1,x1),...,(yn,xn)].
-    indices_np : tuple
-        Tuple of pixel indices ((y0,y1,...,yn),(x0,x1,...,xn)) to index a numpy.ndarray.
     """
     import os
     import astropy.units as u
@@ -586,8 +580,35 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
 
 
 def make_lv(filename, mode='avg', weights=None, path_to_output='.', suffix=''):
+    """This function creates a longitude-velocity map from a datacube.
+    
+    Parameters
+    ----------
+    filename : str
+        Path to file to create a longitude-velocity map from.
+    mode : str
+        Mode to compute the value of collapsed latitude axis.
+        'avg' is the arithmetic mean along the latitude axis.
+        'max' gives the maximum value along the latitude axis.
+        'sum' gives thes sum along the latitude axis.
+        'weighted' gives a weighted arithmetic mean along the latitude axis.
+    weights : str, optional
+        Path to file containing weights. Needs to be of same shape as data of filename.
+    path_to_output : str, optional
+        Path to output where subcube will be saved. By default, the subcube will be saved in the working directory.
+    suffix : str, optional
+        Suffix that is appended to output filename.
+    """
     data = fits.getdata(filename)
     header = fits.getheader(filename)
+    if mode=='weighted':
+        if weights is None:
+            print("No weights have been given! Will compute arithmetic mean with equal weights instead.")
+            weight = np.ones_like(data)
+        else:
+            weight = fits.getdata(weights)
+            if weight.shape != data.shape:
+                raise ValueError("Shape of weights need to be equal to shape of data!")
     
     pv_array = np.empty((header['NAXIS3'],header['NAXIS1']))
     wcs = WCS(header)
@@ -608,20 +629,33 @@ def make_lv(filename, mode='avg', weights=None, path_to_output='.', suffix=''):
 
     new_header = wcs_slice.to_header()
     new_header['BUNIT'] = header['BUNIT']
-    new_header.comments['BUNIT'] = 'Avg. brightness (pixel) unit'
     new_header.comments['CUNIT1'] = header.comments['CUNIT1']
     new_header.comments['CTYPE1'] = header.comments['CTYPE1']
     new_header.comments['CRPIX1'] = header.comments['CRPIX1']
     new_header.comments['CDELT1'] = header.comments['CDELT1']
     new_header.comments['CRVAL1'] = header.comments['CRVAL1']
+    if mode=='avg':
+        new_header.comments['BUNIT'] = 'Avg. brightness (pixel) unit'
+    elif mode=='max':
+        new_header.comments['BUNIT'] = 'Maximum brightness (pixel) unit'
+    elif mode=='sum':
+        new_header.comments['BUNIT'] = 'Sum of brightness pixels'
+    elif mode=='weighted':
+        new_header.comments['BUNIT'] = 'Weighted mean of brightness (pixel) unit'
+    else:
+        raise ValueError("Unknown mode. Mode needs to be 'avg', 'max', 'sum', or 'weighted'.")
 
     for vel in trange(data.shape[0]):
         for lon in range(data.shape[2]):
             if mode=='avg':
                 avg = np.nanmean(data[vel,:,lon])
-            #TODO
+            elif mode=='max':
+                avg = np.nanmax(data[vel,:,lon])
+            elif mode=='sum':
+                avg = np.nansum(data[vel,:,lon])
             elif mode=='weighted':
-                avg = np.nanmean(data[vel,:,lon])
+                norm_weight = weight[vel,:,lon] / np.nansum(weight[vel,:,lon])
+                avg = np.nansum(norm_weight[vel,:,lon] * data[vel,:,lon])
             pv_array[vel,lon] = avg
 
     filename_wext = os.path.basename(filename)
