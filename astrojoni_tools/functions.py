@@ -599,16 +599,19 @@ def make_lv(filename, mode='avg', weights=None, path_to_output='.', suffix=''):
     suffix : str, optional
         Suffix that is appended to output filename.
     """
+    modes = {'avg': 0, 'max': 1, 'sum': 2, 'weighted': 3}
+    if mode not in modes.keys():
+        raise KeyError("\nUnknown mode. Mode needs to be one of the following: {}.".format(modes.keys()))
     data = fits.getdata(filename)
     header = fits.getheader(filename)
     if mode=='weighted':
         if weights is None:
-            print("No weights have been given! Will compute arithmetic mean with equal weights instead.")
+            print("\nNo weights have been given! Will compute arithmetic mean with equal weights instead.")
             weight = np.ones_like(data)
         else:
             weight = fits.getdata(weights)
             if weight.shape != data.shape:
-                raise ValueError("Shape of weights need to be equal to shape of data!")
+                raise ValueError("\nShape of weights need to be equal to shape of data!")
     
     pv_array = np.empty((header['NAXIS3'],header['NAXIS1']))
     wcs = WCS(header)
@@ -643,7 +646,7 @@ def make_lv(filename, mode='avg', weights=None, path_to_output='.', suffix=''):
     elif mode=='weighted':
         new_header.comments['BUNIT'] = 'Weighted mean of brightness (pixel) unit'
     else:
-        raise ValueError("Unknown mode. Mode needs to be 'avg', 'max', 'sum', or 'weighted'.")
+        pass
 
     for vel in trange(data.shape[0]):
         for lon in range(data.shape[2]):
