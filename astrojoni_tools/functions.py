@@ -658,7 +658,7 @@ def make_lv(filename, mode='avg', weights=None, path_to_output='.', suffix=''):
                 avg = np.nansum(data[vel,:,lon])
             elif mode=='weighted':
                 norm_weight = weight[vel,:,lon] / np.nansum(weight[vel,:,lon])
-                avg = np.nansum(norm_weight[vel,:,lon] * data[vel,:,lon])
+                avg = np.nansum(norm_weight * data[vel,:,lon])
             pv_array[vel,lon] = avg
 
     filename_wext = os.path.basename(filename)
