@@ -56,5 +56,5 @@ setup(name=PACKAGENAME,
     python_requires='>={}'.format(__minimum_python_version__),
     packages=find_packages(),
     include_package_data=True,
-    package_data={'': ['data/Reid2019/*.dat']},
+    package_data={'': ['data/Reid2019/*']},
 )
