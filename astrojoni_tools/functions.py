@@ -663,7 +663,8 @@ def make_lv(filename, mode='avg', weights=None, path_to_output='.', suffix=''):
 
     filename_wext = os.path.basename(filename)
     filename_base, file_extension = os.path.splitext(filename_wext)
-    newname = filename_base + '_longitude_velocity_avg_lat' + suffix + '.fits'
+    mode_suffix = '_longitude_velocity_{}'.format(mode)
+    newname = filename_base + mode_suffix + suffix + '.fits'
     pathname = os.path.join(path_to_output, newname)
 
     fits.writeto(pathname, pv_array, header=new_header, overwrite=True)
