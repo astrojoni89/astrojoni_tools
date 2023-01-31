@@ -8,4 +8,4 @@ def load_data(filename, model='Reid2019'):
     # This is a stream-like object. If you want the actual info, call
     # stream.read()
     stream = pkg_resources.resource_stream(__name__, 'data/{}/{}'.format(model,filename))
-    return Table.read(stream, format='ascii')
+    return Table.read(stream, header_start=0, data_start=1, format='ascii')
