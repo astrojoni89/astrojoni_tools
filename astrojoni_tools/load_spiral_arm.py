@@ -1,6 +1,6 @@
 import pkg_resources
 import glob
-import numpy as np
+import pandas as pd
 from astropy.table import Table, Column
 
 
@@ -8,7 +8,8 @@ def get_file_names(model='Reid2019'):
     """Load the spiral arm file names.
     """
     stream = pkg_resources.resource_stream(__name__, 'data/{}/filenames.txt'.format(model))
-    return np.loadtxt(stream)
+    df = pd.read_table(stream)
+    return df['names'].to_list()
     
     
 def load_data(filename, model='Reid2019'):
