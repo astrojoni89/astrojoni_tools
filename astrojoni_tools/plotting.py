@@ -51,6 +51,8 @@ def plot_scalebar(length, fitsfile, distance_of_source, loc='bottom right', labe
     #label depends on loc
     if unit == 'pc' or unit == 'parsec':
         ax.text(x_label, offset_label_data[1], '{} pc'.format(length), color=labelcolor, ha='center', va='top', family='serif', size=labelsize)
+    elif uni == 'au' or unit == 'AU':
+        ax.text(x_label, offset_label_data[1], '{} AU'.format(length), color=labelcolor, ha='center', va='top', family='serif', size=labelsize)
     elif unit == 'ly' or unit == 'lightyear':
         ax.text(x_label, offset_label_data[1], '{} ly'.format(length), color=labelcolor, ha='center', va='top', family='serif', size=labelsize)
     elif unit == 'Lichtjahr':
