@@ -13,6 +13,29 @@ from .functions import find_nearest, velocity_axes, pixel_to_world, pixel_circle
 
 ### SCALEBAR PLOTTING IMSHOW
 def plot_scalebar(length, fitsfile, distance_of_source, loc='bottom right', labelcolor='white', labelsize='small', offset=0.05, unit='pc', **kwargs):
+    """This function plots a scalebar onto an existing figure axis.
+    
+    Parameters
+    ----------
+    length : float
+        Length of scalebar that is plotted on the axis object. Should have the same unit as 'distance_of_source'.
+    fitsfile : str
+        Path to FITS file.
+    distance_of_source : float
+        Distance of the plotted source; should have the same unit as 'length'.
+    loc : str
+        Location of scalebar. The default is 'bottom right'.
+    labelcolor : str
+        Color of scalebar label.
+    labelsize : str or float
+        Fontsize of the label.
+    offset : float
+        Offset between scalebar an corresponding label. Given in units of axis fraction.
+    unit : str
+        Unit of scalebar label that is plotted.
+    **kwargs : str or float
+        Keyword arguments that are passed to .plot()
+    """
     loc_dict = {
         'bottom left': [0.03,0.15],
         'top left': [0.03,0.95],
