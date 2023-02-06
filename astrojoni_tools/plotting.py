@@ -178,8 +178,8 @@ def plot_spectra(fitsfiles, outfile='spectra.pdf', coordinates=None, radius=None
             for i in trange(len(coordinates)):
                 ax = fig.add_subplot(rows,cols,i+1)
                 for idx, fitsfile in enumerate(fitsfiles):
-                    pixel_array = pixel_circle_calculation(fitsfile,coordinates[i,0],coordinates[i,1],r=radius)
-                    spectrum = calculate_spectrum(fitsfile,pixel_array)
+                    pixel_array, _ = pixel_circle_calculation(fitsfile,coordinates[i,0],coordinates[i,1],radius)
+                    spectrum, _ = calculate_spectrum(fitsfile,pixel_array)
                     header = fits.getheader(fitsfile)
                     velocity = velocity_axes(fitsfile)
                     if velo_range is not None:
@@ -198,8 +198,8 @@ def plot_spectra(fitsfiles, outfile='spectra.pdf', coordinates=None, radius=None
                     header = fits.getheader(fitsfile)
                     beam = header['BMAJ']
                     radius = 1/2. * (beam*3600)
-                    pixel_array = pixel_circle_calculation(fitsfile,coordinates[i,0],coordinates[i,1],r=radius)
-                    spectrum = calculate_spectrum(fitsfile,pixel_array)
+                    pixel_array, _ = pixel_circle_calculation(fitsfile,coordinates[i,0],coordinates[i,1],radius)
+                    spectrum, _ = calculate_spectrum(fitsfile,pixel_array)
                     velocity = velocity_axes(fitsfile)
                     velo_min, velo_max = find_nearest(velocity,np.amin(velocity_range)), find_nearest(velocity,np.amax(velocity_range))
                     ax.plot(velocity[velo_min:velo_max], spectrum[velo_min:velo_max], drawstyle=draw_list[idx], color=color_list[idx], linestyle=line_list[idx])
@@ -224,7 +224,7 @@ def plot_spectra(fitsfiles, outfile='spectra.pdf', coordinates=None, radius=None
                 ax = fig.add_subplot(rows,cols,i+1)
                 for idx, fitsfile in enumerate(fitsfiles):
                     pixel_array = pixel_circle_calculation_px(fitsfile,x=xValue,y=yValue,r=radius)
-                    spectrum = calculate_spectrum(fitsfile,pixel_array)
+                    spectrum, _ = calculate_spectrum(fitsfile,pixel_array)
                     header = fits.getheader(fitsfile)
                     velocity = velocity_axes(fitsfile)
                     velo_min, velo_max = find_nearest(velocity,np.amin(velocity_range)), find_nearest(velocity,np.amax(velocity_range))
@@ -248,7 +248,7 @@ def plot_spectra(fitsfiles, outfile='spectra.pdf', coordinates=None, radius=None
                     beam = header['BMAJ']
                     radius = 1/2. * (beam*3600)
                     pixel_array = pixel_circle_calculation_px(fitsfile,x=xValue,y=yValue,r=radius)
-                    spectrum = calculate_spectrum(fitsfile,pixel_array)
+                    spectrum, _ = calculate_spectrum(fitsfile,pixel_array)
                     velocity = velocity_axes(fitsfile)
                     velo_min, velo_max = find_nearest(velocity,np.amin(velocity_range)), find_nearest(velocity,np.amax(velocity_range))
                     ax.plot(velocity[velo_min:velo_max], spectrum[velo_min:velo_max], drawstyle=draw_list[idx], color=color_list[idx], linestyle=line_list[idx])
