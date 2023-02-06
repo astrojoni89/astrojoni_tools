@@ -80,7 +80,7 @@ def calculate_spectrum(fitsfile,pixel_array):
     n=0
     idxs = []
     for i in trange(0,len(pixel_array)):
-        x_1,y_1 = pixel_array[i]
+        y_1,x_1 = pixel_array[i]
         spectrum_i = image[:,y_1,x_1]
         if any([np.isnan(spectrum_i[k]) for k in range(len(spectrum_i))]):
             print('Warning: region contains NaNs!')
