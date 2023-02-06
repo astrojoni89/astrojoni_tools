@@ -32,7 +32,7 @@ def plot_scalebar(length, fitsfile, distance_of_source, ax=None, loc='bottom rig
     labelsize : str or float
         Fontsize of the label.
     offset : float, optional
-        Offset between scalebar an corresponding label. Given in units of axis fraction.
+        Offset between scalebar and corresponding label. Given in units of axis fraction.
     unit : str
         Unit of scalebar label that is plotted.
     **kwargs
