@@ -182,7 +182,7 @@ def plot_spectra(fitsfiles, outfile='spectra.pdf', coordinates=None, radius=None
                     spectrum, _ = calculate_spectrum(fitsfile,pixel_array)
                     header = fits.getheader(fitsfile)
                     velocity = velocity_axes(fitsfile)
-                    if velo_range is not None:
+                    if velocity_range is not None:
                         velo_min, velo_max = find_nearest(velocity,np.amin(velocity_range)), find_nearest(velocity,np.amax(velocity_range))
                     else:
                         velo_min, velo_max = 0, velocity.shape[0]
@@ -201,7 +201,7 @@ def plot_spectra(fitsfiles, outfile='spectra.pdf', coordinates=None, radius=None
                     pixel_array, _ = pixel_circle_calculation(fitsfile,coordinates[i,0],coordinates[i,1],radius)
                     spectrum, _ = calculate_spectrum(fitsfile,pixel_array)
                     velocity = velocity_axes(fitsfile)
-                    if velo_range is not None:
+                    if velocity_range is not None:
                         velo_min, velo_max = find_nearest(velocity,np.amin(velocity_range)), find_nearest(velocity,np.amax(velocity_range))
                     else:
                         velo_min, velo_max = 0, velocity.shape[0]
@@ -230,7 +230,7 @@ def plot_spectra(fitsfiles, outfile='spectra.pdf', coordinates=None, radius=None
                     spectrum, _ = calculate_spectrum(fitsfile,pixel_array)
                     header = fits.getheader(fitsfile)
                     velocity = velocity_axes(fitsfile)
-                    if velo_range is not None:
+                    if velocity_range is not None:
                         velo_min, velo_max = find_nearest(velocity,np.amin(velocity_range)), find_nearest(velocity,np.amax(velocity_range))
                     else:
                         velo_min, velo_max = 0, velocity.shape[0]
@@ -256,7 +256,7 @@ def plot_spectra(fitsfiles, outfile='spectra.pdf', coordinates=None, radius=None
                     pixel_array = pixel_circle_calculation_px(fitsfile,x=xValue,y=yValue,r=radius)
                     spectrum, _ = calculate_spectrum(fitsfile,pixel_array)
                     velocity = velocity_axes(fitsfile)
-                    if velo_range is not None:
+                    if velocity_range is not None:
                         velo_min, velo_max = find_nearest(velocity,np.amin(velocity_range)), find_nearest(velocity,np.amax(velocity_range))
                     else:
                         velo_min, velo_max = 0, velocity.shape[0]
