@@ -201,7 +201,10 @@ def plot_spectra(fitsfiles, outfile='spectra.pdf', coordinates=None, radius=None
                     pixel_array, _ = pixel_circle_calculation(fitsfile,coordinates[i,0],coordinates[i,1],radius)
                     spectrum, _ = calculate_spectrum(fitsfile,pixel_array)
                     velocity = velocity_axes(fitsfile)
-                    velo_min, velo_max = find_nearest(velocity,np.amin(velocity_range)), find_nearest(velocity,np.amax(velocity_range))
+                    if velo_range is not None:
+                        velo_min, velo_max = find_nearest(velocity,np.amin(velocity_range)), find_nearest(velocity,np.amax(velocity_range))
+                    else:
+                        velo_min, velo_max = 0, velocity.shape[0]
                     ax.plot(velocity[velo_min:velo_max], spectrum[velo_min:velo_max], drawstyle=draw_list[idx], color=color_list[idx], linestyle=line_list[idx])
                 add_figure_properties(ax, header=header, fontsize=fontsize, velocity_range=velocity_range, vel_unit=vel_unit)
                 plt.annotate('Glon: {} deg\nGlat: {} deg'.format(round(coordinates[i][0],2),round(coordinates[i][1],2)), xy=(0.05, 0.85), xycoords='axes fraction', fontsize=fontsize)
@@ -227,7 +230,10 @@ def plot_spectra(fitsfiles, outfile='spectra.pdf', coordinates=None, radius=None
                     spectrum, _ = calculate_spectrum(fitsfile,pixel_array)
                     header = fits.getheader(fitsfile)
                     velocity = velocity_axes(fitsfile)
-                    velo_min, velo_max = find_nearest(velocity,np.amin(velocity_range)), find_nearest(velocity,np.amax(velocity_range))
+                    if velo_range is not None:
+                        velo_min, velo_max = find_nearest(velocity,np.amin(velocity_range)), find_nearest(velocity,np.amax(velocity_range))
+                    else:
+                        velo_min, velo_max = 0, velocity.shape[0]
                     ax.plot(velocity[velo_min:velo_max], spectrum[velo_min:velo_max], drawstyle=draw_list[idx], color=color_list[idx], linestyle=line_list[idx])
                 add_figure_properties(ax, header=header, fontsize=fontsize, velocity_range=velocity_range, vel_unit=vel_unit)
                 coordinate = pixel_to_world(fitsfiles[0],xValue,yValue)
@@ -250,7 +256,10 @@ def plot_spectra(fitsfiles, outfile='spectra.pdf', coordinates=None, radius=None
                     pixel_array = pixel_circle_calculation_px(fitsfile,x=xValue,y=yValue,r=radius)
                     spectrum, _ = calculate_spectrum(fitsfile,pixel_array)
                     velocity = velocity_axes(fitsfile)
-                    velo_min, velo_max = find_nearest(velocity,np.amin(velocity_range)), find_nearest(velocity,np.amax(velocity_range))
+                    if velo_range is not None:
+                        velo_min, velo_max = find_nearest(velocity,np.amin(velocity_range)), find_nearest(velocity,np.amax(velocity_range))
+                    else:
+                        velo_min, velo_max = 0, velocity.shape[0]
                     ax.plot(velocity[velo_min:velo_max], spectrum[velo_min:velo_max], drawstyle=draw_list[idx], color=color_list[idx], linestyle=line_list[idx])
                 add_figure_properties(ax, header=header, fontsize=fontsize, velocity_range=velocity_range, vel_unit=vel_unit)
                 coordinate = pixel_to_world(fitsfiles[0],xValue,yValue)
