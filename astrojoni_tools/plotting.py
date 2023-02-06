@@ -12,18 +12,18 @@ from .functions import find_nearest, velocity_axes, pixel_to_world, pixel_circle
 
 
 ### SCALEBAR PLOTTING IMSHOW
-def plot_scalebar(length, fitsfile, distance_of_source, ax=None, loc='bottom right', labelcolor='white', labelsize='small', offset=0.05, unit='pc', **kwargs):
+def plot_scalebar(length, wcs, distance_of_source, ax=None, loc='bottom right', labelcolor='white', labelsize='small', offset=0.05, unit='pc', **kwargs):
     """This function plots a scalebar onto an existing figure axis.
     
     Parameters
     ----------
     length : float
         Length (in units of a projected physical scale; like '1.' [AU/pc/ly]) of scalebar that is plotted on the axis object. Should have the same unit as 'distance_of_source'.
-    fitsfile : str
-        Path to FITS file.
+    wcs : str or :class:`~astropy.wcs.WCS`
+        Path to FITS file or WCS instance.
     distance_of_source : float
         Distance of the plotted source. Should have the same unit as 'length'.
-    ax : :class:`~astropy.visualization.wcsaxes.WCSAxes`
+    ax : None or :class:`~astropy.visualization.wcsaxes.WCSAxes`
         WCSAxes instance in which the scalebar is displayed. The WCS must be celestial.
     loc : str
         Location of scalebar. The default is 'bottom right'.
@@ -45,13 +45,16 @@ def plot_scalebar(length, fitsfile, distance_of_source, ax=None, loc='bottom rig
         'top right': [0.97,0.95]
     }
     
-    header = fits.getheader(fitsfile)
-    #pixel scale
-    degppx = abs(header['CDELT1']) #deg per pixel
-    distance = distance_of_source #arbitrary unit u
-    #parsec per pixel
+    if isinstance(wcs, astropy.wcs.WCS):
+        header = wcs.to_header()
+    elif isinstance(wcs, str):
+        header = fits.getheader(wcs)
+    # pixel scale
+    degppx = abs(header['CDELT1']) # deg per pixel; assuming square pixels
+    distance = distance_of_source # arbitrary unit u
+    # parsec per pixel
     pxscale = np.sin(np.radians(degppx)) * distance
-    #length of scalebar (as well in unit u)
+    # length of scalebar (as well in unit u)
     pxscalebar = int(np.around(length / pxscale,decimals=0))
     
     if ax is None:
@@ -74,7 +77,7 @@ def plot_scalebar(length, fitsfile, distance_of_source, ax=None, loc='bottom rig
     y = np.ones_like(x) * points_data[1]
     
     ax.plot(x,y,**kwargs)
-    #label depends on loc
+    # label depends on loc
     if unit == 'pc' or unit == 'parsec':
         ax.text(x_label, offset_label_data[1], '{} pc'.format(length), color=labelcolor, ha='center', va='top', family='serif', size=labelsize)
     elif unit == 'au' or unit == 'AU':
