@@ -23,6 +23,8 @@ def plot_scalebar(length, fitsfile, distance_of_source, ax=None, loc='bottom rig
         Path to FITS file.
     distance_of_source : float
         Distance of the plotted source. Should have the same unit as 'length'.
+    ax : :class:`~astropy.visualization.wcsaxes.WCSAxes`
+        WCSAxes instance in which the scalebar is displayed. The WCS must be celestial.
     loc : str
         Location of scalebar. The default is 'bottom right'.
     labelcolor : str
@@ -33,8 +35,8 @@ def plot_scalebar(length, fitsfile, distance_of_source, ax=None, loc='bottom rig
         Offset between scalebar an corresponding label. Given in units of axis fraction.
     unit : str
         Unit of scalebar label that is plotted.
-    **kwargs : str or float
-        Keyword arguments that are passed to ax.plot() of the actual scalebar.
+    **kwargs
+        Additional arguments are passed to :class:`~astropy.visualization.wcsaxes.WCSAxes.plot` of the actual scalebar.
     """
     loc_dict = {
         'bottom left': [0.03,0.15],
