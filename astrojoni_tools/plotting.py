@@ -13,7 +13,8 @@ from tqdm import trange
 from .functions import find_nearest, velocity_axes, pixel_to_world, pixel_circle_calculation, pixel_circle_calculation_px, calculate_spectrum
 
 
-### SCALEBAR PLOTTING IMSHOW
+### SCALEBAR PLOTTING IMSHOW; DEPRECATED!
+'''
 def plot_scalebar(length, wcs, distance_of_source, ax=None, loc='bottom right', labelcolor='white', labelsize='small', offset=0.05, unit='pc', **kwargs):
     """This function plots a scalebar onto an existing figure axis.
     
@@ -89,10 +90,10 @@ def plot_scalebar(length, wcs, distance_of_source, ax=None, loc='bottom right', 
         ax.text(x_label, offset_label_data[1], '{} ly'.format(length), color=labelcolor, ha='center', va='top', family='serif', size=labelsize)
     elif unit == 'Lichtjahr':
         ax.text(x_label, offset_label_data[1], '{} Lichtjahre'.format(length), color=labelcolor, ha='center', va='top', family='serif', size=labelsize)
-
+'''
     
 ### SCALEBAR PLOTTING IMSHOW
-def add_scalebar(length, wcs, distance_of_source, ax=None, loc='bottom right', frame=False, borderpad=0.4, pad=0.5, unit='pc', **kwargs):
+def add_scalebar(length, wcs, distance_of_source, ax=None, loc='lower right', frame=False, borderpad=0.4, pad=0.5, unit='pc', **kwargs):
     """This function plots a scalebar onto an existing figure axis.
     
     Parameters
@@ -107,14 +108,14 @@ def add_scalebar(length, wcs, distance_of_source, ax=None, loc='bottom right', f
         WCSAxes instance in which the scalebar is displayed. The WCS must be celestial.
     loc : str
         Location of scalebar. The default is 'bottom right'.
-    labelcolor : str
-        Color of scalebar label.
-    labelsize : str or float
-        Fontsize of the label.
-    offset : float, optional
-        Offset between scalebar and corresponding label. Given in units of axis fraction.
+    frame : bool, optional
+        Whether to display a frame behind the scale bar (default is False).
+    borderpad : float, optional
+        Border padding, in fraction of the font size. Default is 0.4.
+    pad : float, optional
+        Padding around the scale bar, in fraction of the font size. Default is 0.5.
     unit : str
-        Unit of scalebar label that is plotted.
+        Unit of scalebar label that is plotted. This label should match the unit of 'length' and 'distance_of_source'.
     **kwargs
         Additional arguments are passed to :class:`~astropy.visualization.wcsaxes.WCSAxes.plot` of the actual scalebar.
     """
@@ -134,16 +135,6 @@ def add_scalebar(length, wcs, distance_of_source, ax=None, loc='bottom right', f
     if ax is None:
         ax = plt.gca()
     axis_to_data = ax.transAxes + ax.transData.inverted()
-   
-    # label depends on loc
-    if unit == 'pc' or unit == 'parsec':
-        label = '{} pc'.format(length)
-    elif unit == 'au' or unit == 'AU':
-        label = '{} AU'.format(length)
-    elif unit == 'ly' or unit == 'lightyear':
-        label = '{} ly'.format(length)
-    elif unit == 'Lichtjahr':
-        label = '{} Lichtjahre'.format(length)
 
     scalebar = AnchoredSizeBar(
         ax.transData,
@@ -158,6 +149,7 @@ def add_scalebar(length, wcs, distance_of_source, ax=None, loc='bottom right', f
     )
 
     ax.add_artist(scalebar)
+
 
 ### PLOTTING TOOL FOR AVERAGED SPECTRA
 def styles():
