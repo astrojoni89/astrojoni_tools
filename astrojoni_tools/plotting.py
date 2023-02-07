@@ -99,7 +99,8 @@ def add_scalebar(length, wcs, distance_of_source, ax=None, loc='lower right', fr
     Parameters
     ----------
     length : int or float
-        Length (in units of a projected physical scale; like '1' [AU/pc/ly]) of scalebar that is plotted on the Axes instance. Should have the same unit as 'distance_of_source'.
+        Length of scalebar (in units of a projected physical scale; like '1' [AU/pc/ly])
+        that is plotted on the Axes instance. Should have the same unit as 'distance_of_source'.
     wcs : str or :class:`~astropy.wcs.WCS`
         Path to FITS file or WCS instance.
     distance_of_source : float
@@ -107,7 +108,10 @@ def add_scalebar(length, wcs, distance_of_source, ax=None, loc='lower right', fr
     ax : None or :class:`~astropy.visualization.wcsaxes.WCSAxes`
         WCSAxes instance in which the scalebar is displayed. The WCS must be celestial.
     loc : str or int
-        Location of scalebar. Location of the size bar. Valid locations are 'upper left', 'upper center', 'upper right', 'center left', 'center', 'center right', 'lower left', 'lower center', 'lower right' (default). For backward compatibility, numeric values are accepted as well. See the parameter loc of Legend for details.
+        Location of scalebar. Location of the size bar.
+        Valid locations are 'upper left', 'upper center', 'upper right', 'center left',
+        'center', 'center right', 'lower left', 'lower center', 'lower right' (default).
+        For backward compatibility, numeric values are accepted as well. See the parameter loc of Legend for details.
     frame : bool, optional
         Whether to display a frame behind the scalebar (default is False).
     borderpad : float, optional
@@ -117,7 +121,8 @@ def add_scalebar(length, wcs, distance_of_source, ax=None, loc='lower right', fr
     unit : str
         Unit of scalebar label that is plotted. This label should match the unit of 'length' and 'distance_of_source'.
     **kwargs
-        Additional arguments are passed to :class:`~mpl_toolkits.axes_grid1.anchored_artists.AnchoredSizeBar` of the actual scalebar.
+        Additional arguments are passed to
+        :class:`~mpl_toolkits.axes_grid1.anchored_artists.AnchoredSizeBar` of the actual scalebar.
     """
     
     if isinstance(wcs, WCS):
