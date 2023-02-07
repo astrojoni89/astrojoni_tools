@@ -134,7 +134,8 @@ def add_scalebar(length, wcs, distance_of_source, ax=None, loc='lower right', fr
     
     if ax is None:
         ax = plt.gca()
-    axis_to_data = ax.transAxes + ax.transData.inverted()
+    
+    label = '{} '.format(length) + unit
 
     scalebar = AnchoredSizeBar(
         ax.transData,
