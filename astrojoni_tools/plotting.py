@@ -3,6 +3,7 @@ import random
 import numpy as np
 
 import matplotlib.pyplot as plt
+from mpl_toolkits.axes_grid1.anchored_artists import AnchoredSizeBar
 
 from astropy.io import fits
 from astropy import units as u
