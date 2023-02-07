@@ -94,13 +94,13 @@ def plot_scalebar(length, wcs, distance_of_source, ax=None, loc='bottom right', 
     
 ### SCALEBAR PLOTTING IMSHOW
 def add_scalebar(length, wcs, distance_of_source, ax=None, loc='lower right', frame=False, borderpad=0.4, pad=0.5, unit='pc', **kwargs):
-    """This function plots a scalebar onto an existing Axes instance.
+    """This function plots a scalebar in an existing WCSAxes instance.
     
     Parameters
     ----------
     length : int or float
         Length of scalebar (in units of a projected physical scale; like '1' [AU/pc/ly])
-        that is plotted on the Axes instance. Should have the same unit as 'distance_of_source'.
+        that is plotted in the WCSAxes instance. Should have the same unit as 'distance_of_source'.
     wcs : str or :class:`~astropy.wcs.WCS`
         Path to FITS file or WCS instance.
     distance_of_source : float
@@ -108,7 +108,7 @@ def add_scalebar(length, wcs, distance_of_source, ax=None, loc='lower right', fr
     ax : None or :class:`~astropy.visualization.wcsaxes.WCSAxes`
         WCSAxes instance in which the scalebar is displayed. The WCS must be celestial.
     loc : str or int
-        Location of scalebar. Location of the size bar.
+        Location of scalebar.
         Valid locations are 'upper left', 'upper center', 'upper right', 'center left',
         'center', 'center right', 'lower left', 'lower center', 'lower right' (default).
         For backward compatibility, numeric values are accepted as well. See the parameter loc of Legend for details.
