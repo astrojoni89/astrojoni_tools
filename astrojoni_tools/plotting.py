@@ -76,7 +76,7 @@ def plot_scalebar(length, wcs, distance_of_source, ax=None, loc='bottom right', 
         x_label = points_data[0]+pxscalebar/2.
     y = np.ones_like(x) * points_data[1]
     
-    ax.plot(x,y,**kwargs)
+    ax.plot(x,y,transform=ax.get_transform('world'),**kwargs)
     # label depends on loc
     if unit == 'pc' or unit == 'parsec':
         ax.text(x_label, offset_label_data[1], '{} pc'.format(length), color=labelcolor, ha='center', va='top', family='serif', size=labelsize)
