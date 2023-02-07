@@ -126,8 +126,9 @@ def add_scalebar(length, wcs, distance_of_source, ax=None, loc='lower right', fr
         header = fits.getheader(wcs)
     # pixel scale
     degppx = abs(header['CDELT1']) # deg per pixel; assuming square pixels
-    distance = distance_of_source # arbitrary unit u
-    # parsec per pixel
+    # distance in arbitrary unit u
+    distance = distance_of_source
+    # length unit per pixel
     pxscale = np.sin(np.radians(degppx)) * distance
     # length of scalebar (as well in unit u)
     pxscalebar = int(np.around(length / pxscale,decimals=0))
