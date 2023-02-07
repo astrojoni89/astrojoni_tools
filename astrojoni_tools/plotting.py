@@ -7,6 +7,7 @@ from mpl_toolkits.axes_grid1.anchored_artists import AnchoredSizeBar
 
 from astropy.io import fits
 from astropy import units as u
+from astropy.wcs import WCS
 from tqdm import trange
 
 from .functions import find_nearest, velocity_axes, pixel_to_world, pixel_circle_calculation, pixel_circle_calculation_px, calculate_spectrum
@@ -45,7 +46,7 @@ def plot_scalebar(length, wcs, distance_of_source, ax=None, loc='bottom right', 
         'bottom right': [0.97,0.15],
         'top right': [0.97,0.95]
     }
-    from astropy.wcs import WCS
+    
     if isinstance(wcs, WCS):
         header = wcs.to_header()
     elif isinstance(wcs, str):
@@ -117,7 +118,7 @@ def add_scalebar(length, wcs, distance_of_source, ax=None, loc='bottom right', f
     **kwargs
         Additional arguments are passed to :class:`~astropy.visualization.wcsaxes.WCSAxes.plot` of the actual scalebar.
     """
-    from astropy.wcs import WCS
+    
     if isinstance(wcs, WCS):
         header = wcs.to_header()
     elif isinstance(wcs, str):
