@@ -254,18 +254,18 @@ def channel_averaged(fitsfile,velocity_start,velocity_end):
 
 
 def pixel_circle_calculation(fitsfile,xcoord,ycoord,r):
-    """This function returns both a list of pixels [(y0,x0),(y1,x1),...] and a tuple ((y0,y1,...),(x0,x1,...)) corresponding to the circle region with central coordinates xcoord, ycoord, and radius r..
+    """This function returns both a list of pixels [(y0,x0),(y1,x1),...] and a tuple ((y0,y1,...),(x0,x1,...)) corresponding to the circle region with central coordinates xcoord, ycoord, and radius r.
     
     Parameters
     ----------
     fitsfile : str
-        path to FITS file.
+        Path to FITS file.
     xcoord : numpy.ndarray or float
         x-coordinate of central pixel in units given in the header.
     ycoord : numpy.ndarray or float
         y-coordinate of central pixel in units given in the header.
     r : float
-        radius of region in units of arcseconds.
+        Radius of region in units of arcseconds.
     Returns
     -------
     pixel_coords : list
@@ -304,12 +304,25 @@ def pixel_circle_calculation(fitsfile,xcoord,ycoord,r):
 
 
 def pixel_circle_calculation_px(fitsfile,x,y,r):
-    '''
-    This function returns array of pixels corresponding to circle region with central coordinates Glon, Glat, and radius r
-    x: central pixel x
-    y: central pixel y
-    r: radius of region in arcseconds
-    '''
+    """This function returns both a list of pixels [(y0,x0),(y1,x1),...] and a tuple ((y0,y1,...),(x0,x1,...)) corresponding to the circle region with central pixels x, y, and radius r.
+    
+    Parameters
+    ----------
+    fitsfile : str
+        Path to FITS file.
+    x : numpy.ndarray or float
+        Central x pixel.
+    y : numpy.ndarray or float
+        Central y pixel.
+    r : float
+        Radius of region in units of arcseconds.
+    Returns
+    -------
+    pixel_coords : list
+        List of pixel coordinates [(y0,x0),(y1,x1),...].
+    indices_np : tuple
+        Tuple of pixel indices ((y0,y1,...),(x0,x1,...)) to index a numpy.ndarray.
+    """
     header = fits.getheader(fitsfile)
     w = WCS(fitsfile)
     delta = abs(header['CDELT1']) #in degree
@@ -325,10 +338,13 @@ def pixel_circle_calculation_px(fitsfile,x,y,r):
         for i_x in range(px_start[0]-1,px_end[0]+1):
             for i_y in range(px_start[1]-1,px_end[1]+1):
                 if np.sqrt((i_x-central_px[0])**2+(i_y-central_px[1])**2) < circle_size_px/2.:
-                    pixel_array.append((i_x,i_y))
+                    pixel_array.append((i_y,i_x))
     else:
         pixel_array.append((central_px[0],central_px[1]))
-    return pixel_array
+    
+    indices_np = tuple(zip(*pixel_coords))
+    
+    return pixel_array, indices_np
 
 
 def pixel_box_calculation(fitsfile,longitude,latitude,a,b):
