@@ -44,8 +44,8 @@ def plot_scalebar(length, wcs, distance_of_source, ax=None, loc='bottom right', 
         'bottom right': [0.97,0.15],
         'top right': [0.97,0.95]
     }
-    
-    if isinstance(wcs, astropy.wcs.WCS):
+    from astropy.wcs import WCS
+    if isinstance(wcs, WCS):
         header = wcs.to_header()
     elif isinstance(wcs, str):
         header = fits.getheader(wcs)
