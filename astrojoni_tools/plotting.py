@@ -60,7 +60,7 @@ def plot_scalebar(length, wcs, distance_of_source, ax=None, loc='bottom right', 
     if ax is None:
         ax = plt.gca()
     axis_to_data = ax.transAxes + ax.transData.inverted()
-    '''
+    
     if loc not in loc_dict:
         raise KeyError('Possible locations are {}'.format(loc_dict.keys()))
     points_axis = loc_dict[loc]
@@ -77,18 +77,72 @@ def plot_scalebar(length, wcs, distance_of_source, ax=None, loc='bottom right', 
     y = np.ones_like(x) * points_data[1]
     
     ax.plot(x,y,transform=ax.get_transform('world'),**kwargs)
-    '''
+    
     # label depends on loc
     if unit == 'pc' or unit == 'parsec':
-        # ax.text(x_label, offset_label_data[1], '{} pc'.format(length), color=labelcolor, ha='center', va='top', family='serif', size=labelsize)
+        ax.text(x_label, offset_label_data[1], '{} pc'.format(length), color=labelcolor, ha='center', va='top', family='serif', size=labelsize)
     elif unit == 'au' or unit == 'AU':
-        # ax.text(x_label, offset_label_data[1], '{} AU'.format(length), color=labelcolor, ha='center', va='top', family='serif', size=labelsize)
+        ax.text(x_label, offset_label_data[1], '{} AU'.format(length), color=labelcolor, ha='center', va='top', family='serif', size=labelsize)
     elif unit == 'ly' or unit == 'lightyear':
-        # ax.text(x_label, offset_label_data[1], '{} ly'.format(length), color=labelcolor, ha='center', va='top', family='serif', size=labelsize)
+        ax.text(x_label, offset_label_data[1], '{} ly'.format(length), color=labelcolor, ha='center', va='top', family='serif', size=labelsize)
     elif unit == 'Lichtjahr':
-        # ax.text(x_label, offset_label_data[1], '{} Lichtjahre'.format(length), color=labelcolor, ha='center', va='top', family='serif', size=labelsize)
+        ax.text(x_label, offset_label_data[1], '{} Lichtjahre'.format(length), color=labelcolor, ha='center', va='top', family='serif', size=labelsize)
 
-    label = 
+    
+### SCALEBAR PLOTTING IMSHOW
+def add_scalebar(length, wcs, distance_of_source, ax=None, loc='bottom right', frame=False, borderpad=0.4, pad=0.5, unit='pc', **kwargs):
+    """This function plots a scalebar onto an existing figure axis.
+    
+    Parameters
+    ----------
+    length : float
+        Length (in units of a projected physical scale; like '1.' [AU/pc/ly]) of scalebar that is plotted on the axis object. Should have the same unit as 'distance_of_source'.
+    wcs : str or :class:`~astropy.wcs.WCS`
+        Path to FITS file or WCS instance.
+    distance_of_source : float
+        Distance of the plotted source. Should have the same unit as 'length'.
+    ax : None or :class:`~astropy.visualization.wcsaxes.WCSAxes`
+        WCSAxes instance in which the scalebar is displayed. The WCS must be celestial.
+    loc : str
+        Location of scalebar. The default is 'bottom right'.
+    labelcolor : str
+        Color of scalebar label.
+    labelsize : str or float
+        Fontsize of the label.
+    offset : float, optional
+        Offset between scalebar and corresponding label. Given in units of axis fraction.
+    unit : str
+        Unit of scalebar label that is plotted.
+    **kwargs
+        Additional arguments are passed to :class:`~astropy.visualization.wcsaxes.WCSAxes.plot` of the actual scalebar.
+    """
+    
+    if isinstance(wcs, astropy.wcs.WCS):
+        header = wcs.to_header()
+    elif isinstance(wcs, str):
+        header = fits.getheader(wcs)
+    # pixel scale
+    degppx = abs(header['CDELT1']) # deg per pixel; assuming square pixels
+    distance = distance_of_source # arbitrary unit u
+    # parsec per pixel
+    pxscale = np.sin(np.radians(degppx)) * distance
+    # length of scalebar (as well in unit u)
+    pxscalebar = int(np.around(length / pxscale,decimals=0))
+    
+    if ax is None:
+        ax = plt.gca()
+    axis_to_data = ax.transAxes + ax.transData.inverted()
+   
+    # label depends on loc
+    if unit == 'pc' or unit == 'parsec':
+        label = '{} pc'.format(length)
+    elif unit == 'au' or unit == 'AU':
+        label = '{} AU'.format(length)
+    elif unit == 'ly' or unit == 'lightyear':
+        label = '{} ly'.format(length)
+    elif unit == 'Lichtjahr':
+        label = '{} Lichtjahre'.format(length)
+
     scalebar = AnchoredSizeBar(
         ax.transData,
         pxscalebar,
