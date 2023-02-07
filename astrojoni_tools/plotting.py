@@ -60,7 +60,7 @@ def plot_scalebar(length, wcs, distance_of_source, ax=None, loc='bottom right', 
     if ax is None:
         ax = plt.gca()
     axis_to_data = ax.transAxes + ax.transData.inverted()
-    
+    '''
     if loc not in loc_dict:
         raise KeyError('Possible locations are {}'.format(loc_dict.keys()))
     points_axis = loc_dict[loc]
@@ -77,16 +77,31 @@ def plot_scalebar(length, wcs, distance_of_source, ax=None, loc='bottom right', 
     y = np.ones_like(x) * points_data[1]
     
     ax.plot(x,y,transform=ax.get_transform('world'),**kwargs)
+    '''
     # label depends on loc
     if unit == 'pc' or unit == 'parsec':
-        ax.text(x_label, offset_label_data[1], '{} pc'.format(length), color=labelcolor, ha='center', va='top', family='serif', size=labelsize)
+        # ax.text(x_label, offset_label_data[1], '{} pc'.format(length), color=labelcolor, ha='center', va='top', family='serif', size=labelsize)
     elif unit == 'au' or unit == 'AU':
-        ax.text(x_label, offset_label_data[1], '{} AU'.format(length), color=labelcolor, ha='center', va='top', family='serif', size=labelsize)
+        # ax.text(x_label, offset_label_data[1], '{} AU'.format(length), color=labelcolor, ha='center', va='top', family='serif', size=labelsize)
     elif unit == 'ly' or unit == 'lightyear':
-        ax.text(x_label, offset_label_data[1], '{} ly'.format(length), color=labelcolor, ha='center', va='top', family='serif', size=labelsize)
+        # ax.text(x_label, offset_label_data[1], '{} ly'.format(length), color=labelcolor, ha='center', va='top', family='serif', size=labelsize)
     elif unit == 'Lichtjahr':
-        ax.text(x_label, offset_label_data[1], '{} Lichtjahre'.format(length), color=labelcolor, ha='center', va='top', family='serif', size=labelsize)
+        # ax.text(x_label, offset_label_data[1], '{} Lichtjahre'.format(length), color=labelcolor, ha='center', va='top', family='serif', size=labelsize)
 
+    label = 
+    scalebar = AnchoredSizeBar(
+        ax.transData,
+        pxscalebar,
+        label,
+        loc,
+        pad=pad,
+        borderpad=borderpad,
+        sep=5,
+        frameon=frame,
+        **kwargs,
+    )
+
+    ax.add_artist(scalebar)
 
 ### PLOTTING TOOL FOR AVERAGED SPECTRA
 def styles():
