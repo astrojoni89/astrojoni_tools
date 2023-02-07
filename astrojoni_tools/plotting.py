@@ -116,7 +116,7 @@ def add_scalebar(length, wcs, distance_of_source, ax=None, loc='bottom right', f
     **kwargs
         Additional arguments are passed to :class:`~astropy.visualization.wcsaxes.WCSAxes.plot` of the actual scalebar.
     """
-    
+    from astropy.wcs import WCS
     if isinstance(wcs, astropy.wcs.WCS):
         header = wcs.to_header()
     elif isinstance(wcs, str):
