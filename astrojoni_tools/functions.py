@@ -1125,26 +1125,8 @@ def calculateLength_from_array(filamentData,distance,pix_size):
     return length
 
 
-#calculate Galactocentric radius from distance
-def calculate_gal_radius_from_distance(distance,longitude,latitude,R_sun=8.15): # 8.15 kpc from Reid et al. (2019)
-    R_hel_x = distance * np.cos(np.radians(latitude)) * np.cos(np.radians(longitude))
-    R_hel_y = distance * np.cos(np.radians(latitude)) * np.sin(np.radians(longitude))
-    R_hel_z = distance * np.sin(np.radians(latitude))
-
-    R_sun_x = R_sun
-    R_sun_y = 0
-    R_sun_z = 0
-
-    R_gal_x = R_hel_x - R_sun_x
-    R_gal_y = R_hel_y - R_sun_y
-    R_gal_z = R_hel_z - R_sun_z
-
-    R_gal_distance = np.sqrt(R_gal_x**2 + R_gal_y**2 + R_gal_z**2)
-    return R_gal_distance
-
-
-def estimate_cont_noise(data):
-    global inner_pct, outer_pct
+def estimate_cont_noise(data, inner_pct, outer_pct):
+    #global inner_pct, outer_pct
     y_size = data.shape[0]
     x_size = data.shape[1]
     central_px_x = x_size/2.
@@ -1159,11 +1141,12 @@ def estimate_cont_noise(data):
         print('\n\033[93mRegion contains NaNs!\033[0m\nMaking region smaller now...')
         inner_pct -= 0.05
         outer_pct -= 0.05
-        return estimate_cont_noise(data)
+        return estimate_cont_noise(data, inner_pct, outer_pct)
     else:
         # estimate rms and std in that region
         std = np.std(data_in_annulus)
         rms = np.sqrt(np.mean(data_in_annulus**2))
         print('\nstd, rms = {}, {}'.format(std,rms))
+	print('\nwith inner and outer pct: {}, {}'.format(inner_pct,outer_pct))
         print('\n\033[92mJONAS IS AWESOME\033[0m')
         return std, rms
