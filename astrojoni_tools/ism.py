@@ -68,7 +68,7 @@ def t_hisa_max(p, t_on, t_off, t_cont):
     t_spin_max = t_on + t_cont - (1-p) * t_off
     return t_spin_max
 
-def calculate_gal_radius_from_distance(distance,longitude,latitude,R_sun=8.15): # 8.15 kpc from Reid et al. (2019)
+def calculate_gal_radius_from_distance(distance,longitude,latitude,R_sun=8.15):
     """This function returns the Galactocentric distance of a source
     given its distance from the sun, Galactic longitude, Galactic latitude,
     and the Galactocentric distance of the sun.
