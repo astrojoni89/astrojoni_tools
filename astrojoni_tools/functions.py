@@ -1147,6 +1147,6 @@ def estimate_cont_noise(data, inner_pct, outer_pct):
         std = np.std(data_in_annulus)
         rms = np.sqrt(np.mean(data_in_annulus**2))
         print('\nstd, rms = {}, {}'.format(std,rms))
-	print('\nwith inner and outer pct: {}, {}'.format(inner_pct,outer_pct))
+        print('\nwith inner and outer pct: {}, {}'.format(inner_pct,outer_pct))
         print('\n\033[92mJONAS IS AWESOME\033[0m')
         return std, rms
