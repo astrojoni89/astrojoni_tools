@@ -70,7 +70,7 @@ def pixel_to_world(fitsfile,x,y,ch=0):
 
 def calculate_spectrum(fitsfile,pixel_array):
     '''
-    This function returns an average spectrum
+    Calculate an average spectrum
     pixel_array: pixel indices to average
     '''
     header = fits.getheader(fitsfile)
@@ -254,7 +254,8 @@ def channel_averaged(fitsfile,velocity_start,velocity_end):
 
 
 def pixel_circle_calculation(fitsfile,xcoord,ycoord,r):
-    """This function returns both a list of pixels [(y0,x0),(y1,x1),...] and a tuple ((y0,y1,...),(x0,x1,...)) corresponding to the circle region with central coordinates xcoord, ycoord, and radius r.
+    """Extract both a list of pixels [(y0,x0),(y1,x1),...] and a tuple ((y0,y1,...),(x0,x1,...))
+    corresponding to the circle region with central coordinates xcoord, ycoord, and radius r.
     
     Parameters
     ----------
@@ -304,7 +305,8 @@ def pixel_circle_calculation(fitsfile,xcoord,ycoord,r):
 
 
 def pixel_circle_calculation_px(fitsfile,x,y,r):
-    """This function returns both a list of pixels [(y0,x0),(y1,x1),...] and a tuple ((y0,y1,...),(x0,x1,...)) corresponding to the circle region with central pixels x, y, and radius r.
+    """Extract both a list of pixels [(y0,x0),(y1,x1),...] and a tuple ((y0,y1,...),(x0,x1,...))
+    corresponding to the circle region with central pixels x, y, and radius r.
     
     Parameters
     ----------
@@ -433,7 +435,9 @@ def pixel_ellipse_calculation(central_pixel_x,central_pixel_y,a_pixel,b_pixel):
 
 #Calculate ellipse pixel annulus:
 def pixel_ellipse_annulus_calculation(center_x,center_y,x_in,x_out,y_in,y_out):
-    """This function returns both a list of pixels [(y0,x0),(y1,x1),...,(yn,xn)] and a tuple ((y0,y1,...,yn),(x0,x1,...,xn)) corresponding to the ellipse annulus region with central coordinates center_x, center_y, and inner and outer semimajor/semiminor axes x_in, x_out/ y_in, y_out (or the other way around).
+    """Extract both a list of pixels [(y0,x0),(y1,x1),...,(yn,xn)] and a tuple ((y0,y1,...,yn),(x0,x1,...,xn))
+    corresponding to the ellipse annulus region with central coordinates center_x, center_y,
+    and inner and outer semimajor/semiminor axes x_in, x_out/ y_in, y_out (or the other way around).
     
     Parameters
     ----------
@@ -476,7 +480,8 @@ def pixel_ellipse_annulus_calculation(center_x,center_y,x_in,x_out,y_in,y_out):
 
 # get all off diagonal pixels of a map
 def get_off_diagonal(name, offset=0):
-    """This function returns both a list of pixel coordinate tuples [(y0,x0),(y1,x1),...,(yn,xn)] and a tuple ((y0,y1,...,yn),(x0,x1,...,xn)) corresponding to off diagonal elements of a 2D numpy.ndarray
+    """Extract both a list of pixel coordinate tuples [(y0,x0),(y1,x1),...,(yn,xn)] and a tuple ((y0,y1,...,yn),(x0,x1,...,xn))
+    corresponding to off diagonal elements of a 2D numpy.ndarray
     
     Parameters
     ----------
@@ -506,7 +511,7 @@ def get_off_diagonal(name, offset=0):
 
 # make subcube of ppv cube
 def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_range=None, path_to_output='.', suffix=''):
-    """This function creates a subcube from an existing SpectralCube (or 2D Projection) given some coordinate ranges.
+    """Create a subcube from an existing SpectralCube (or 2D Projection) given some coordinate ranges.
     
     Parameters
     ----------
@@ -596,7 +601,7 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
 
 
 def make_lv(filename, mode='avg', weights=None, path_to_output='.', suffix=''):
-    """This function creates a longitude-velocity map from a datacube.
+    """Create a longitude-velocity map from a datacube.
     
     Parameters
     ----------
