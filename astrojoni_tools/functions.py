@@ -9,11 +9,35 @@ from .utils.wcs_utils import sanitize_wcs
 
 
 def find_nearest(array,value):
+    """Find the index of the element nearest to a given value.
+    
+    Parameters
+    ----------
+    array : numpy.ndarray
+        Input array to index.
+    value : float
+        Value of the element to find the closest index for.
+    Returns
+    -------
+    idx : int
+        Index of the element with value closest to 'value'.
+    """
     idx = (np.abs(array-value)).argmin()
     return idx
 
 
 def md_header_2d(fitsfile):
+    """Get 2D header from FITS file.
+    
+    Parameters
+    ----------
+    fitsfile : path-like object or file-like object
+        Path to FITS file to get header from.
+    Returns
+    -------
+    header_2d : :class:`~astropy.io.fits.Header`
+        Header object without third axis.
+    """
     header_2d = fits.getheader(fitsfile)
     del header_2d['NAXIS3']
     del header_2d['CRPIX3']
@@ -29,6 +53,17 @@ def md_header_2d(fitsfile):
 
 #convert axes indices to world coordinates
 def velocity_axes(name):
+    """Get velocity axis from FITS file.
+    
+    Parameters
+    ----------
+    name : path-like object or file-like object
+        Path to FITS file to get velocity axis from.
+    Returns
+    -------
+    velocity : numpy.ndarray
+        Array of velocity axis.
+    """
     header = fits.getheader(name)
     n = header['NAXIS3'] #number of channels on spectral axis
     velocity = (header['CRVAL3'] - header['CRPIX3'] * header['CDELT3']) + (np.arange(n)+1) * header['CDELT3']
@@ -36,12 +71,34 @@ def velocity_axes(name):
     return velocity
   
 def latitude_axes(name):
+    """Get latitude axis from FITS file.
+    
+    Parameters
+    ----------
+    name : path-like object or file-like object
+        Path to FITS file to get latitude axis from.
+    Returns
+    -------
+    velocity : numpy.ndarray
+        Array of latitude axis.
+    """
     header = fits.getheader(name)
     n = header['NAXIS2'] #number of pixels along latitude axis
     latitude = (header['CRVAL2'] - header['CRPIX2'] * header['CDELT2']) + (np.arange(n)+1) * header['CDELT2']
     return latitude
 
 def longitude_axes(name):
+    """Get longitude axis from FITS file.
+    
+    Parameters
+    ----------
+    name : path-like object or file-like object
+        Path to FITS file to get longitude axis from.
+    Returns
+    -------
+    velocity : numpy.ndarray
+        Array of longitude axis.
+    """
     header = fits.getheader(name)
     n = header['NAXIS1'] #number of pixels along longitude axis
     longitude = (header['CRVAL1'] - header['CRPIX1'] * header['CDELT1']) + (np.arange(n)+1) * header['CDELT1']
@@ -49,7 +106,25 @@ def longitude_axes(name):
 
 
 #convert world/pixel coords to pixel/world coords from .FITS
-def world_to_pixel(fitsfile,longtitude,latitude,velocity=0):
+def world_to_pixel(fitsfile,longtitude,latitude,velocity=0.):
+    """Convert world coordinates to pixel coordinates from a FITS file.
+    
+    Parameters
+    ----------
+    fitsfile : str
+        Path to FITS file to get coordinates from.
+    longitude : float
+        World coordinate value along the x-axis of the FITS file, e.g. longitude.
+    latitude : float
+        World coordinate value along the y-axis of the FITS file, e.g. latitude.
+    velocity : float, optional
+        Velocity value to convert (default is 0.).
+    Returns
+    -------
+    result : numpy.ndarray
+        Returns the pixel coordinates. If the input was a single array and origin,
+	a single array is returned, otherwise a tuple of arrays is returned.
+    """
     w = WCS(fitsfile)
     if w.wcs.naxis == 3:
         return w.all_world2pix(longitude, latitude, velocity, 1)
@@ -58,7 +133,25 @@ def world_to_pixel(fitsfile,longtitude,latitude,velocity=0):
     else:
         raise ValueError('Something wrong with the header.')
 
-def pixel_to_world(fitsfile,x,y,ch=0):
+def pixel_to_world(fitsfile,x,y,ch=0.):
+    """Convert pixel coordinates to world coordinates from a FITS file.
+    
+    Parameters
+    ----------
+    fitsfile : str
+        Path to FITS file to get coordinates from.
+    x : float
+        Pixel coordinate on the x-axis of the FITS file.
+    y : float
+        Pixel coordinate on the y-axis of the FITS file.
+    ch : float, optional
+        Velocity channel to convert (default is 0.).
+    Returns
+    -------
+    result : numpy.ndarray
+        Returns the world coordinates. If the input was a single array and origin,
+	a single array is returned, otherwise a tuple of arrays is returned.
+    """
     w = WCS(fitsfile)
     if w.wcs.naxis == 3:
         return w.all_pix2world(x, y, ch, 1)
@@ -517,7 +610,7 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
     ----------
     filename : str
         Path to file to create a subcube from.
-    cubedata : None or spectralcube.SpectralCube or spectralcube.Projection, optional
+    cubedata : None or :class:`~spectralcube.SpectralCube` or :class:`~spectralcube.Projection`, optional
         SpectralCube of data if data is already read in. This option avoids reading data into memory again.
     longitudes : list
         List of coordinate range of first world coordinate axis.
