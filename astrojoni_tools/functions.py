@@ -51,6 +51,33 @@ def md_header_2d(fitsfile):
     return header_2d
 
 
+def save_fits(filename_basis, suffix='_new', data, header, path_to_output='.', **kwargs):
+    """Save FITS file with given filename + suffix at a given location.
+    
+    Parameters
+    ----------
+    filename_basis : path-like object or file-like object
+        Path to FITS file to use as a basis for the new filename.
+    suffix : str, optional
+        Suffix to append to new filename. Default is '_new'.
+    data : numpy.ndarray
+        Data to save under the new filename.
+    header : :class:`~astropy.io.fits.Header`
+        Header object that is associated with 'data'.
+	 If None, a header of the appropriate type is created for the supplied data.
+    """
+    filename_wext = os.path.basename(filename_basis)
+    filename_base, file_extension = os.path.splitext(filename_wext)
+    outname = filename_base + suffix + '.fits'
+
+    if not os.path.exists(path_to_output):
+        os.makedirs(path_to_output)
+    outfile = os.path.join(path_to_output, outname)
+
+    fits.writeto(outfile, data, header=header, overwrite=True, **kwargs)
+    print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(outname, path_to_output))
+
+
 #convert axes indices to world coordinates
 def velocity_axes(name):
     """Get velocity axis from FITS file.
