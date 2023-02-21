@@ -1,7 +1,7 @@
 import numpy as np
 
 def tau_hisa(t_hisa, p, t_on, t_off, t_cont):
-    """This function returns the optical depth of HI self-absorption
+    """Compute the optical depth of HI self-absorption
     given a HISA spin temperature, background fraction, on and off brightness,
     and the continuum brightness.
     
@@ -26,7 +26,7 @@ def tau_hisa(t_hisa, p, t_on, t_off, t_cont):
     return tau_hisa
 
 def hi_coldens(t_s, tau, dv):
-    """This function returns the column density of atomic hydrogen (HI)
+    """Compute the column density of atomic hydrogen (HI)
     given a spin temperature, optical depth and velocity resolution element.
     
     Parameters
@@ -46,7 +46,7 @@ def hi_coldens(t_s, tau, dv):
     return n_HI
 
 def t_hisa_max(p, t_on, t_off, t_cont):
-    """This function returns the maximum spin temperature of HI self-absorbing gas
+    """Compute the maximum spin temperature of HI self-absorbing gas
     that would still give a solution to the optical depth computation.
     This limit is reached if the optical depth is set to infty.
     
@@ -69,7 +69,7 @@ def t_hisa_max(p, t_on, t_off, t_cont):
     return t_spin_max
 
 def calculate_gal_radius_from_distance(distance,longitude,latitude,R_sun=8.15):
-    """This function returns the Galactocentric distance of a source
+    """Compute the Galactocentric distance of a source
     given its distance from the sun, Galactic longitude, Galactic latitude,
     and the Galactocentric distance of the sun.
     
