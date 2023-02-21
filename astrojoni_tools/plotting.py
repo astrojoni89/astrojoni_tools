@@ -16,7 +16,7 @@ from .functions import find_nearest, velocity_axes, pixel_to_world, pixel_circle
 ### SCALEBAR PLOTTING IMSHOW; DEPRECATED!
 '''
 def plot_scalebar(length, wcs, distance_of_source, ax=None, loc='bottom right', labelcolor='white', labelsize='small', offset=0.05, unit='pc', **kwargs):
-    """This function plots a scalebar onto an existing figure axis.
+    """Plot a scalebar onto an existing figure axis.
     
     Parameters
     ----------
@@ -94,7 +94,7 @@ def plot_scalebar(length, wcs, distance_of_source, ax=None, loc='bottom right', 
     
 ### SCALEBAR PLOTTING IMSHOW
 def add_scalebar(length, wcs, distance_of_source, ax=None, loc='lower right', frame=False, borderpad=0.4, pad=0.5, unit='pc', **kwargs):
-    """This function plots a scalebar in an existing WCSAxes instance.
+    """Plot a scalebar in an existing WCSAxes instance.
     
     Parameters
     ----------
