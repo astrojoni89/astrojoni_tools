@@ -1,8 +1,11 @@
 import os
+import shutil
 import numpy as np
 import astropy.units as u
 from tqdm import trange
+
 from astropy.io import fits
+from astropy import constants as const
 from astropy.wcs import WCS, WCSSUB_SPECTRAL
 from spectral_cube import SpectralCube, Projection
 
@@ -887,7 +890,6 @@ def make_lv(filename, mode='avg', weights=None, path_to_output='.', suffix=''):
 
 
 def jansky_to_kelvin(frequency,theta_1,theta_2): #in units of (GHz,arcsec,arcsec)
-    from astropy import constants as const
     c = const.c
     k = const.k_B
     theta_1 = theta_1*2*np.pi/360./3600.
@@ -899,11 +901,6 @@ def jansky_to_kelvin(frequency,theta_1,theta_2): #in units of (GHz,arcsec,arcsec
 
 
 def convert_jybeam_to_kelvin(filename, path_to_output='.', suffix=''):
-    import os
-    from astropy.io import fits
-    from spectral_cube import SpectralCube, Projection
-    import astropy.units as u
-
     data = fits.open(filename) # Open the FITS file for reading
     try:
         cube = SpectralCube.read(data)  # Initiate a SpectralCube
@@ -924,13 +921,6 @@ def convert_jybeam_to_kelvin(filename, path_to_output='.', suffix=''):
 
 
 def convert_jtok_huge_dataset(filename, suffix=''):
-    import os
-    import shutil
-    from tqdm import tqdm
-    from astropy.io import fits
-    from spectral_cube import SpectralCube, Projection
-    import astropy.units as u
-
     filename_wext = os.path.basename(filename)
     filename_base, file_extension = os.path.splitext(filename_wext)
     newname = filename_base + '_unit_Tb' + suffix + '.fits'
