@@ -3,8 +3,8 @@ import shutil
 import numpy as np
 import radio_beam
 import astropy.units as u
-from tqdm import trange
 
+from tqdm import trange
 from astropy.io import fits
 from astropy import convolution
 from astropy import constants as const
