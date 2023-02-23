@@ -1,10 +1,12 @@
 import os
 import shutil
 import numpy as np
+import radio_beam
 import astropy.units as u
 from tqdm import trange
 
 from astropy.io import fits
+from astropy import convolution
 from astropy import constants as const
 from astropy.wcs import WCS, WCSSUB_SPECTRAL
 from spectral_cube import SpectralCube, Projection
@@ -948,9 +950,6 @@ def convert_jtok_huge_dataset(filename, suffix=''):
 
 
 def find_common_beam(filenames):
-    import radio_beam
-    from spectral_cube import SpectralCube, Projection
-    from astropy import units as u
     if not isinstance(filenames, list):
         raise TypeError("'filenames' needs to be a list of len=2")
     if not len(filenames)==2:
@@ -968,10 +967,6 @@ def find_common_beam(filenames):
 
 
 def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_output='.', suffix=None, allow_huge_operations=False, **kwargs): # smooth image with 2D Gaussian
-    import radio_beam
-    from spectral_cube import SpectralCube, Projection
-    from astropy import units as u
-    from astropy import convolution
     try:
         cube = SpectralCube.read(filename)
     except:
@@ -996,9 +991,6 @@ def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_ou
 
 	
 def reproject_cube(filename, template, axes='spatial', path_to_output='.', suffix=None, allow_huge_operations=False):
-    from spectral_cube import SpectralCube, Projection
-    from astropy.io import fits
-
     try:
         cube1 = SpectralCube.read(filename)
     except:
@@ -1048,8 +1040,6 @@ def smooth_1d(x,window_len=11,window='hanning'): # smooth spectrum
     output:
         the smoothed signal
     """
-    import numpy
-
     if x.ndim != 1:
         raise ValueError("smooth only accepts 1 dimension arrays.")
 
