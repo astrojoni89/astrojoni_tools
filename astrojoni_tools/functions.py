@@ -1,8 +1,10 @@
 import os
 import numpy as np
+import astropy.units as u
 from tqdm import trange
 from astropy.io import fits
 from astropy.wcs import WCS, WCSSUB_SPECTRAL
+from spectral_cube import SpectralCube, Projection
 
 from .utils.wcs_utils import sanitize_wcs
 
@@ -727,11 +729,6 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
     suffix : str, optional
         Suffix that is appended to output filename.
     """
-    import os
-    import astropy.units as u
-    from astropy.io import fits
-    from spectral_cube import SpectralCube, Projection
-
     if cubedata is None:
         data = fits.open(filename)  # Open the FITS file for reading
         try:
