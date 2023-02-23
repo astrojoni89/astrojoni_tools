@@ -189,10 +189,24 @@ def pixel_to_world(fitsfile,x,y,ch=0.):
 
 
 def calculate_spectrum(fitsfile,pixel_array):
-    '''
-    Calculate an average spectrum
-    pixel_array: pixel indices to average
-    '''
+    """Calculate an average spectrum given a p-p-v FITS cube and pixel coordinates.
+    If NaN values are present at specific coordinates, these coordinates will be ignored. 
+    
+    Parameters
+    ----------
+    fitsfile : path-like object or file-like object
+        Path to FITS file to get average spectrum from.
+    pixel_array : list
+        List of tuples containing pixel coordinates [(y0,x0),(y1,x1),...]
+	over which to average.
+    Returns
+    -------
+    spectrum_average : numpy.ndarray
+        Averaged spectrum.
+    pixel_list_without_nan_values : list
+        List of tuples containing pixel coordinates [(y0,x0),(y1,x1),...]
+	at which data contain finite values.
+    """
     header = fits.getheader(fitsfile)
     image = fits.getdata(fitsfile)
     number_of_channels = header['NAXIS3']
@@ -202,20 +216,37 @@ def calculate_spectrum(fitsfile,pixel_array):
     for i in trange(0,len(pixel_array)):
         y_1,x_1 = pixel_array[i]
         spectrum_i = image[:,y_1,x_1]
-        if any([np.isnan(spectrum_i[k]) for k in range(len(spectrum_i))]):
+        if np.any([np.isnan(spectrum_i[k]) for k in range(len(spectrum_i))]):
             print('Warning: region contains NaNs!')
             idxs.append(i)
-            spectrum_add = spectrum_add + 0
             n+=1
         else:
             spectrum_add = spectrum_add + spectrum_i
     spectrum_average = spectrum_add / (len(pixel_array)-n)
     temp_array = np.delete(pixel_array, idxs, axis=0)
-    pixel_array_without_nan_values = list(map(tuple, temp_array))
-    return spectrum_average, pixel_array_without_nan_values
+    pixel_list_without_nan_values = list(map(tuple, temp_array))
+    return spectrum_average, pixel_list_without_nan_values
 
 
-def calculate_average_value_pixelArray(fitsfile,pixel_array): #nan treatment?
+def calculate_average_value_of_map(fitsfile,pixel_array):
+    """Calculate an average value given a 2-D FITS map and pixel coordinates.
+    If NaN values are present at specific coordinates, these coordinates will be ignored. 
+    
+    Parameters
+    ----------
+    fitsfile : path-like object or file-like object
+        Path to FITS file to get average value from.
+    pixel_array : list
+        List of tuples containing pixel coordinates [(y0,x0),(y1,x1),...]
+	over which to average.
+    Returns
+    -------
+    value_average : float
+        Averaged value.
+    pixel_list_without_nan_values : list
+        List of tuples containing pixel coordinates [(y0,x0),(y1,x1),...]
+	at which data contain finite values.
+    """
     image = fits.getdata(fitsfile)
     value_add = 0
     n=0
@@ -226,18 +257,43 @@ def calculate_average_value_pixelArray(fitsfile,pixel_array): #nan treatment?
         if np.isnan(value_i):
             print('Warning: region contains NaNs!')
             idxs.append(i)
-            value_add = value_add + 0
             n+=1
         else:
             value_add = value_add + value_i
     value_average = value_add / (len(pixel_array)-n)
     temp_array = np.delete(pixel_array, idxs, axis=0)
-    pixel_array_without_nan_values = list(map(tuple, temp_array))
-    return value_average, pixel_array_without_nan_values
+    pixel_list_without_nan_values = list(map(tuple, temp_array))
+    return value_average, pixel_list_without_nan_values
  
 
 def moment_0(filename,velocity_start,velocity_end,noise=None,path_to_output='.',save_file=True,output_noise=True,suffix=''):
-    import os
+    """Calculate the zeroth moment of a p-p-v FITS cube.
+    
+    Parameters
+    ----------
+    filename : path-like object or file-like object
+        Path to FITS file.
+    velocity_start : float
+        Start velocity from which to integrate.
+    velocity_end : float
+        End velocity up to which data are integrated.
+    noise : float, optional
+        Noise value of p-p-v data. If noise is given,
+	noise of the zeroth moment will be calculated.
+    path_to_output : str, optional
+        Path to output where moment 0 map will be saved.
+	By default, the subcube will be saved in the working directory.
+    save_file : bool
+        Whether moment 0 map should be saved as a file. Default is True.
+    output_noise : bool
+        Whether moment 0 noise should be stored in a .txt file. Default is True.
+    suffix : str
+        Suffix of moment 0 filename.
+    Returns
+    -------
+    moment_0_map : numpy.ndarray
+        Zeroth moment map.
+    """
     image = fits.getdata(filename)
     headerm0 = fits.getheader(filename)
     velocity = velocity_axes(filename)
@@ -285,7 +341,28 @@ def moment_0(filename,velocity_start,velocity_end,noise=None,path_to_output='.',
 
 
 def moment_1(filename,velocity_start,velocity_end,path_to_output='.',save_file=True,suffix=''):
-    import os
+    """Calculate the intensity-weighted mean velocity (first moment) of a p-p-v FITS cube.
+    
+    Parameters
+    ----------
+    filename : path-like object or file-like object
+        Path to FITS file.
+    velocity_start : float
+        Start velocity from which to integrate.
+    velocity_end : float
+        End velocity up to which data are integrated.
+    path_to_output : str, optional
+        Path to output where moment 1 map will be saved.
+	By default, the subcube will be saved in the working directory.
+    save_file : bool
+        Whether moment 1 map should be saved as a file. Default is True.
+    suffix : str
+        Suffix of moment 1 filename.
+    Returns
+    -------
+    moment_1_map : numpy.ndarray
+        First moment map.
+    """
     image = fits.getdata(filename)
     headerm1 = fits.getheader(filename)
     velocity = velocity_axes(filename)
@@ -440,7 +517,7 @@ def pixel_circle_calculation_px(fitsfile,x,y,r):
         Radius of region in units of arcseconds.
     Returns
     -------
-    pixel_coords : list
+    pixel_array : list
         List of pixel coordinates [(y0,x0),(y1,x1),...].
     indices_np : tuple
         Tuple of pixel indices ((y0,y1,...),(x0,x1,...)) to index a numpy.ndarray.
