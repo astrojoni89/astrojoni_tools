@@ -58,20 +58,25 @@ def md_header_2d(fitsfile):
     return header_2d
 
 
-def save_fits(filename_basis, suffix='_new', data, header, path_to_output='.', **kwargs):
+def save_fits(filename_basis, data, header, suffix='_new', path_to_output='.', **kwargs):
     """Save FITS file with given filename + suffix at a given location.
     
     Parameters
     ----------
     filename_basis : path-like object or file-like object
         Path to FITS file to use as a basis for the new filename.
-    suffix : str, optional
-        Suffix to append to new filename. Default is '_new'.
     data : numpy.ndarray
         Data to save under the new filename.
     header : :class:`~astropy.io.fits.Header`
         Header object that is associated with 'data'.
 	 If None, a header of the appropriate type is created for the supplied data.
+    suffix : str, optional
+        Suffix to append to new filename. Default is '_new'.
+    path_to_output : str
+        Path to output where FITS will be saved.
+    **kwargs
+        Additional arguments are passed to
+        :func:`~astropy.io.fits.writeto()`.
     """
     filename_wext = os.path.basename(filename_basis)
     filename_base, file_extension = os.path.splitext(filename_wext)
