@@ -314,13 +314,11 @@ def moment_0(filename,velocity_start,velocity_end,noise=None,path_to_output='.',
     upper_channel = find_nearest(velocity,velocity_up)
     print('channel-range: '+str(lower_channel)+' - '+str(upper_channel))
     print('velocity-range: '+str(velocity[lower_channel])+' - '+str(velocity[upper_channel]))
-    
+    moment_0_map = np.zeros((headerm0['NAXIS2'],headerm0['NAXIS1']))
     if headerm0['NAXIS']==4:
-        moment_0_map = np.zeros((headerm0['NAXIS2'],headerm0['NAXIS1']))
         for i in range(lower_channel,upper_channel+1,1):
             moment_0_map = moment_0_map + image[0,i,:,:]
     elif headerm0['NAXIS']==3:
-        moment_0_map = np.zeros((headerm0['NAXIS2'],headerm0['NAXIS1']))
         for i in range(lower_channel,upper_channel+1,1):
             moment_0_map = moment_0_map + image[i,:,:]
     else:
@@ -330,7 +328,7 @@ def moment_0(filename,velocity_start,velocity_end,noise=None,path_to_output='.',
 
     filename_wext = os.path.basename(filename)
     filename_base, file_extension = os.path.splitext(filename_wext)
-    newname = filename_base + '_mom-0_' + str(velocity_start) + '_to_' + str(velocity_end) + 'km-s' + suffix + '.fits'
+    newname = filename_base + '_mom-0_' + str(np.around(velocity[lower_channel],decimals=1)) + '_to_' + str(np.around(velocity[upper_channel],decimals=1)) + 'km-s' + suffix + '.fits'
     pathname = os.path.join(path_to_output, newname)
 
     if save_file is True:
@@ -381,12 +379,11 @@ def moment_1(filename,velocity_start,velocity_end,path_to_output='.',save_file=T
     upper_channel = find_nearest(velocity,velocity_end)
     print('channel-range: '+str(lower_channel)+' - '+str(upper_channel))
     print('velocity-range: '+str(velocity[lower_channel])+' - '+str(velocity[upper_channel]))
+    moment_1_map = np.zeros((headerm1['NAXIS2'],headerm1['NAXIS1']))
     if headerm1['NAXIS']==4:
-        moment_1_map = np.zeros((headerm1['NAXIS2'],headerm1['NAXIS1']))
         for i in range(lower_channel,upper_channel+1,1):
             moment_1_map = moment_1_map + image[0,i,:,:] * velocity[i]
     elif headerm1['NAXIS']==3:
-        moment_1_map = np.zeros((headerm1['NAXIS2'],headerm1['NAXIS1']))
         for i in range(lower_channel,upper_channel+1,1):
             moment_1_map = moment_1_map + image[i,:,:] * velocity[i]
     else:
@@ -397,7 +394,7 @@ def moment_1(filename,velocity_start,velocity_end,path_to_output='.',save_file=T
 
     filename_wext = os.path.basename(filename)
     filename_base, file_extension = os.path.splitext(filename_wext)
-    newname = filename_base + '_mom-1_' + str(velocity_start) + '_to_' + str(velocity_end) + 'km-s' + suffix + '.fits'
+    newname = filename_base + '_mom-1_' + str(np.around(velocity[lower_channel],decimals=1)) + '_to_' + str(np.around(velocity[upper_channel],decimals=1)) + 'km-s' + suffix + '.fits'
     pathname = os.path.join(path_to_output, newname)
 
     if save_file is True:
@@ -408,7 +405,29 @@ def moment_1(filename,velocity_start,velocity_end,path_to_output='.',save_file=T
     return moment_1_map
 
 
-def add_up_channels(fitsfile,velocity_start,velocity_end):
+def add_up_channels(fitsfile,velocity_start,velocity_end,path_to_output='.',save_file=True,suffix=''):
+    """Add up slices of a p-p-v FITS cube along the velocity axis.
+    
+    Parameters
+    ----------
+    fitsfile : path-like object or file-like object
+        Path to FITS file.
+    velocity_start : float
+        Start velocity from which to sum up channels.
+    velocity_end : float
+        End velocity up to which data summed up.
+    path_to_output : str, optional
+        Path to output where moment 1 map will be saved.
+	By default, the subcube will be saved in the working directory.
+    save_file : bool
+        Whether moment 1 map should be saved as a file. Default is True.
+    suffix : str
+        Suffix of moment 1 filename.
+    Returns
+    -------
+    map_sum : numpy.ndarray
+        Map of summed up channels.
+    """
     image = fits.getdata(fitsfile)
     header = fits.getheader(fitsfile)
     velocity = velocity_axes(fitsfile)
@@ -417,22 +436,52 @@ def add_up_channels(fitsfile,velocity_start,velocity_end):
     upper_channel = find_nearest(velocity,velocity_end)
     print('channel-range: '+str(lower_channel)+' - '+str(upper_channel))
     print('velocity-range: '+str(velocity[lower_channel])+' - '+str(velocity[upper_channel]))
+    map_sum = np.zeros((header['NAXIS2'],header['NAXIS1']))
     if header['NAXIS']==4:
-        moment_0_map = np.zeros((1,header['NAXIS2'],header['NAXIS1']))
         for i in range(lower_channel,upper_channel+1,1):
-            moment_0_map = moment_0_map + image[0,i,:,:]
+            map_sum = map_sum + image[0,i,:,:]
     elif header['NAXIS']==3:
-        moment_0_map = np.zeros((1,header['NAXIS2'],header['NAXIS1']))
         for i in range(lower_channel,upper_channel+1,1):
-            moment_0_map = moment_0_map + image[i,:,:]
+            map_sum = moment_0_map + image[i,:,:]
     else:
         print('Something wrong with the header.')
-    fits.writeto(fitsfile.split('.fits')[0]+'_sum_'+str(velocity[lower_channel])+'_to_'+str(velocity[upper_channel])+'km-s.fits', moment_0_map, header=header, overwrite=True)
-    print(fitsfile.split('.fits')[0]+'_sum_'+str(velocity[lower_channel])+'_to_'+str(velocity[upper_channel])+'km-s.fits')
-    return [fitsfile.split('.fits')[0]+'_sum_'+str(velocity[lower_channel])+'_to_'+str(velocity[upper_channel])+'km-s.fits',lower_channel,upper_channel]
+
+    filename_wext = os.path.basename(filename)
+    filename_base, file_extension = os.path.splitext(filename_wext)
+    newname = filename_base + '_sum_' + str(np.around(velocity[lower_channel],decimals=1)) + '_to_' + str(np.around(velocity[upper_channel],decimals=1)) + 'km-s' + suffix + '.fits'
+    pathname = os.path.join(path_to_output, newname)
+
+    if save_file is True:
+        fits.writeto(pathname, map_sum, header=header, overwrite=True)
+        print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
+    else:
+        print(newname.split('.fits')[0])
+    return map_sum
 
 
-def channel_averaged(fitsfile,velocity_start,velocity_end):
+def channel_averaged(fitsfile,velocity_start,velocity_end,path_to_output='.',save_file=True,suffix=''):
+    """Average slices of a p-p-v FITS cube along the velocity axis.
+    
+    Parameters
+    ----------
+    fitsfile : path-like object or file-like object
+        Path to FITS file.
+    velocity_start : float
+        Start velocity from which to sum up channels.
+    velocity_end : float
+        End velocity up to which data summed up.
+    path_to_output : str, optional
+        Path to output where moment 1 map will be saved.
+	By default, the subcube will be saved in the working directory.
+    save_file : bool
+        Whether moment 1 map should be saved as a file. Default is True.
+    suffix : str
+        Suffix of moment 1 filename.
+    Returns
+    -------
+    average_map : numpy.ndarray
+        Map of averaged channels.
+    """
     image = fits.getdata(fitsfile)
     header = fits.getheader(fitsfile)
     velocity = velocity_axes(fitsfile)
@@ -441,23 +490,37 @@ def channel_averaged(fitsfile,velocity_start,velocity_end):
     upper_channel = find_nearest(velocity,velocity_end)
     print('channel-range: '+str(lower_channel)+' - '+str(upper_channel))
     print('velocity-range: '+str(velocity[lower_channel])+' - '+str(velocity[upper_channel]))
-    j=0
+    average_map = np.zeros((header['NAXIS2'],header['NAXIS1']))
+    n=0
     if header['NAXIS']==4:
-        moment_0_map = np.zeros((1,1,header['NAXIS2'],header['NAXIS1']))
         for i in range(lower_channel,upper_channel+1,1):
-            moment_0_map = moment_0_map + image[0,i,:,:]
-            j=j+1
+            if np.all(np.isnan(image[0,i,:,:])):
+                continue
+            else:
+                average_map = average_map + image[0,i,:,:]
+                n+=1
     elif header['NAXIS']==3:
-        moment_0_map = np.zeros((1,header['NAXIS2'],header['NAXIS1']))
         for i in range(lower_channel,upper_channel+1,1):
-            moment_0_map = moment_0_map + image[i,:,:]
-            j=j+1
+            if np.all(np.isnan(image[i,:,:])):
+                continue
+            else:
+                average_map = average_map + image[i,:,:]
+                n+=1
     else:
         print('Something wrong with the header...')
-    moment_0_map = moment_0_map /float(j)
-    fits.writeto(fitsfile.split('.fits')[0]+'_averaged-channel_'+str(velocity_start)+'_to_'+str(velocity_end)+'km-s.fits', moment_0_map, header=header, overwrite=True)
-    print(fitsfile.split('.fits')[0]+'_mom-0_'+str(velocity_start)+'_to_'+str(velocity_end)+'km-s.fits')
-    return [fitsfile.split('.fits')[0]+'_mom-0_'+str(velocity_start)+'_to_'+str(velocity_end)+'km-s.fits',lower_channel,upper_channel]
+    average_map = average_map / n
+
+    filename_wext = os.path.basename(filename)
+    filename_base, file_extension = os.path.splitext(filename_wext)
+    newname = filename_base + '_averaged-channel_' + str(np.around(velocity[lower_channel],decimals=1)) + '_to_' + str(np.around(velocity[upper_channel],decimals=1)) + 'km-s' + suffix + '.fits'
+    pathname = os.path.join(path_to_output, newname)
+
+    if save_file is True:
+        fits.writeto(pathname, average_map, header=header, overwrite=True)
+        print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
+    else:
+        print(newname.split('.fits')[0])
+    return average_map
 
 
 def pixel_circle_calculation(fitsfile,xcoord,ycoord,r):
