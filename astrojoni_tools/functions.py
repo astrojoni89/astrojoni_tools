@@ -46,13 +46,10 @@ def md_header_2d(fitsfile):
         Header object without third axis.
     """
     header_2d = fits.getheader(fitsfile)
-    del header_2d['NAXIS3']
-    del header_2d['CRPIX3']
-    del header_2d['CDELT3']
-    del header_2d['CUNIT3']
-    del header_2d['CTYPE3']
-    del header_2d['CRVAL3']
-
+    keys_3d = ['NAXIS3', 'CRPIX3', 'CDELT3', 'CUNIT3', 'CTYPE3', 'CRVAL3']    
+    for key in keys_3d:
+        if key in header_2d.keys():
+            del header_2d[key]
     header_2d['NAXIS'] = 2
     header_2d['WCSAXES'] = 2
     return header_2d
