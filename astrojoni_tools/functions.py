@@ -87,7 +87,6 @@ def save_fits(filename_basis, data, header, suffix='_new', path_to_output='.', *
     print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(outname, path_to_output))
 
 
-#convert axes indices to world coordinates
 def velocity_axes(name):
     """Get velocity axis from FITS file.
     
@@ -105,7 +104,8 @@ def velocity_axes(name):
     velocity = (header['CRVAL3'] - header['CRPIX3'] * header['CDELT3']) + (np.arange(n)+1) * header['CDELT3']
     velocity = velocity / 1000
     return velocity
-  
+
+
 def latitude_axes(name):
     """Get latitude axis from FITS file.
     
@@ -122,6 +122,7 @@ def latitude_axes(name):
     n = header['NAXIS2'] #number of pixels along latitude axis
     latitude = (header['CRVAL2'] - header['CRPIX2'] * header['CDELT2']) + (np.arange(n)+1) * header['CDELT2']
     return latitude
+
 
 def longitude_axes(name):
     """Get longitude axis from FITS file.
@@ -141,7 +142,6 @@ def longitude_axes(name):
     return longitude
 
 
-#convert world/pixel coords to pixel/world coords from .FITS
 def world_to_pixel(fitsfile,longtitude,latitude,velocity=0.):
     """Convert world coordinates to pixel coordinates from a FITS file.
     
@@ -168,6 +168,7 @@ def world_to_pixel(fitsfile,longtitude,latitude,velocity=0.):
         return w.all_world2pix(longitude, latitude, 1)
     else:
         raise ValueError('Something wrong with the header.')
+
 
 def pixel_to_world(fitsfile,x,y,ch=0.):
     """Convert pixel coordinates to world coordinates from a FITS file.
@@ -684,7 +685,6 @@ def pixel_ellipse_annulus_calculation(center_x,center_y,x_in,x_out,y_in,y_out):
     return pixel_coords, indices_np
 
 
-# get all off diagonal pixels of a map
 def get_off_diagonal(name, offset=0):
     """Extract both a list of pixel coordinate tuples [(y0,x0),(y1,x1),...,(yn,xn)] and a tuple ((y0,y1,...,yn),(x0,x1,...,xn))
     corresponding to off diagonal elements of a 2D numpy.ndarray
@@ -715,7 +715,6 @@ def get_off_diagonal(name, offset=0):
     return pixel_coords, indices_np
 
 
-# make subcube of ppv cube
 def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_range=None, path_to_output='.', suffix=''):
     """Create a subcube from an existing SpectralCube (or 2D Projection) given some coordinate ranges.
     
