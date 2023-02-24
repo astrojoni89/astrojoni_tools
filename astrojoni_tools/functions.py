@@ -16,7 +16,7 @@ from .utils.wcs_utils import sanitize_wcs
 
 
 def find_nearest(array,value):
-    """Find the index of the element nearest to a given value.
+    """Find the index of an element in an array nearest to a given value.
     
     Parameters
     ----------
