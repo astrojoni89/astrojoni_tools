@@ -994,7 +994,6 @@ def convert_jtok_huge_dataset(filename, suffix=''):
     data = fits.open(filename) # Open the FITS file for reading
     try:
         cube = SpectralCube.read(data)  # Initiate a SpectralCube
-        data.close()
         jtok_factors = cube.beam.jtok(cube.with_spectral_unit(u.GHz).spectral_axis)
         shutil.copy(filename, newname)
         outfh = fits.open(newname, mode='update')
@@ -1009,10 +1008,10 @@ def convert_jtok_huge_dataset(filename, suffix=''):
         print("\n\033[92mSAVED FILE:\033[0m '{}'".format(newname))
     except:
         cube = Projection.from_hdu(data) # as a fallback if fits is a 2d image
-        data.close()
         kcube = cube.to(u.K)
         kcube.write(newname, format='fits', overwrite=True)
         print("\n\033[92mSAVED FILE:\033[0m '{}'".format(newname))
+    data.close()
 
 
 def find_common_beam(filenames):
