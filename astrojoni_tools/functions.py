@@ -446,7 +446,7 @@ def add_up_channels(fitsfile,velocity_start,velocity_end,path_to_output='.',save
     else:
         print('Something wrong with the header.')
 
-    filename_wext = os.path.basename(filename)
+    filename_wext = os.path.basename(fitsfile)
     filename_base, file_extension = os.path.splitext(filename_wext)
     newname = filename_base + '_sum_' + str(np.around(velocity[lower_channel],decimals=1)) + '_to_' + str(np.around(velocity[upper_channel],decimals=1)) + 'km-s' + suffix + '.fits'
     pathname = os.path.join(path_to_output, newname)
