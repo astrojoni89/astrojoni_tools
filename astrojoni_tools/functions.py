@@ -442,7 +442,7 @@ def add_up_channels(fitsfile,velocity_start,velocity_end,path_to_output='.',save
             map_sum = map_sum + image[0,i,:,:]
     elif header['NAXIS']==3:
         for i in range(lower_channel,upper_channel+1,1):
-            map_sum = moment_0_map + image[i,:,:]
+            map_sum = map_sum + image[i,:,:]
     else:
         print('Something wrong with the header.')
 
