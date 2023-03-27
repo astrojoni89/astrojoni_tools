@@ -1,4 +1,6 @@
 import numpy as np
+from astropy import constants as const
+
 
 def tau_hisa(t_hisa, p, t_on, t_off, t_cont):
     """Compute the optical depth of HI self-absorption
@@ -104,3 +106,23 @@ def calculate_gal_radius_from_distance(distance,longitude,latitude,R_sun=8.15):
     R_gal_distance = np.sqrt(R_gal_x**2 + R_gal_y**2 + R_gal_z**2)
     return R_gal_distance
 
+def thermal_linewidth(t_kin, mu=1.27):
+    """Compute the thermal linewidth of a chemical species.
+    
+    Parameters
+    ----------
+    t_kin : float or numpy.ndarray
+        Gas kinetic temperature [Kelvin].
+    mu : float or numpy.ndarray
+        Mean molecular weight. Default is '1.27' [atomic hydrogen].
+        Another prominent example is: '2.34' [carbon monoxide], 
+    Returns
+    -------
+    thermal_lw : float or numpy.ndarray
+        The thermal linewidth of the gas given in units of sigma.
+        To convert to FWHM: thermal_lw * np.sqrt(8*np.log(2)).
+    """
+    kB = const.k_B
+    mp = const.u
+    thermal_lw = np.sqrt((kB* t_kin)/(mu*mp)) /1000
+    return thermal_lw
