@@ -125,4 +125,4 @@ def thermal_linewidth(t_kin, mu=1.27):
     kB = const.k_B
     mp = const.u
     thermal_lw = np.sqrt((kB* t_kin)/(mu*mp)) /1000
-    return thermal_lw
+    return thermal_lw.value
