@@ -119,7 +119,7 @@ def thermal_linewidth(t_kin, mu=1.27):
     Returns
     -------
     thermal_lw : float or numpy.ndarray
-        The thermal linewidth of the gas given in units of sigma.
+        The thermal linewidth of the gas given in units of sigma [km/s].
         To convert to FWHM: thermal_lw * np.sqrt(8*np.log(2)).
     """
     kB = const.k_B
