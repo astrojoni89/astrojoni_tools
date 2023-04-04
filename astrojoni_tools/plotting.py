@@ -241,15 +241,17 @@ def plot_spectra(fitsfiles, outfile='spectra.pdf', coordinates=None, radius=None
     color_list, draw_list, line_list = styles()
     if color_styles is not None:
         if len(color_styles)<len(fitsfiles):
-            print('\nNumber of color styles is less than number of spectra to plot. Fallback to default...')
+            print('\nNumber of color styles is less than number of spectra to plot. Fallback to default color styles...')
         else:
             color_list = color_styles
-    if len(draw_styles)<len(fitsfiles):
-            print('\nNumber of draw styles is less than number of spectra to plot. Fallback to default...')
+    if draw_styles is not None:
+        if len(draw_styles)<len(fitsfiles):
+            print('\nNumber of draw styles is less than number of spectra to plot. Fallback to default draw styles...')
         else:
             draw_list = draw_styles
-    if len(line_styles)<len(fitsfiles):
-            print('\nNumber of line styles is less than number of spectra to plot. Fallback to default...')
+    if line_styles is not None:
+        if len(line_styles)<len(fitsfiles):
+            print('\nNumber of line styles is less than number of spectra to plot. Fallback to default line styles...')
         else:
             line_list = line_styles
     
