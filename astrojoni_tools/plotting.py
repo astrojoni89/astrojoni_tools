@@ -226,7 +226,9 @@ def scale_fontsize(rowsize):
     return fontsize
 
 
-def plot_spectra(fitsfiles, outfile='spectra.pdf', coordinates=None, radius=None, path_to_plots='.', n_spectra=9, rowsize=4., rowbreak=10, dpi=72, velocity_range=None, vel_unit=u.km/u.s):
+def plot_spectra(fitsfiles, outfile='spectra.pdf', coordinates=None, radius=None, path_to_plots='.',
+                 n_spectra=9, rowsize=4., rowbreak=10, dpi=72, velocity_range=None, vel_unit=u.km/u.s,
+                color_styles=None, draw_styles=None, line_styles=None):
     '''
     fitsfiles: list of fitsfiles to plot spectra from
     coordinates: array of central coordinates [[Glon, Glat]] to plot spectra from
@@ -237,6 +239,19 @@ def plot_spectra(fitsfiles, outfile='spectra.pdf', coordinates=None, radius=None
     
     fontsize = scale_fontsize(rowsize)
     color_list, draw_list, line_list = styles()
+    if color_styles is not None:
+        if len(color_styles)<len(fitsfiles):
+            print('\nNumber of color styles is less than number of spectra to plot. Fallback to default...')
+        else:
+            color_list = color_styles
+    if len(draw_styles)<len(fitsfiles):
+            print('\nNumber of draw styles is less than number of spectra to plot. Fallback to default...')
+        else:
+            draw_list = draw_styles
+    if len(line_styles)<len(fitsfiles):
+            print('\nNumber of line styles is less than number of spectra to plot. Fallback to default...')
+        else:
+            line_list = line_styles
     
     if coordinates is not None:
         n_spectra = len(coordinates)
