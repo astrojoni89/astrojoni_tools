@@ -115,7 +115,7 @@ def thermal_linewidth(t_kin, mu=1.27):
         Gas kinetic temperature [Kelvin].
     mu : float or numpy.ndarray
         Mean molecular weight. Default is '1.27' [atomic hydrogen].
-        Another prominent example is: '2.34' [carbon monoxide], 
+        Another prominent example is: '2.34' [carbon monoxide]. 
     Returns
     -------
     thermal_lw : float or numpy.ndarray
@@ -126,3 +126,28 @@ def thermal_linewidth(t_kin, mu=1.27):
     mp = const.u
     thermal_lw = np.sqrt((kB* t_kin)/(mu*mp)) /1000
     return thermal_lw.value
+
+def radial_velocity(l,r,rotvel=220.,v0=220.,r0=8.5):
+    """Compute the radial velocity of circular motion around the Galactic center.
+    
+    Parameters
+    ----------
+    l : float or numpy.ndarray
+        Galactic longitude in degrees.
+    r : float
+        Galactocentric distance of source in units of kiloparsec. 
+    rotcurve : float
+        Value of rotation velocity at distance r.
+    v0 : float
+        Rotational velocity of the sun in units of km/s. Default is v0=220.
+    r0 : float
+        Galactocentric distance of sun in units of kiloparsec. Default is r0=8.5.
+    Returns
+    -------
+    vrad : float or numpy.ndarray
+        The radial velocity given the rotation velocity at distance r and longitude l.
+    """
+    r = r*3.09e16
+    r0 = r0*3.09e16
+    vrad = v0*r0* ((rotvel/(v0*r)) - 1/r0) * np.sin(np.radians(l))
+    return vrad
