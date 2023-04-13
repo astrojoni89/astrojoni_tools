@@ -151,3 +151,29 @@ def radial_velocity(l,r,rotvel=220.,v0=220.,r0=8.5):
     r0 = r0*3.09e16
     vrad = v0*r0* ((rotvel/(v0*r)) - 1/r0) * np.sin(np.radians(l))
     return vrad
+
+def rotation_curve(r,r0=8.5,a1=1.00767,a2=0.0394,a3=0.00712):
+    """Compute the rotational velocity at distance r from the Galactic center.
+    This rotational velocity is computed according to the Brand&Blitz (1993) rotation curve.
+    
+    Parameters
+    ----------
+    r : float
+        Galactocentric distance of source in units of kiloparsec. 
+    r0 : float
+        Galactocentric distance of sun in units of kiloparsec. Default is r0=8.5.
+    a1 : float
+        Fit parameter of the Brand&Blitz rotation curve.
+    a2 : float
+        Fit parameter of the Brand&Blitz rotation curve.
+    a3 : float
+        Fit parameter of the Brand&Blitz rotation curve.
+    Returns
+    -------
+    v_over_v0 : float
+        The rotational velocity at distance r from the Galactic center in units of the sun's rotational velocity, which is 220 km/s in this model.
+    """
+    r = r*3.09e16
+    r0 = r0*3.09e16
+    v_over_v0 = a1 * (r/r0)**a2 + a3
+    return v_over_v0
