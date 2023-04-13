@@ -136,8 +136,9 @@ def radial_velocity(l,r,rotvel=220.,v0=220.,r0=8.5):
         Galactic longitude in degrees.
     r : float
         Galactocentric distance of source in units of kiloparsec. 
-    rotcurve : float
-        Value of rotation velocity at distance r.
+    rotvel : float or numpy.ndarray
+        Value of rotation velocity at distance r in units of sun's orbital velocity v0
+        (absolute value would be rotvel*v0).
     v0 : float
         Rotational velocity of the sun in units of km/s. Default is v0=220.
     r0 : float
@@ -149,7 +150,7 @@ def radial_velocity(l,r,rotvel=220.,v0=220.,r0=8.5):
     """
     r = r*3.09e16
     r0 = r0*3.09e16
-    vrad = v0*r0* ((rotvel/(v0*r)) - 1/r0) * np.sin(np.radians(l))
+    vrad = v0*r0* ((rotvel/r) - 1/r0) * np.sin(np.radians(l))
     return vrad
 
 def rotation_curve(r,r0=8.5,a1=1.00767,a2=0.0394,a3=0.00712):
