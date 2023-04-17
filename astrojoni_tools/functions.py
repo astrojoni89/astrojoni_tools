@@ -1,41 +1,42 @@
 import os
 import shutil
+from pathlib import Path
+from typing import Union, Optional, List, Tuple
+
 import numpy as np
 import radio_beam
 import astropy.units as u
 
-from tqdm import tqdm, trange
 from astropy.io import fits
-from astropy import convolution
 from astropy import constants as const
 from astropy.wcs import WCS, WCSSUB_SPECTRAL
 from spectral_cube import SpectralCube, Projection
+from tqdm import tqdm, trange
 
 from .utils.wcs_utils import sanitize_wcs
 
 
-
-def find_nearest(array,value):
+def find_nearest(array: np.ndarray, value: float) -> int:
     """Find the index of an element in an array nearest to a given value.
-    
+
     Parameters
     ----------
     array : numpy.ndarray
         Input array to index.
     value : float
         Value of the element to find the closest index for.
+
     Returns
     -------
     idx : int
         Index of the element with value closest to 'value'.
     """
-    idx = (np.abs(array-value)).argmin()
-    return idx
+    return np.abs(array-value).argmin()
 
 
 def md_header_2d(fitsfile):
     """Get 2D header from FITS file.
-    
+
     Parameters
     ----------
     fitsfile : path-like object or file-like object
@@ -46,7 +47,7 @@ def md_header_2d(fitsfile):
         Header object without third axis.
     """
     header_2d = fits.getheader(fitsfile)
-    keys_3d = ['NAXIS3', 'CRPIX3', 'CDELT3', 'CUNIT3', 'CTYPE3', 'CRVAL3']    
+    keys_3d = ['NAXIS3', 'CRPIX3', 'CDELT3', 'CUNIT3', 'CTYPE3', 'CRVAL3']
     for key in keys_3d:
         if key in header_2d.keys():
             del header_2d[key]
@@ -55,18 +56,20 @@ def md_header_2d(fitsfile):
     return header_2d
 
 
-def save_fits(filename_basis, data, header, suffix='_new', path_to_output='.', **kwargs):
+def save_fits(filename_basis: Path, data: np.ndarray,
+              header, suffix: Optional[str] = '_new',
+              path_to_output: Optional[str] = '.', **kwargs):
     """Save FITS file with given filename + suffix at a given location.
-    
+
     Parameters
     ----------
-    filename_basis : path-like object or file-like object
+    filename_basis : Path
         Path to FITS file to use as a basis for the new filename.
     data : numpy.ndarray
         Data to save under the new filename.
     header : :class:`~astropy.io.fits.Header`
         Header object that is associated with 'data'.
-	 If None, a header of the appropriate type is created for the supplied data.
+	    If None, a header of the appropriate type is created for the supplied data.
     suffix : str, optional
         Suffix to append to new filename. Default is '_new'.
     path_to_output : str
@@ -87,13 +90,14 @@ def save_fits(filename_basis, data, header, suffix='_new', path_to_output='.', *
     print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(outname, path_to_output))
 
 
-def velocity_axes(name):
+def velocity_axes(name: Path) -> np.ndarray:
     """Get velocity axis from FITS file.
-    
+
     Parameters
     ----------
-    name : path-like object or file-like object
+    name : Path
         Path to FITS file to get velocity axis from.
+
     Returns
     -------
     velocity : numpy.ndarray
@@ -106,13 +110,14 @@ def velocity_axes(name):
     return velocity
 
 
-def latitude_axes(name):
+def latitude_axes(name: Path) -> np.ndarray:
     """Get latitude axis from FITS file.
     
     Parameters
     ----------
-    name : path-like object or file-like object
+    name : Path
         Path to FITS file to get latitude axis from.
+
     Returns
     -------
     velocity : numpy.ndarray
@@ -120,17 +125,17 @@ def latitude_axes(name):
     """
     header = fits.getheader(name)
     n = header['NAXIS2'] #number of pixels along latitude axis
-    latitude = (header['CRVAL2'] - header['CRPIX2'] * header['CDELT2']) + (np.arange(n)+1) * header['CDELT2']
-    return latitude
+    return (header['CRVAL2'] - header['CRPIX2'] * header['CDELT2']) + (np.arange(n)+1) * header['CDELT2']
 
 
-def longitude_axes(name):
+def longitude_axes(name: Path) -> np.ndarray:
     """Get longitude axis from FITS file.
     
     Parameters
     ----------
-    name : path-like object or file-like object
+    name : Path
         Path to FITS file to get longitude axis from.
+
     Returns
     -------
     velocity : numpy.ndarray
@@ -138,16 +143,16 @@ def longitude_axes(name):
     """
     header = fits.getheader(name)
     n = header['NAXIS1'] #number of pixels along longitude axis
-    longitude = (header['CRVAL1'] - header['CRPIX1'] * header['CDELT1']) + (np.arange(n)+1) * header['CDELT1']
-    return longitude
+    return (header['CRVAL1'] - header['CRPIX1'] * header['CDELT1']) + (np.arange(n)+1) * header['CDELT1']
 
 
-def world_to_pixel(fitsfile,longtitude,latitude,velocity=0.):
+def world_to_pixel(fitsfile: Path, longitude: float,
+                   latitude: float, velocity: Optional[float] = 0.) -> np.ndarray:
     """Convert world coordinates to pixel coordinates from a FITS file.
     
     Parameters
     ----------
-    fitsfile : str
+    fitsfile : Path
         Path to FITS file to get coordinates from.
     longitude : float
         World coordinate value along the x-axis of the FITS file, e.g. longitude.
@@ -155,6 +160,7 @@ def world_to_pixel(fitsfile,longtitude,latitude,velocity=0.):
         World coordinate value along the y-axis of the FITS file, e.g. latitude.
     velocity : float, optional
         Velocity value to convert (default is 0.).
+
     Returns
     -------
     result : numpy.ndarray
@@ -170,7 +176,8 @@ def world_to_pixel(fitsfile,longtitude,latitude,velocity=0.):
         raise ValueError('Something wrong with the header.')
 
 
-def pixel_to_world(fitsfile,x,y,ch=0.):
+def pixel_to_world(fitsfile: Path, x: float,
+                   y: float, ch: Optional[float] = 0.):
     """Convert pixel coordinates to world coordinates from a FITS file.
     
     Parameters
@@ -198,22 +205,23 @@ def pixel_to_world(fitsfile,x,y,ch=0.):
         raise ValueError('Something wrong with the header.')
 
 
-def calculate_spectrum(fitsfile,pixel_array):
+def calculate_spectrum(fitsfile: Path, pixel_array: List) -> Tuple[np.ndarray, List]:
     """Calculate an average spectrum given a p-p-v FITS cube and pixel coordinates.
     If NaN values are present at specific coordinates, these coordinates will be ignored. 
     
     Parameters
     ----------
-    fitsfile : path-like object or file-like object
+    fitsfile : Path
         Path to FITS file to get average spectrum from.
-    pixel_array : list
+    pixel_array : List
         List of tuples containing pixel coordinates [(y0,x0),(y1,x1),...]
-	over which to average.
+	    over which to average.
+
     Returns
     -------
     spectrum_average : numpy.ndarray
         Averaged spectrum.
-    pixel_list_without_nan_values : list
+    pixel_list_without_nan_values : List
         List of tuples containing pixel coordinates [(y0,x0),(y1,x1),...]
 	at which data contain finite values.
     """
@@ -238,7 +246,7 @@ def calculate_spectrum(fitsfile,pixel_array):
     return spectrum_average, pixel_list_without_nan_values
 
 
-def calculate_average_value_of_map(fitsfile,pixel_array):
+def calculate_average_value_of_map(fitsfile: Path, pixel_array: List) -> Tuple[float, List]:
     """Calculate an average value given a 2-D FITS map and pixel coordinates.
     If NaN values are present at specific coordinates, these coordinates will be ignored. 
     
@@ -248,7 +256,8 @@ def calculate_average_value_of_map(fitsfile,pixel_array):
         Path to FITS file to get average value from.
     pixel_array : list
         List of tuples containing pixel coordinates [(y0,x0),(y1,x1),...]
-	over which to average.
+	    over which to average.
+
     Returns
     -------
     value_average : float
@@ -274,14 +283,19 @@ def calculate_average_value_of_map(fitsfile,pixel_array):
     temp_array = np.delete(pixel_array, idxs, axis=0)
     pixel_list_without_nan_values = list(map(tuple, temp_array))
     return value_average, pixel_list_without_nan_values
- 
 
-def moment_0(filename,velocity_start,velocity_end,noise=None,path_to_output='.',save_file=True,output_noise=True,suffix=''):
+
+def moment_0(filename: Path, velocity_start: float, velocity_end: float,
+             noise: Optional[float] = None,
+             path_to_output: Optional[str] = '.',
+             save_file: Optional[bool] = True,
+             output_noise: Optional[bool] = True,
+             suffix: Optional[str] = ''):
     """Calculate the zeroth moment of a p-p-v FITS cube.
     
     Parameters
     ----------
-    filename : path-like object or file-like object
+    filename : Path
         Path to FITS file.
     velocity_start : float
         Start velocity from which to integrate.
@@ -289,10 +303,10 @@ def moment_0(filename,velocity_start,velocity_end,noise=None,path_to_output='.',
         End velocity up to which data are integrated.
     noise : float, optional
         Noise value of p-p-v data. If noise is given,
-	noise of the zeroth moment will be calculated.
+	    noise of the zeroth moment will be calculated.
     path_to_output : str, optional
         Path to output where moment 0 map will be saved.
-	By default, the subcube will be saved in the working directory.
+	    By default, the subcube will be saved in the working directory.
     save_file : bool
         Whether moment 0 map should be saved as a file. Default is True.
     output_noise : bool
@@ -348,12 +362,17 @@ def moment_0(filename,velocity_start,velocity_end,noise=None,path_to_output='.',
     return moment_0_map
 
 
-def moment_1(filename,velocity_start,velocity_end,path_to_output='.',save_file=True,suffix=''):
+def moment_1(filename: Path,
+             velocity_start: float,
+             velocity_end: float,
+             path_to_output: Optional[str] = '.',
+             save_file: Optional[bool] = True,
+             suffix: Optional[str] = ''):
     """Calculate the intensity-weighted mean velocity (first moment) of a p-p-v FITS cube.
     
     Parameters
     ----------
-    filename : path-like object or file-like object
+    filename : Path
         Path to FITS file.
     velocity_start : float
         Start velocity from which to integrate.
@@ -361,10 +380,10 @@ def moment_1(filename,velocity_start,velocity_end,path_to_output='.',save_file=T
         End velocity up to which data are integrated.
     path_to_output : str, optional
         Path to output where moment 1 map will be saved.
-	By default, the subcube will be saved in the working directory.
+	    By default, the subcube will be saved in the working directory.
     save_file : bool
         Whether moment 1 map should be saved as a file. Default is True.
-    suffix : str
+    suffix : str, optional
         Suffix of moment 1 filename.
     Returns
     -------
@@ -375,25 +394,25 @@ def moment_1(filename,velocity_start,velocity_end,path_to_output='.',save_file=T
     headerm1 = fits.getheader(filename)
     velocity = velocity_axes(filename)
     velocity = velocity.round(decimals=4)
-    lower_channel = find_nearest(velocity,velocity_start)
-    upper_channel = find_nearest(velocity,velocity_end)
+    lower_channel = find_nearest(velocity, velocity_start)
+    upper_channel = find_nearest(velocity, velocity_end)
     print('channel-range: '+str(lower_channel)+' - '+str(upper_channel))
     print('velocity-range: '+str(velocity[lower_channel])+' - '+str(velocity[upper_channel]))
-    moment_1_map = np.zeros((headerm1['NAXIS2'],headerm1['NAXIS1']))
-    if headerm1['NAXIS']==4:
-        for i in range(lower_channel,upper_channel+1,1):
-            moment_1_map = moment_1_map + image[0,i,:,:] * velocity[i]
-    elif headerm1['NAXIS']==3:
-        for i in range(lower_channel,upper_channel+1,1):
-            moment_1_map = moment_1_map + image[i,:,:] * velocity[i]
+    moment_1_map = np.zeros((headerm1['NAXIS2'], headerm1['NAXIS1']))
+    if headerm1['NAXIS'] == 4:
+        for i in range(lower_channel, upper_channel+1, 1):
+            moment_1_map = moment_1_map + image[0, i, :, :] * velocity[i]
+    elif headerm1['NAXIS'] == 3:
+        for i in range(lower_channel, upper_channel+1, 1):
+            moment_1_map = moment_1_map + image[i, :, :] * velocity[i]
     else:
         print('Something wrong with the header.')
-    moment_0_map = moment_0(fitsfile,velocity_start,velocity_end,save_file=False)
+    moment_0_map = moment_0(filename, velocity_start, velocity_end, save_file=False)
     moment_1_map = (moment_1_map * headerm1['CDELT3']/1000) / moment_0_map
     headerm1['BUNIT'] = 'KM/S'
 
     filename_wext = os.path.basename(filename)
-    filename_base, file_extension = os.path.splitext(filename_wext)
+    filename_base, _ = os.path.splitext(filename_wext)
     newname = filename_base + '_mom-1_' + str(np.around(velocity[lower_channel],decimals=1)) + '_to_' + str(np.around(velocity[upper_channel],decimals=1)) + 'km-s' + suffix + '.fits'
     pathname = os.path.join(path_to_output, newname)
 
@@ -405,12 +424,16 @@ def moment_1(filename,velocity_start,velocity_end,path_to_output='.',save_file=T
     return moment_1_map
 
 
-def add_up_channels(fitsfile,velocity_start,velocity_end,path_to_output='.',save_file=True,suffix=''):
+def add_up_channels(fitsfile: Path, velocity_start: float,
+                    velocity_end: float,
+                    path_to_output: Optional[str] = '.',
+                    save_file: Optional[bool] = True,
+                    suffix: Optional[str] = '') -> np.ndarray:
     """Add up slices of a p-p-v FITS cube along the velocity axis.
     
     Parameters
     ----------
-    fitsfile : path-like object or file-like object
+    fitsfile : Path
         Path to FITS file.
     velocity_start : float
         Start velocity from which to sum up channels.
@@ -418,10 +441,10 @@ def add_up_channels(fitsfile,velocity_start,velocity_end,path_to_output='.',save
         End velocity up to which data summed up.
     path_to_output : str, optional
         Path to output where moment 1 map will be saved.
-	By default, the subcube will be saved in the working directory.
-    save_file : bool
+	    By default, the subcube will be saved in the working directory.
+    save_file : bool, optional
         Whether moment 1 map should be saved as a file. Default is True.
-    suffix : str
+    suffix : str, optional
         Suffix of moment 1 filename.
     Returns
     -------
@@ -432,22 +455,22 @@ def add_up_channels(fitsfile,velocity_start,velocity_end,path_to_output='.',save
     header = fits.getheader(fitsfile)
     velocity = velocity_axes(fitsfile)
     velocity = velocity.round(decimals=4)
-    lower_channel = find_nearest(velocity,velocity_start)
-    upper_channel = find_nearest(velocity,velocity_end)
+    lower_channel = find_nearest(velocity, velocity_start)
+    upper_channel = find_nearest(velocity, velocity_end)
     print('channel-range: '+str(lower_channel)+' - '+str(upper_channel))
     print('velocity-range: '+str(velocity[lower_channel])+' - '+str(velocity[upper_channel]))
-    map_sum = np.zeros((header['NAXIS2'],header['NAXIS1']))
-    if header['NAXIS']==4:
-        for i in range(lower_channel,upper_channel+1,1):
-            map_sum = map_sum + image[0,i,:,:]
-    elif header['NAXIS']==3:
-        for i in range(lower_channel,upper_channel+1,1):
-            map_sum = map_sum + image[i,:,:]
+    map_sum = np.zeros((header['NAXIS2'], header['NAXIS1']))
+    if header['NAXIS'] == 4:
+        for i in range(lower_channel, upper_channel+1, 1):
+            map_sum += image[0, i, :, :]
+    elif header['NAXIS'] == 3:
+        for i in range(lower_channel, upper_channel+1, 1):
+            map_sum += image[i, :, :]
     else:
         print('Something wrong with the header.')
 
     filename_wext = os.path.basename(fitsfile)
-    filename_base, file_extension = os.path.splitext(filename_wext)
+    filename_base, _ = os.path.splitext(filename_wext)
     newname = filename_base + '_sum_' + str(np.around(velocity[lower_channel],decimals=1)) + '_to_' + str(np.around(velocity[upper_channel],decimals=1)) + 'km-s' + suffix + '.fits'
     pathname = os.path.join(path_to_output, newname)
 
@@ -459,7 +482,11 @@ def add_up_channels(fitsfile,velocity_start,velocity_end,path_to_output='.',save
     return map_sum
 
 
-def channel_averaged(fitsfile,velocity_start,velocity_end,path_to_output='.',save_file=True,suffix=''):
+def channel_averaged(fitsfile: Path, velocity_start: float,
+                     velocity_end: float,
+                     path_to_output: Optional[str] = '.',
+                     save_file: Optional[bool] = True,
+                     suffix: Optional[str] = '') -> np.ndarray:
     """Average slices of a p-p-v FITS cube along the velocity axis.
     
     Parameters
@@ -472,11 +499,12 @@ def channel_averaged(fitsfile,velocity_start,velocity_end,path_to_output='.',sav
         End velocity up to which data summed up.
     path_to_output : str, optional
         Path to output where moment 1 map will be saved.
-	By default, the subcube will be saved in the working directory.
-    save_file : bool
+	    By default, the subcube will be saved in the working directory.
+    save_file : bool, optional
         Whether moment 1 map should be saved as a file. Default is True.
-    suffix : str
+    suffix : str, optional
         Suffix of moment 1 filename.
+
     Returns
     -------
     average_map : numpy.ndarray
@@ -486,101 +514,107 @@ def channel_averaged(fitsfile,velocity_start,velocity_end,path_to_output='.',sav
     header = fits.getheader(fitsfile)
     velocity = velocity_axes(fitsfile)
     velocity = velocity.round(decimals=4)
-    lower_channel = find_nearest(velocity,velocity_start)
-    upper_channel = find_nearest(velocity,velocity_end)
+    lower_channel = find_nearest(velocity, velocity_start)
+    upper_channel = find_nearest(velocity, velocity_end)
     print('channel-range: '+str(lower_channel)+' - '+str(upper_channel))
     print('velocity-range: '+str(velocity[lower_channel])+' - '+str(velocity[upper_channel]))
     average_map = np.zeros((header['NAXIS2'],header['NAXIS1']))
-    n=0
-    if header['NAXIS']==4:
+
+    n = 0
+    if header['NAXIS'] == 4:
         for i in range(lower_channel,upper_channel+1,1):
-            if np.all(np.isnan(image[0,i,:,:])):
+            if np.all(np.isnan(image[0, i, :, :])):
                 continue
             else:
-                average_map = average_map + image[0,i,:,:]
-                n+=1
-    elif header['NAXIS']==3:
-        for i in range(lower_channel,upper_channel+1,1):
-            if np.all(np.isnan(image[i,:,:])):
+                average_map += image[0, i, :, :]
+                n += 1
+    elif header['NAXIS'] == 3:
+        for i in range(lower_channel, upper_channel+1, 1):
+            if np.all(np.isnan(image[i, :, :])):
                 continue
             else:
-                average_map = average_map + image[i,:,:]
-                n+=1
+                average_map += image[i, :, :]
+                n += 1
     else:
         print('Something wrong with the header...')
     average_map = average_map / n
 
-    filename_wext = os.path.basename(filename)
-    filename_base, file_extension = os.path.splitext(filename_wext)
+    filename_wext = os.path.basename(fitsfile)
+    filename_base, _ = os.path.splitext(filename_wext)
     newname = filename_base + '_averaged-channel_' + str(np.around(velocity[lower_channel],decimals=1)) + '_to_' + str(np.around(velocity[upper_channel],decimals=1)) + 'km-s' + suffix + '.fits'
     pathname = os.path.join(path_to_output, newname)
 
     if save_file is True:
         fits.writeto(pathname, average_map, header=header, overwrite=True)
-        print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
+        print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname, path_to_output))
     else:
         print(newname.split('.fits')[0])
     return average_map
 
 
-def pixel_circle_calculation(fitsfile,xcoord,ycoord,r):
+def pixel_circle_calculation(fitsfile: Path,
+                             xcoord: Union[np.ndarray, float],
+                             ycoord: Union[np.ndarray, float],
+                             r: float) -> Tuple[List, Tuple]:
     """Extract both a list of pixels [(y0,x0),(y1,x1),...] and a tuple ((y0,y1,...),(x0,x1,...))
     corresponding to the circle region with central coordinates xcoord, ycoord, and radius r.
     
     Parameters
     ----------
-    fitsfile : str
+    fitsfile : Path
         Path to FITS file.
-    xcoord : numpy.ndarray or float
+    xcoord : numpy.ndarray | float
         x-coordinate of central pixel in units given in the header.
-    ycoord : numpy.ndarray or float
+    ycoord : numpy.ndarray | float
         y-coordinate of central pixel in units given in the header.
     r : float
         Radius of region in units of arcseconds.
     Returns
     -------
-    pixel_coords : list
+    pixel_coords : List
         List of pixel coordinates [(y0,x0),(y1,x1),...].
-    indices_np : tuple
+    indices_np : Tuple
         Tuple of pixel indices ((y0,y1,...),(x0,x1,...)) to index a numpy.ndarray.
     """
     header = fits.getheader(fitsfile)
     w = WCS(fitsfile)
     delta = abs(header['CDELT1']) #in degree
     pixel_coords = []
-    if header['NAXIS']==3:
-        central_px = w.all_world2pix(xcoord,ycoord,0,1)
-    elif header['NAXIS']==2:
-        central_px = w.all_world2pix(xcoord,ycoord,1)
+    if header['NAXIS'] == 3:
+        central_px = w.all_world2pix(xcoord, ycoord, 0, 1)
+    elif header['NAXIS'] == 2:
+        central_px = w.all_world2pix(xcoord, ycoord, 1)
     else:
         raise Exception('Something wrong with the header!')
-    central_px = [int(np.round(central_px[0],decimals=0))-1,int(np.round(central_px[1],decimals=0))-1]
+    central_px = [int(np.round(central_px[0],decimals=0))-1, int(np.round(central_px[1],decimals=0))-1]
     if r != 'single':
         circle_size_px = 2*r/3600. / delta
         circle_size_px = int(round(circle_size_px))
-        px_start = [central_px[0]-circle_size_px/2,central_px[1]-circle_size_px/2]
-        px_end = [central_px[0]+circle_size_px/2,central_px[1]+circle_size_px/2]
-        px_start = [int(np.round(px_start[0],decimals=0)),int(np.round(px_start[1],decimals=0))]
-        px_end = [int(np.round(px_end[0],decimals=0)),int(np.round(px_end[1],decimals=0))]
-        for i_x in trange(px_start[0]-1,px_end[0]+1):
-            for i_y in range(px_start[1]-1,px_end[1]+1):
+        px_start = [central_px[0]-circle_size_px/2, central_px[1]-circle_size_px/2]
+        px_end = [central_px[0]+circle_size_px/2, central_px[1]+circle_size_px/2]
+        px_start = [int(np.round(px_start[0], decimals=0)), int(np.round(px_start[1], decimals=0))]
+        px_end = [int(np.round(px_end[0], decimals=0)), int(np.round(px_end[1], decimals=0))]
+        for i_x in trange(px_start[0]-1, px_end[0]+1):
+            for i_y in range(px_start[1]-1, px_end[1]+1):
                 if np.sqrt((i_x-central_px[0])**2+(i_y-central_px[1])**2) < circle_size_px/2.:
-                    pixel_coords.append((i_y,i_x))
+                    pixel_coords.append((i_y, i_x))
     else:
-        pixel_coords.append((central_px[1],central_px[0]))
+        pixel_coords.append((central_px[1], central_px[0]))
     
     indices_np = tuple(zip(*pixel_coords))
-    
     return pixel_coords, indices_np
 
 
-def pixel_circle_calculation_px(fitsfile,x,y,r):
+def pixel_circle_calculation_px(fitsfile: Path,
+                                x: Union[np.ndarray, float],
+                                y: Union[np.ndarray, float],
+                                r: float) -> Tuple[List, Tuple]:
     """Extract both a list of pixels [(y0,x0),(y1,x1),...] and a tuple ((y0,y1,...),(x0,x1,...))
     corresponding to the circle region with central pixels x, y, and radius r.
     
     Parameters
     ----------
-    fitsfile : str
+    fitsfile : Path
         Path to FITS file.
     x : numpy.ndarray or float
         Central x pixel.
@@ -590,68 +624,77 @@ def pixel_circle_calculation_px(fitsfile,x,y,r):
         Radius of region in units of arcseconds.
     Returns
     -------
-    pixel_array : list
+    pixel_array : List
         List of pixel coordinates [(y0,x0),(y1,x1),...].
-    indices_np : tuple
+    indices_np : Tuple
         Tuple of pixel indices ((y0,y1,...),(x0,x1,...)) to index a numpy.ndarray.
+    """
+    header = fits.getheader(fitsfile)
+    delta = abs(header['CDELT1']) #in degree
+    pixel_array = []
+    central_px = [x, y]
+    if r != 'single':
+        circle_size_px = 2*r/3600. / delta
+        circle_size_px = int(round(circle_size_px))
+        px_start = [central_px[0]-circle_size_px/2, central_px[1]-circle_size_px/2]
+        px_end = [central_px[0]+circle_size_px/2, central_px[1]+circle_size_px/2]
+        px_start = [int(np.round(px_start[0], decimals=0)), int(np.round(px_start[1], decimals=0))]
+        px_end = [int(np.round(px_end[0], decimals=0)), int(np.round(px_end[1], decimals=0))]
+        for i_x in range(px_start[0]-1, px_end[0]+1):
+            for i_y in range(px_start[1]-1, px_end[1]+1):
+                if np.sqrt((i_x-central_px[0])**2+(i_y-central_px[1])**2) < circle_size_px/2.:
+                    pixel_array.append((i_y, i_x))
+    else:
+        pixel_array.append((central_px[0], central_px[1]))
+    
+    indices_np = tuple(zip(*pixel_array))
+    return pixel_array, indices_np
+
+
+def pixel_box_calculation(fitsfile: Path, longitude: float,
+                          latitude: float, a: float, b: float):
+    """
+    Parameters
+    ----------
+    longitude : float
+        [deg]
+    latitude : float
+        [deg]
+    a,b: total size of longitude,latitude box in arcsec
+
+    Returns
+    -------
+    give central coordinates, size of box and fitsfile and it returns array with the corresponding pixels 
     """
     header = fits.getheader(fitsfile)
     w = WCS(fitsfile)
     delta = abs(header['CDELT1']) #in degree
     pixel_array = []
-    central_px = [x,y]
-    if r != 'single':
-        circle_size_px = 2*r/3600. / delta
-        circle_size_px = int(round(circle_size_px))
-        px_start = [central_px[0]-circle_size_px/2,central_px[1]-circle_size_px/2]
-        px_end = [central_px[0]+circle_size_px/2,central_px[1]+circle_size_px/2]
-        px_start = [int(np.round(px_start[0],decimals=0)),int(np.round(px_start[1],decimals=0))]
-        px_end = [int(np.round(px_end[0],decimals=0)),int(np.round(px_end[1],decimals=0))]
-        for i_x in range(px_start[0]-1,px_end[0]+1):
-            for i_y in range(px_start[1]-1,px_end[1]+1):
-                if np.sqrt((i_x-central_px[0])**2+(i_y-central_px[1])**2) < circle_size_px/2.:
-                    pixel_array.append((i_y,i_x))
-    else:
-        pixel_array.append((central_px[0],central_px[1]))
-    
-    indices_np = tuple(zip(*pixel_coords))
-    
-    return pixel_array, indices_np
-
-
-def pixel_box_calculation(fitsfile,longitude,latitude,a,b):
-    #longitude and latitude in degree
-    #a,b: total size of longitude,latitude box in arcsec
-    #give central coordinates, size of box and fitsfile and it returns array with the corresponding pixels 
-    header = fits.getheader(fitsfile)
-    w = WCS(fitsfile)
-    delta = abs(header['CDELT1']) #in degree
-    pixel_array = []
-    if header['NAXIS']==3:
-        central_px = w.all_world2pix(longitude,latitude,0,1)
-    elif header['NAXIS']==2:
-        central_px = w.all_world2pix(longitude,latitude,1)
+    if header['NAXIS'] == 3:
+        central_px = w.all_world2pix(longitude, latitude, 0, 1)
+    elif header['NAXIS'] == 2:
+        central_px = w.all_world2pix(longitude, latitude, 1)
     else:
         raise Exception('Something wrong with the header.')
-    central_px = [int(np.round(central_px[0],decimals=0))-1,int(np.round(central_px[1],decimals=0))-1]
+    central_px = [int(np.round(central_px[0], decimals=0))-1, int(np.round(central_px[1], decimals=0))-1]
     if a != 'single':
         box_size_px_a = a/3600. / delta
         box_size_px_a = int(round(box_size_px_a))
         box_size_px_b = b/3600. / delta
         box_size_px_b = int(round(box_size_px_b))
-        px_start = [central_px[0]-box_size_px_a/2,central_px[1]-box_size_px_b/2]
-        px_end = [central_px[0]+box_size_px_a/2,central_px[1]+box_size_px_b/2]
-        px_start = [int(np.round(px_start[0],decimals=0)),int(np.round(px_start[1],decimals=0))]
-        px_end = [int(np.round(px_end[0],decimals=0)),int(np.round(px_end[1],decimals=0))]
-        for i_x in trange(px_start[0],px_end[0]):
-            for i_y in range(px_start[1],px_end[1]):
-                pixel_array.append((i_x,i_y))
+        px_start = [central_px[0]-box_size_px_a/2, central_px[1]-box_size_px_b/2]
+        px_end = [central_px[0]+box_size_px_a/2, central_px[1]+box_size_px_b/2]
+        px_start = [int(np.round(px_start[0], decimals=0)), int(np.round(px_start[1], decimals=0))]
+        px_end = [int(np.round(px_end[0], decimals=0)), int(np.round(px_end[1], decimals=0))]
+        for i_x in trange(px_start[0], px_end[0]):
+            for i_y in range(px_start[1], px_end[1]):
+                pixel_array.append((i_x, i_y))
     else:
-        pixel_array.append((central_px[0],central_px[1]))
+        pixel_array.append((central_px[0], central_px[1]))
     return pixel_array
 
 
-def pixel_annulus_calculation(fitsfile,longitude,latitude,r_in,r_out):
+def pixel_annulus_calculation(fitsfile, longitude, latitude, r_in, r_out):
     #longitude and latitude in degree
     #r_in and r_out: inner and outer radius in arcsec
     #give central coordinates, inner and outer radius of annulus and fitsfile and it returns array with the corresponding pixels 
