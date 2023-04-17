@@ -866,13 +866,13 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
     print('\nMake sure to give coordinates in the frame of the data header: {}\n'.format(physical_types))
     if latitudes is not None:
         lat_range = latitudes * u.deg
-        lat_range_idx = sorted([find_nearest(b, lat_range[0]), find_nearest(b, lat_range[1])+1])
+        lat_range_idx = sorted([find_nearest(b, lat_range[0]), find_nearest(b, lat_range[1])])
         #lat_range_idx[-1] = lat_range_idx[-1] + 1
     else:
         lat_range_idx = [None, None]
     if longitudes is not None:
         lon_range = longitudes * u.deg
-        lon_range_idx = sorted([find_nearest(l, lon_range[0]), find_nearest(l, lon_range[1])+1])
+        lon_range_idx = sorted([find_nearest(l, lon_range[0]), find_nearest(l, lon_range[1])])
         #lon_range_idx[-1] = lon_range_idx[-1] + 1
     else:
         lon_range_idx = [None, None]
@@ -880,7 +880,7 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
     if cube.ndim == 3:
         if velo_range is not None:
             vel_range = velo_range * u.km/u.s
-            vel_range_idx = sorted([find_nearest(v, vel_range[0]), find_nearest(v, vel_range[1])+1])
+            vel_range_idx = sorted([find_nearest(v, vel_range[0]), find_nearest(v, vel_range[1])])
             #vel_range_idx[-1] = vel_range_idx[-1] + 1
         else:
             vel_range_idx = [None, None]
