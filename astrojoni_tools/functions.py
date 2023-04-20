@@ -342,7 +342,7 @@ def moment_0(filename: Path, velocity_start: float, velocity_end: float,
 
     filename_wext = os.path.basename(filename)
     filename_base, file_extension = os.path.splitext(filename_wext)
-    newname = filename_base + '_mom-0_' + str(np.around(velocity[lower_channel],decimals=1)) + '_to_' + str(np.around(velocity[upper_channel],decimals=1)) + 'km-s' + suffix + '.fits'
+    newname = filename_base + f'_mom-0_{np.around(velocity[lower_channel],decimals=1):05.1f}_to_{np.around(velocity[upper_channel],decimals=1)):05.1f}km-s' + suffix + '.fits'
     pathname = os.path.join(path_to_output, newname)
 
     if save_file is True:
