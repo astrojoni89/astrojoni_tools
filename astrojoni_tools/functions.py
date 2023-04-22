@@ -16,6 +16,13 @@ from tqdm import tqdm, trange
 from .utils.wcs_utils import sanitize_wcs
 
 
+
+def getting_ready(string: str):
+    banner = len(string) * '='
+    heading = '\n' + banner + '\n' + string + '\n' + banner
+    print(heading)
+
+
 def find_nearest(array: np.ndarray, value: float) -> int:
     """Find the index of an element in an array nearest to a given value.
 
@@ -318,6 +325,7 @@ def moment_0(filename: Path, velocity_start: float, velocity_end: float,
     moment_0_map : numpy.ndarray
         Zeroth moment map.
     """
+    getting_ready('Computing moment 0')
     image = fits.getdata(filename)
     headerm0 = fits.getheader(filename)
     velocity = velocity_axes(filename)
@@ -390,6 +398,7 @@ def moment_1(filename: Path,
     moment_1_map : numpy.ndarray
         First moment map.
     """
+    getting_ready('Computing moment 1')
     image = fits.getdata(filename)
     headerm1 = fits.getheader(filename)
     velocity = velocity_axes(filename)
@@ -451,6 +460,7 @@ def add_up_channels(fitsfile: Path, velocity_start: float,
     map_sum : numpy.ndarray
         Map of summed up channels.
     """
+    getting_ready('Adding up channels')
     image = fits.getdata(fitsfile)
     header = fits.getheader(fitsfile)
     velocity = velocity_axes(fitsfile)
@@ -510,6 +520,7 @@ def channel_averaged(fitsfile: Path, velocity_start: float,
     average_map : numpy.ndarray
         Map of averaged channels.
     """
+    getting_ready('Averaging channels')
     image = fits.getdata(fitsfile)
     header = fits.getheader(fitsfile)
     velocity = velocity_axes(fitsfile)
@@ -841,6 +852,7 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
     suffix : str, optional
         Suffix that is appended to output filename.
     """
+    getting_ready('Making subcube')
     if cubedata is None:
         data = fits.open(filename)  # Open the FITS file for reading
         try:
@@ -926,6 +938,7 @@ def make_lv(filename, mode='avg', weights=None, path_to_output='.', suffix=''):
     suffix : str, optional
         Suffix that is appended to output filename.
     """
+    getting_ready('Making l-v map')
     modes = {'avg': 0, 'max': 1, 'sum': 2, 'weighted': 3}
     if mode not in modes.keys():
         raise KeyError("\nUnknown mode. Mode needs to be one of the following: {}.".format(modes.keys()))
