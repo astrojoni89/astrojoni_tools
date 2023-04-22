@@ -991,6 +991,8 @@ def make_lv(filename, mode='avg', weights=None, path_to_output='.', suffix=''):
     for vel in trange(data.shape[0]):
         for lon in range(data.shape[2]):
             if mode=='avg':
+                nanmask = np.where(np.isnan(data[vel,:,lon]))
+                data[vel,:,lon][nanmask] = 0.
                 avg = np.nanmean(data[vel,:,lon])
             elif mode=='max':
                 avg = np.nanmax(data[vel,:,lon])
