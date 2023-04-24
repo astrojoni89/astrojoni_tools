@@ -338,10 +338,10 @@ def moment_0(filename: Path, velocity_start: float, velocity_end: float,
     print('velocity-range: '+str(velocity[lower_channel])+' - '+str(velocity[upper_channel]))
     moment_0_map = np.zeros((headerm0['NAXIS2'],headerm0['NAXIS1']))
     if headerm0['NAXIS']==4:
-        for i in range(lower_channel,upper_channel+1,1):
+        for i in trange(lower_channel,upper_channel+1,1):
             moment_0_map = moment_0_map + image[0,i,:,:]
     elif headerm0['NAXIS']==3:
-        for i in range(lower_channel,upper_channel+1,1):
+        for i in trange(lower_channel,upper_channel+1,1):
             moment_0_map = moment_0_map + image[i,:,:]
     else:
         print('Something wrong with the header.')
@@ -409,10 +409,10 @@ def moment_1(filename: Path,
     print('velocity-range: '+str(velocity[lower_channel])+' - '+str(velocity[upper_channel]))
     moment_1_map = np.zeros((headerm1['NAXIS2'], headerm1['NAXIS1']))
     if headerm1['NAXIS'] == 4:
-        for i in range(lower_channel, upper_channel+1, 1):
+        for i in trange(lower_channel, upper_channel+1, 1):
             moment_1_map = moment_1_map + image[0, i, :, :] * velocity[i]
     elif headerm1['NAXIS'] == 3:
-        for i in range(lower_channel, upper_channel+1, 1):
+        for i in trange(lower_channel, upper_channel+1, 1):
             moment_1_map = moment_1_map + image[i, :, :] * velocity[i]
     else:
         print('Something wrong with the header.')
