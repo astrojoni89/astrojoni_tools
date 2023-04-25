@@ -934,7 +934,7 @@ def make_lv(filename, mode='avg', weights=None, noise=None, path_to_output='.', 
     weights : str, optional
         Path to file containing weights. Needs to be of same shape as data of filename.
     noise : float
-        Noise to use as a threshold for weighted mean calculation. Every pixel value below the noise will be masked.
+        Noise to use as a threshold. Every pixel value below the noise will be masked.
     path_to_output : str, optional
         Path to output where subcube will be saved. By default, the subcube will be saved in the working directory.
     suffix : str, optional
@@ -990,6 +990,11 @@ def make_lv(filename, mode='avg', weights=None, noise=None, path_to_output='.', 
     else:
         pass
 
+    if noise is not None:
+        noisemask = np.where(data < noise)
+        weight[noisemask] = np.nan
+        data[noisemask] = np.nan
+
     for vel in trange(data.shape[0]):
         for lon in range(data.shape[2]):
             if mode=='avg':
@@ -999,10 +1004,6 @@ def make_lv(filename, mode='avg', weights=None, noise=None, path_to_output='.', 
             elif mode=='sum':
                 avg = np.nansum(data[vel,:,lon])
             elif mode=='weighted':
-                if noise is not None:
-                    noisemask = np.where(data < noise)
-                    weight[noisemask] = np.nan
-                    data[noisemask] = np.nan 
                 norm_weight = np.absolute(weight[vel,:,lon]) / np.nansum(np.absolute(weight[vel,:,lon]))
                 avg = np.nansum(norm_weight * data[vel,:,lon])
             pv_array[vel,lon] = avg
