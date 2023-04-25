@@ -21,6 +21,7 @@ Per_lbvRBD_edit.dat
 ScF_lbvRBD_edit.dat
 ScF_lbvRBD_edit_with_2016.dat
 ScN_lbvRBD_edit.dat
+ScN_lbvRBD_edit_ds.dat
 ScS_lbvRBD_edit.dat
 SgF_lbvRBD_edit.dat
 SgN_lbvRBD_edit.dat
