@@ -918,7 +918,7 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
     print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
 
 
-def make_lv(filename, mode='avg', weights=None, path_to_output='.', suffix=''):
+def make_lv(filename, mode='avg', weights=None, noise=None, path_to_output='.', suffix=''):
     """Create a longitude-velocity map from a datacube.
     
     Parameters
@@ -933,6 +933,8 @@ def make_lv(filename, mode='avg', weights=None, path_to_output='.', suffix=''):
         'weighted' gives a weighted arithmetic mean along the latitude axis.
     weights : str, optional
         Path to file containing weights. Needs to be of same shape as data of filename.
+    noise : float
+        Noise to use as a threshold for weighted mean calculation. Every pixel value below the noise will be masked.
     path_to_output : str, optional
         Path to output where subcube will be saved. By default, the subcube will be saved in the working directory.
     suffix : str, optional
@@ -997,6 +999,10 @@ def make_lv(filename, mode='avg', weights=None, path_to_output='.', suffix=''):
             elif mode=='sum':
                 avg = np.nansum(data[vel,:,lon])
             elif mode=='weighted':
+                if noise is not None:
+                    noisemask = np.where(data < noise)
+                    weight[noisemask] = np.nan
+                    data[noisemask] = np.nan 
                 norm_weight = np.absolute(weight[vel,:,lon]) / np.nansum(np.absolute(weight[vel,:,lon]))
                 avg = np.nansum(norm_weight * data[vel,:,lon])
             pv_array[vel,lon] = avg
