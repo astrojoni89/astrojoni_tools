@@ -41,7 +41,7 @@ def find_nearest(array: np.ndarray, value: float) -> int:
     return np.abs(array-value).argmin()
 
 
-def md_header_2d(fitsfile):
+def md_header_2d(hdr):
     """Get 2D header from FITS file.
 
     Parameters
@@ -53,29 +53,10 @@ def md_header_2d(fitsfile):
     header_2d : :class:`~astropy.io.fits.Header`
         Header object without third axis.
     """
-    header_2d = fits.getheader(fitsfile)
-    keys_3d = ['NAXIS3', 'CRPIX3', 'CDELT3', 'CUNIT3', 'CTYPE3', 'CRVAL3']
-    for key in keys_3d:
-        if key in header_2d.keys():
-            del header_2d[key]
-    header_2d['NAXIS'] = 2
-    header_2d['WCSAXES'] = 2
-    return header_2d
-
-
-def md_header_2d_hdr(hdr):
-    """Get 2D header from FITS file.
-
-    Parameters
-    ----------
-    hdr : path-like object or file-like object
-        Header.
-    Returns
-    -------
-    header_2d : :class:`~astropy.io.fits.Header`
-        Header object without third axis.
-    """
-    header_2d = hdr
+    if isinstance(hdr, Path):
+        header_2d = fits.getheader(hdr)
+    elif isinstance(hdr, fits.Header):
+        header_2d = hdr
     keys_3d = ['NAXIS3', 'CRPIX3', 'CDELT3', 'CUNIT3', 'CTYPE3', 'CRVAL3']
     for key in keys_3d:
         if key in header_2d.keys():
@@ -1185,9 +1166,7 @@ def reproject_cube(filename, template, axes='spatial', path_to_output='.', suffi
         if axes=='spatial':
             shutil.copy(template, newname)
             outfh = fits.open(newname, mode='update')
-            
-            header_template['WCSAXES'] = 2
-            header_template['NAXIS'] = 2
+            header_template = md_header_2d(header_template)
             with tqdm(total=cube2.shape[0]) as pbar:
                 for index in range(cube2.shape[0]):
                     cube_slice_reproj = cube1[index].reproject(header_template)
