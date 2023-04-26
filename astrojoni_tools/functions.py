@@ -63,6 +63,28 @@ def md_header_2d(fitsfile):
     return header_2d
 
 
+def md_header_2d_hdr(hdr):
+    """Get 2D header from FITS file.
+
+    Parameters
+    ----------
+    hdr : path-like object or file-like object
+        Header.
+    Returns
+    -------
+    header_2d : :class:`~astropy.io.fits.Header`
+        Header object without third axis.
+    """
+    header_2d = hdr
+    keys_3d = ['NAXIS3', 'CRPIX3', 'CDELT3', 'CUNIT3', 'CTYPE3', 'CRVAL3']
+    for key in keys_3d:
+        if key in header_2d.keys():
+            del header_2d[key]
+    header_2d['NAXIS'] = 2
+    header_2d['WCSAXES'] = 2
+    return header_2d
+
+
 def save_fits(filename_basis: Path, data: np.ndarray,
               header, suffix: Optional[str] = '_new',
               path_to_output: Optional[str] = '.', **kwargs):
@@ -1139,14 +1161,30 @@ def reproject_cube(filename, template, axes='spatial', path_to_output='.', suffi
         header_template['CRVAL3'] = cube1.header['CRVAL3']
     elif axes=='all':
         header_template = cube2.header
-    if allow_huge_operations:
-        cube1.allow_huge_operations = True
-    cube1_reproj = cube1.reproject(header_template)
 
     if suffix is not None:
         newname = filename.split('/')[-1].split('.fits')[0] + '_reproject' + suffix + '.fits'
     else:
         newname = filename.split('/')[-1].split('.fits')[0] + '_reproject' + '.fits'
+    #TODO
+    if allow_huge_operations:
+        cube1.allow_huge_operations = True
+        if axes=='spatial':
+            shutil.copy(template, newname)
+            outfh = fits.open(newname, mode='update')
+            
+            header_template['WCSAXES'] = 2
+            with tqdm(total=cube2.shape[0]) as pbar:
+                for index in range(cube2.shape[0]):
+                    cube_slice_reproj = cube1[index].reproject(header_template)
+                    outfh[0].data[index] = cube_slice_reproj.masked_data
+                    outfh.flush() # write the data to disk
+                    pbar.update(1)
+            outfh.flush()
+            print("\n\033[92mSAVED FILE:\033[0m '{}'".format(newname))
+    else:
+        cube1_reproj = cube1.reproject(header_template)
+
     pathname = os.path.join(path_to_output, newname)
     cube1_reproj.write(pathname, overwrite=True)
     print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
