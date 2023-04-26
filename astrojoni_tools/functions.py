@@ -1116,7 +1116,7 @@ def find_common_beam(filenames):
     return common_beam
 
 
-def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_output='.', suffix=None, allow_huge_operations=False, **kwargs): # smooth image with 2D Gaussian
+def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_output='.', suffix=None, allow_huge_operations=False, datatype='regular', **kwargs): # smooth image with 2D Gaussian
     try:
         cube = SpectralCube.read(filename)
     except:
@@ -1134,13 +1134,25 @@ def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_ou
         newname = filename.split('/')[-1].split('.fits')[0] + '_smooth_' + str(major) + '_arcsec' + '.fits'
     if allow_huge_operations:
         cube.allow_huge_operations = True
-    smoothcube = cube.convolve_to(beam, **kwargs)
-    pathname = os.path.join(path_to_output, newname)
-    smoothcube.write(pathname, format='fits', overwrite=True)
-    print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
+    if datatype=='large':
+        shutil.copy(template, newname)
+        outfh = fits.open(newname, mode='update')
+        with tqdm(total=cube.shape[0]) as pbar:
+            for index in range(cube.shape[0]):
+                smooth_slice = cube.convolve_to(beam, **kwargs)
+                outfh[0].data[index] = smooth_slice.array
+                outfh.flush() # write the data to disk
+                pbar.update(1)
+        outfh.flush()
+        print("\n\033[92mSAVED FILE:\033[0m '{}'".format(newname))
+    else:
+        smoothcube = cube.convolve_to(beam, **kwargs)
+        pathname = os.path.join(path_to_output, newname)
+        smoothcube.write(pathname, format='fits', overwrite=True)
+        print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
 
 	
-def reproject_cube(filename, template, axes='spatial', path_to_output='.', suffix=None, allow_huge_operations=False):
+def reproject_cube(filename, template, axes='spatial', path_to_output='.', suffix=None, allow_huge_operations=False, datatype='regular'):
     try:
         cube1 = SpectralCube.read(filename)
     except:
@@ -1169,6 +1181,7 @@ def reproject_cube(filename, template, axes='spatial', path_to_output='.', suffi
     #TODO
     if allow_huge_operations:
         cube1.allow_huge_operations = True
+    if datatype=='large':
         if axes=='spatial':
             shutil.copy(template, newname)
             outfh = fits.open(newname, mode='update')
@@ -1178,7 +1191,7 @@ def reproject_cube(filename, template, axes='spatial', path_to_output='.', suffi
             with tqdm(total=cube2.shape[0]) as pbar:
                 for index in range(cube2.shape[0]):
                     cube_slice_reproj = cube1[index].reproject(header_template)
-                    outfh[0].data[index] = cube_slice_reproj.masked_data
+                    outfh[0].data[index] = cube_slice_reproj.array
                     outfh.flush() # write the data to disk
                     pbar.update(1)
             outfh.flush()
@@ -1186,9 +1199,9 @@ def reproject_cube(filename, template, axes='spatial', path_to_output='.', suffi
     else:
         cube1_reproj = cube1.reproject(header_template)
 
-    pathname = os.path.join(path_to_output, newname)
-    cube1_reproj.write(pathname, overwrite=True)
-    print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
+        pathname = os.path.join(path_to_output, newname)
+        cube1_reproj.write(pathname, overwrite=True)
+        print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
 
 
 #TODO
