@@ -1174,6 +1174,7 @@ def reproject_cube(filename, template, axes='spatial', path_to_output='.', suffi
             outfh = fits.open(newname, mode='update')
             
             header_template['WCSAXES'] = 2
+            header_template['NAXIS'] = 2
             with tqdm(total=cube2.shape[0]) as pbar:
                 for index in range(cube2.shape[0]):
                     cube_slice_reproj = cube1[index].reproject(header_template)
