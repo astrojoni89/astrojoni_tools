@@ -1123,7 +1123,7 @@ def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_ou
         outfh = fits.open(newname, mode='update')
         with tqdm(total=cube.shape[0]) as pbar:
             for index in range(cube.shape[0]):
-                smooth_slice = cube.convolve_to(beam, **kwargs)
+                smooth_slice = cube[index].convolve_to(beam, **kwargs)
                 outfh[0].data[index] = smooth_slice.array
                 outfh.flush() # write the data to disk
                 pbar.update(1)
