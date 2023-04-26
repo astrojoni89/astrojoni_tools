@@ -1046,7 +1046,9 @@ def convert_jybeam_to_kelvin(filename, path_to_output='.', suffix=''):
     kcube = cube.to(u.K)  
     kcube.unit 
     
-    newname = filename.split('/')[-1].split('.fits')[0] + '_unit_Tb' + suffix + '.fits'
+    filename_wext = os.path.basename(filename)
+    filename_base, file_extension = os.path.splitext(filename_wext)
+    newname = filename_base + '_unit_Tb' + suffix + '.fits'
     pathname = os.path.join(path_to_output, newname)
     kcube.write(pathname, format='fits', overwrite=True)
     print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
@@ -1097,7 +1099,7 @@ def find_common_beam(filenames):
     return common_beam
 
 
-def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_output='.', suffix=None, allow_huge_operations=False, datatype='regular', **kwargs): # smooth image with 2D Gaussian
+def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_output='.', suffix='', allow_huge_operations=False, datatype='regular', **kwargs): # smooth image with 2D Gaussian
     try:
         cube = SpectralCube.read(filename)
     except:
@@ -1109,14 +1111,15 @@ def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_ou
     elif beam is not None:
         beam = beam
         major = int(np.around(beam.major.value * 3600, decimals=0))
-    if suffix is not None:
-        newname = filename.split('/')[-1].split('.fits')[0] + '_smooth' + str(major) + '_arcsec' + suffix + '.fits'
-    else:
-        newname = filename.split('/')[-1].split('.fits')[0] + '_smooth_' + str(major) + '_arcsec' + '.fits'
+
+    filename_wext = os.path.basename(filename)
+    filename_base, file_extension = os.path.splitext(filename_wext)
+    newname = filename_base + '_smooth' + str(major) + '_arcsec' + suffix + '.fits'
+
     if allow_huge_operations:
         cube.allow_huge_operations = True
     if datatype=='large':
-        shutil.copy(template, newname)
+        shutil.copy(filename, newname)
         outfh = fits.open(newname, mode='update')
         with tqdm(total=cube.shape[0]) as pbar:
             for index in range(cube.shape[0]):
@@ -1133,7 +1136,7 @@ def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_ou
         print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
 
 	
-def reproject_cube(filename, template, axes='spatial', path_to_output='.', suffix=None, allow_huge_operations=False, datatype='regular'):
+def reproject_cube(filename, template, axes='spatial', path_to_output='.', suffix='', allow_huge_operations=False, datatype='regular'):
     try:
         cube1 = SpectralCube.read(filename)
     except:
@@ -1155,10 +1158,10 @@ def reproject_cube(filename, template, axes='spatial', path_to_output='.', suffi
     elif axes=='all':
         header_template = cube2.header
 
-    if suffix is not None:
-        newname = filename.split('/')[-1].split('.fits')[0] + '_reproject' + suffix + '.fits'
-    else:
-        newname = filename.split('/')[-1].split('.fits')[0] + '_reproject' + '.fits'
+    filename_wext = os.path.basename(filename)
+    filename_base, file_extension = os.path.splitext(filename_wext)
+    newname = filename_base + '_reproject' + suffix + '.fits'
+
     #TODO
     if allow_huge_operations:
         cube1.allow_huge_operations = True
