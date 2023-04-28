@@ -1115,11 +1115,12 @@ def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_ou
     filename_wext = os.path.basename(filename)
     filename_base, file_extension = os.path.splitext(filename_wext)
     newname = filename_base + '_smooth' + str(major) + '_arcsec' + suffix + '.fits'
+    pathname = os.path.join(path_to_output, newname)
 
     if allow_huge_operations:
         cube.allow_huge_operations = True
     if datatype=='large':
-        shutil.copy(filename, newname)
+        shutil.copy(filename, pathname)
         outfh = fits.open(newname, mode='update')
         with tqdm(total=cube.shape[0]) as pbar:
             for index in range(cube.shape[0]):
@@ -1133,7 +1134,6 @@ def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_ou
         print("\n\033[92mSAVED FILE:\033[0m '{}'".format(newname))
     else:
         smoothcube = cube.convolve_to(beam, **kwargs)
-        pathname = os.path.join(path_to_output, newname)
         smoothcube.write(pathname, format='fits', overwrite=True)
         print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
 
@@ -1163,13 +1163,14 @@ def reproject_cube(filename, template, axes='spatial', path_to_output='.', suffi
     filename_wext = os.path.basename(filename)
     filename_base, file_extension = os.path.splitext(filename_wext)
     newname = filename_base + '_reproject' + suffix + '.fits'
+    pathname = os.path.join(path_to_output, newname)
 
     #TODO
     if allow_huge_operations:
         cube1.allow_huge_operations = True
     if datatype=='large':
         if axes=='spatial':
-            shutil.copy(template, newname)
+            shutil.copy(template, pathname)
             outfh = fits.open(newname, mode='update')
             header_template = md_header_2d(header_template)
             with tqdm(total=cube2.shape[0]) as pbar:
@@ -1183,7 +1184,6 @@ def reproject_cube(filename, template, axes='spatial', path_to_output='.', suffi
     else:
         cube1_reproj = cube1.reproject(header_template)
 
-        pathname = os.path.join(path_to_output, newname)
         cube1_reproj.write(pathname, overwrite=True)
         print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
 
