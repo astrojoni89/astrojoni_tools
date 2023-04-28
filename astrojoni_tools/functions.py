@@ -53,7 +53,7 @@ def md_header_2d(hdr):
     header_2d : :class:`~astropy.io.fits.Header`
         Header object without third axis.
     """
-    if isinstance(hdr, Union[Path, str]):
+    if isinstance(hdr, (Path, str)):
         header_2d = fits.getheader(hdr)
     elif isinstance(hdr, fits.Header):
         header_2d = hdr
