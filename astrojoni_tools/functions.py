@@ -1127,7 +1127,8 @@ def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_ou
                 outfh[0].data[index] = smooth_slice.array
                 outfh.flush() # write the data to disk
                 pbar.update(1)
-        outfh[0].header.update(beam.to_header_keywords()) 
+        outfh[0].header.update(beam.to_header_keywords())
+        outfh[0].header.update({'BEAM' : f'Beam: BMAJ={beam.major.value:.1f} arcsec BMIN={beam.minor.value:.1f} arcsec BPA={beam.pa.value:.1f} deg'})
         outfh.flush()
         print("\n\033[92mSAVED FILE:\033[0m '{}'".format(newname))
     else:
