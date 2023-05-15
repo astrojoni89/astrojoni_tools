@@ -1107,14 +1107,18 @@ def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_ou
     if beam is None:
         if major is None or minor is None:
             raise ValueError('Need to specify beam size if no beam is given.')
+        if minor is None:
+            print('No minor beam size was given, will assume major=minor')
         beam = radio_beam.Beam(major=major*u.arcsec, minor=minor*u.arcsec, pa=pa*u.deg)
     elif beam is not None:
         beam = beam
-        major = int(np.around(beam.major.value * 3600, decimals=0))
+        major = np.around(beam.major.value * 3600, decimals=2)
+        minor = np.around(beam.minor.value * 3600, decimals=2)
+    meanbeam = np.sqrt(major*minor) # geometric mean
 
     filename_wext = os.path.basename(filename)
     filename_base, file_extension = os.path.splitext(filename_wext)
-    newname = filename_base + '_smooth' + str(major) + '_arcsec' + suffix + '.fits'
+    newname = filename_base + '_smooth' + str(meanbeam) + '_arcsec' + suffix + '.fits'
     pathname = os.path.join(path_to_output, newname)
 
     if allow_huge_operations:
