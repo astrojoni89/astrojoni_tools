@@ -1,0 +1,59 @@
+name: Build and Deploy Documentation
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.7"
+        
+    - name: Install dependencies
+      run: |
+        pip install -e .
+
+    - name: Build Documentation
+      run: |
+        sphinx-build -b html docs/ docs/build/
+
+    - name: Commit and Stash Documentation
+      run: |
+        git add -f docs/build/
+        git stash
+
+    - name: Checkout gh-pages
+      uses: actions/checkout@v4
+      with:
+        ref: gh-pages
+
+    - name: Git Configuration
+      run: |
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+
+    - name: Cleanup Old Folders
+      run: |
+        rm -rf _static/
+        rm -rf _modules/
+        rm -rf _sources/
+        rm -rf examples/
+        rm -rf modules/
+
+    - name: Deploy to gh-pages
+      run: |
+        git stash pop
+        mv -f docs/build/* .
+        rm -rf docs/build
+        git add .
+        git commit -m "Auto update docs"
+        git push
