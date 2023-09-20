@@ -295,7 +295,7 @@ def calculate_average_value_of_map(fitsfile: Path, pixel_array: List) -> Tuple[f
     return value_average, pixel_list_without_nan_values
 
 
-def moment_0(filename: Path, velocity_start: float, velocity_end: float,
+def moment_0(filename: Path, velocity_start: float = None, velocity_end: float = None,
              noise: Optional[float] = None,
              path_to_output: Optional[str] = '.',
              save_file: Optional[bool] = True,
@@ -333,10 +333,22 @@ def moment_0(filename: Path, velocity_start: float, velocity_end: float,
     headerm0 = fits.getheader(filename)
     velocity = velocity_axes(filename)
     velocity = velocity.round(decimals=4)
-    velocity_low = min(velocity_start,velocity_end)
-    velocity_up = max(velocity_start,velocity_end)
-    lower_channel = find_nearest(velocity,velocity_low)
-    upper_channel = find_nearest(velocity,velocity_up)
+    if velocity_start is not None:
+        if velocity_end is not None:
+            velocity_low = min(velocity_start,velocity_end)
+	else:
+            velocity_low = velocity_start
+        lower_channel = find_nearest(velocity,velocity_low)
+    else:
+        lower_channel = 0
+    if velocity_end is not None:
+        if velocity_start is not None:
+            velocity_up = max(velocity_start,velocity_end)
+	else:
+            velocity_up = velocity_end
+        upper_channel = find_nearest(velocity,velocity_up)
+    else:
+        upper_channel = -1
     print('channel-range: '+str(lower_channel)+' - '+str(upper_channel))
     print('velocity-range: '+str(velocity[lower_channel])+' - '+str(velocity[upper_channel]))
     moment_0_map = np.zeros((headerm0['NAXIS2'],headerm0['NAXIS1']))
