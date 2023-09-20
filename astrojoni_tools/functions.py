@@ -331,6 +331,7 @@ def moment_0(filename: Path, velocity_start: float = None, velocity_end: float =
     getting_ready('Computing moment 0')
     image = fits.getdata(filename)
     headerm0 = fits.getheader(filename)
+    header_save = md_header_2d(filename)
     velocity = velocity_axes(filename)
     velocity = velocity.round(decimals=4)
     if velocity_start is not None:
@@ -369,7 +370,7 @@ def moment_0(filename: Path, velocity_start: float = None, velocity_end: float =
     pathname = os.path.join(path_to_output, newname)
 
     if save_file is True:
-        fits.writeto(pathname, moment_0_map, header=headerm0, overwrite=True)
+        fits.writeto(pathname, moment_0_map, header=header_save, overwrite=True)
         print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
     else:
         print(newname.split('.fits')[0])
@@ -416,6 +417,7 @@ def moment_1(filename: Path,
     getting_ready('Computing moment 1')
     image = fits.getdata(filename)
     headerm1 = fits.getheader(filename)
+    header_save = md_header_2d(filename)
     velocity = velocity_axes(filename)
     velocity = velocity.round(decimals=4)
     lower_channel = find_nearest(velocity, velocity_start)
@@ -441,7 +443,7 @@ def moment_1(filename: Path,
     pathname = os.path.join(path_to_output, newname)
 
     if save_file is True:
-        fits.writeto(pathname, moment_1_map, header=headerm1, overwrite=True)
+        fits.writeto(pathname, moment_1_map, header=header_save, overwrite=True)
         print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
     else:
         print(newname.split('.fits')[0])
