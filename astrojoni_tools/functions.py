@@ -345,7 +345,7 @@ def moment_0(filename: Path, velocity_start: float = None, velocity_end: float =
     if velocity_end is not None:
         if velocity_start is not None:
             velocity_up = max(velocity_start,velocity_end)
-	else:
+        else:
             velocity_up = velocity_end
         upper_channel = find_nearest(velocity,velocity_up)
     else:
