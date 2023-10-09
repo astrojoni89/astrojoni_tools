@@ -327,8 +327,600 @@ document.write(`
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">#</a></h2>
 </section>
-<section id="astrojoni-tools-functions-module">
-<h2>astrojoni_tools.functions module<a class="headerlink" href="#astrojoni-tools-functions-module" title="Permalink to this heading">#</a></h2>
+<section id="module-astrojoni_tools.functions">
+<span id="astrojoni-tools-functions-module"></span><h2>astrojoni_tools.functions module<a class="headerlink" href="#module-astrojoni_tools.functions" title="Permalink to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.add_up_channels">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">add_up_channels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fitsfile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velocity_start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velocity_end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_to_output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#add_up_channels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.add_up_channels" title="Permalink to this definition">#</a></dt>
+<dd><p>Add up slices of a p-p-v FITS cube along the velocity axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fitsfile</strong> (<em>Path</em>) – Path to FITS file.</p></li>
+<li><p><strong>velocity_start</strong> (<em>float</em>) – Start velocity from which to sum up channels.</p></li>
+<li><p><strong>velocity_end</strong> (<em>float</em>) – End velocity up to which data summed up.</p></li>
+<li><p><strong>path_to_output</strong> (<em>str</em><em>, </em><em>optional</em>) – <dl class="simple">
+<dt>Path to output where moment 1 map will be saved.</dt><dd><p>By default, the subcube will be saved in the working directory.</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>save_file</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether moment 1 map should be saved as a file. Default is True.</p></li>
+<li><p><strong>suffix</strong> (<em>str</em><em>, </em><em>optional</em>) – Suffix of moment 1 filename.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>map_sum</strong> – Map of summed up channels.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.calculateLength">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">calculateLength</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filamentDatafile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pix_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#calculateLength"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.calculateLength" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.calculateLength_from_array">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">calculateLength_from_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filamentData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pix_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#calculateLength_from_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.calculateLength_from_array" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.calculateLength_worldcoords">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">calculateLength_worldcoords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filamentDatafile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#calculateLength_worldcoords"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.calculateLength_worldcoords" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.calculate_average_value_of_map">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">calculate_average_value_of_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fitsfile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pixel_array</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#calculate_average_value_of_map"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.calculate_average_value_of_map" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate an average value given a 2-D FITS map and pixel coordinates.
+If NaN values are present at specific coordinates, these coordinates will be ignored.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fitsfile</strong> (<em>path-like object</em><em> or </em><em>file-like object</em>) – Path to FITS file to get average value from.</p></li>
+<li><p><strong>pixel_array</strong> (<em>list</em>) – <dl class="simple">
+<dt>List of tuples containing pixel coordinates [(y0,x0),(y1,x1),…]</dt><dd><p>over which to average.</p>
+</dd>
+</dl>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>value_average</strong> (<em>float</em>) – Averaged value.</p></li>
+<li><p><strong>pixel_list_without_nan_values</strong> (<em>list</em>) – List of tuples containing pixel coordinates [(y0,x0),(y1,x1),…]
+at which data contain finite values.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.calculate_pixelArray_along_filament">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">calculate_pixelArray_along_filament</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filamentdata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">halfwidth_pc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance_of_source</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#calculate_pixelArray_along_filament"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.calculate_pixelArray_along_filament" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.calculate_spectrum">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">calculate_spectrum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fitsfile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pixel_array</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#calculate_spectrum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.calculate_spectrum" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate an average spectrum given a p-p-v FITS cube and pixel coordinates.
+If NaN values are present at specific coordinates, these coordinates will be ignored.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fitsfile</strong> (<em>Path</em>) – Path to FITS file to get average spectrum from.</p></li>
+<li><p><strong>pixel_array</strong> (<em>List</em>) – <dl class="simple">
+<dt>List of tuples containing pixel coordinates [(y0,x0),(y1,x1),…]</dt><dd><p>over which to average.</p>
+</dd>
+</dl>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>spectrum_average</strong> (<em>numpy.ndarray</em>) – Averaged spectrum.</p></li>
+<li><p><strong>pixel_list_without_nan_values</strong> (<em>List</em>) – List of tuples containing pixel coordinates [(y0,x0),(y1,x1),…]
+at which data contain finite values.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.channel_averaged">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">channel_averaged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fitsfile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velocity_start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velocity_end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_to_output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#channel_averaged"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.channel_averaged" title="Permalink to this definition">#</a></dt>
+<dd><p>Average slices of a p-p-v FITS cube along the velocity axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fitsfile</strong> (<em>path-like object</em><em> or </em><em>file-like object</em>) – Path to FITS file.</p></li>
+<li><p><strong>velocity_start</strong> (<em>float</em>) – Start velocity from which to sum up channels.</p></li>
+<li><p><strong>velocity_end</strong> (<em>float</em>) – End velocity up to which data summed up.</p></li>
+<li><p><strong>path_to_output</strong> (<em>str</em><em>, </em><em>optional</em>) – <dl class="simple">
+<dt>Path to output where moment 1 map will be saved.</dt><dd><p>By default, the subcube will be saved in the working directory.</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>save_file</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether moment 1 map should be saved as a file. Default is True.</p></li>
+<li><p><strong>suffix</strong> (<em>str</em><em>, </em><em>optional</em>) – Suffix of moment 1 filename.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>average_map</strong> – Map of averaged channels.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.convert_jtok_huge_dataset">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">convert_jtok_huge_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#convert_jtok_huge_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.convert_jtok_huge_dataset" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.convert_jybeam_to_kelvin">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">convert_jybeam_to_kelvin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_to_output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#convert_jybeam_to_kelvin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.convert_jybeam_to_kelvin" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.estimate_cont_noise">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">estimate_cont_noise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inner_pct</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outer_pct</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#estimate_cont_noise"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.estimate_cont_noise" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.find_common_beam">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">find_common_beam</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filenames</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#find_common_beam"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.find_common_beam" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.find_nearest">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">find_nearest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#find_nearest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.find_nearest" title="Permalink to this definition">#</a></dt>
+<dd><p>Find the index of an element in an array nearest to a given value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>array</strong> (<em>numpy.ndarray</em>) – Input array to index.</p></li>
+<li><p><strong>value</strong> (<em>float</em>) – Value of the element to find the closest index for.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>idx</strong> – Index of the element with value closest to ‘value’.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.get_off_diagonal">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">get_off_diagonal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#get_off_diagonal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.get_off_diagonal" title="Permalink to this definition">#</a></dt>
+<dd><p>Extract both a list of pixel coordinate tuples [(y0,x0),(y1,x1),…,(yn,xn)] and a tuple ((y0,y1,…,yn),(x0,x1,…,xn))
+corresponding to off diagonal elements of a 2D numpy.ndarray</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – Name of file.</p></li>
+<li><p><strong>offset</strong> (<em>int</em>) – y-axis offset from diagonal in units of pixels.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>pixel_coords</strong> (<em>list</em>) – List of pixel coordinates [(y0,x0),(y1,x1),…,(yn,xn)].</p></li>
+<li><p><strong>indices_np</strong> (<em>tuple</em>) – Tuple of pixel indices ((y0,y1,…,yn),(x0,x1,…,xn)) to index a numpy.ndarray.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.getting_ready">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">getting_ready</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#getting_ready"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.getting_ready" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.jansky_to_kelvin">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">jansky_to_kelvin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta_2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#jansky_to_kelvin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.jansky_to_kelvin" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.latitude_axes">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">latitude_axes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#latitude_axes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.latitude_axes" title="Permalink to this definition">#</a></dt>
+<dd><p>Get latitude axis from FITS file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>Path</em>) – Path to FITS file to get latitude axis from.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>velocity</strong> – Array of latitude axis.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.longitude_axes">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">longitude_axes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#longitude_axes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.longitude_axes" title="Permalink to this definition">#</a></dt>
+<dd><p>Get longitude axis from FITS file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>Path</em>) – Path to FITS file to get longitude axis from.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>velocity</strong> – Array of longitude axis.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.make_lv">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">make_lv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'avg'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_to_output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#make_lv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.make_lv" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a longitude-velocity map from a datacube.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>str</em>) – Path to file to create a longitude-velocity map from.</p></li>
+<li><p><strong>mode</strong> (<em>str</em>) – Mode to compute the value of collapsed latitude axis.
+‘avg’ is the arithmetic mean along the latitude axis.
+‘max’ gives the maximum value along the latitude axis.
+‘sum’ gives thes sum along the latitude axis.
+‘weighted’ gives a weighted arithmetic mean along the latitude axis.</p></li>
+<li><p><strong>weights</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to file containing weights. Needs to be of same shape as data of filename.</p></li>
+<li><p><strong>noise</strong> (<em>float</em>) – Noise to use as a threshold. Every pixel value below the noise will be masked.</p></li>
+<li><p><strong>path_to_output</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to output where subcube will be saved. By default, the subcube will be saved in the working directory.</p></li>
+<li><p><strong>suffix</strong> (<em>str</em><em>, </em><em>optional</em>) – Suffix that is appended to output filename.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.make_subcube">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">make_subcube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cubedata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">longitudes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latitudes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velo_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_to_output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#make_subcube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.make_subcube" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a subcube from an existing SpectralCube (or 2D Projection) given some coordinate ranges.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>str</em>) – Path to file to create a subcube from.</p></li>
+<li><p><strong>cubedata</strong> (None or <code class="xref py py-class docutils literal notranslate"><span class="pre">SpectralCube</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">Projection</span></code>, optional) – SpectralCube of data if data is already read in. This option avoids reading data into memory again.</p></li>
+<li><p><strong>longitudes</strong> (<em>list</em>) – List of coordinate range of first world coordinate axis.</p></li>
+<li><p><strong>latitudes</strong> (<em>list</em>) – List of coordinate range of second world coordinate axis.</p></li>
+<li><p><strong>velo_range</strong> (<em>list</em>) – List of velocity range of spectral coordinate axis.</p></li>
+<li><p><strong>path_to_output</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to output where subcube will be saved. By default, the subcube will be saved in the working directory.</p></li>
+<li><p><strong>suffix</strong> (<em>str</em><em>, </em><em>optional</em>) – Suffix that is appended to output filename.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Option to print subcube info and save messages. Default is True.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.md_header_2d">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">md_header_2d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hdr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#md_header_2d"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.md_header_2d" title="Permalink to this definition">#</a></dt>
+<dd><p>Get 2D header from FITS file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fitsfile</strong> (<em>path-like object</em><em> or </em><em>file-like object</em>) – Path to FITS file to get header from.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>header_2d</strong> – Header object without third axis.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Header</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.moment_0">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">moment_0</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velocity_start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velocity_end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_to_output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_noise</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#moment_0"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.moment_0" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate the zeroth moment of a p-p-v FITS cube.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>Path</em>) – Path to FITS file.</p></li>
+<li><p><strong>velocity_start</strong> (<em>float</em>) – Start velocity from which to integrate.</p></li>
+<li><p><strong>velocity_end</strong> (<em>float</em>) – End velocity up to which data are integrated.</p></li>
+<li><p><strong>noise</strong> (<em>float</em><em>, </em><em>optional</em>) – <dl class="simple">
+<dt>Noise value of p-p-v data. If noise is given,</dt><dd><p>noise of the zeroth moment will be calculated.</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>path_to_output</strong> (<em>str</em><em>, </em><em>optional</em>) – <dl class="simple">
+<dt>Path to output where moment 0 map will be saved.</dt><dd><p>By default, the subcube will be saved in the working directory.</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>save_file</strong> (<em>bool</em>) – Whether moment 0 map should be saved as a file. Default is True.</p></li>
+<li><p><strong>output_noise</strong> (<em>bool</em>) – Whether moment 0 noise should be stored in a .txt file. Default is True.</p></li>
+<li><p><strong>suffix</strong> (<em>str</em>) – Suffix of moment 0 filename.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>moment_0_map</strong> – Zeroth moment map.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.moment_1">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">moment_1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velocity_start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velocity_end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_to_output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#moment_1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.moment_1" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate the intensity-weighted mean velocity (first moment) of a p-p-v FITS cube.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>Path</em>) – Path to FITS file.</p></li>
+<li><p><strong>velocity_start</strong> (<em>float</em>) – Start velocity from which to integrate.</p></li>
+<li><p><strong>velocity_end</strong> (<em>float</em>) – End velocity up to which data are integrated.</p></li>
+<li><p><strong>path_to_output</strong> (<em>str</em><em>, </em><em>optional</em>) – <dl class="simple">
+<dt>Path to output where moment 1 map will be saved.</dt><dd><p>By default, the subcube will be saved in the working directory.</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>save_file</strong> (<em>bool</em>) – Whether moment 1 map should be saved as a file. Default is True.</p></li>
+<li><p><strong>suffix</strong> (<em>str</em><em>, </em><em>optional</em>) – Suffix of moment 1 filename.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>moment_1_map</strong> – First moment map.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.pixel_annulus_calculation">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">pixel_annulus_calculation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fitsfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">longitude</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latitude</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_out</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#pixel_annulus_calculation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.pixel_annulus_calculation" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.pixel_box_calculation">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">pixel_box_calculation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fitsfile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">longitude</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latitude</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#pixel_box_calculation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.pixel_box_calculation" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>longitude</strong> (<em>float</em>) – [deg]</p></li>
+<li><p><strong>latitude</strong> (<em>float</em>) – [deg]</p></li>
+<li><p><strong>a</strong> (<em>total size</em><em> of </em><em>longitude</em><em>,</em><em>latitude box in arcsec</em>) – </p></li>
+<li><p><strong>b</strong> (<em>total size</em><em> of </em><em>longitude</em><em>,</em><em>latitude box in arcsec</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>give central coordinates, size of box and fitsfile and it returns array with the corresponding pixels</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.pixel_circle_calculation">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">pixel_circle_calculation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fitsfile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xcoord</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ycoord</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#pixel_circle_calculation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.pixel_circle_calculation" title="Permalink to this definition">#</a></dt>
+<dd><p>Extract both a list of pixels [(y0,x0),(y1,x1),…] and a tuple ((y0,y1,…),(x0,x1,…))
+corresponding to the circle region with central coordinates xcoord, ycoord, and radius r.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fitsfile</strong> (<em>Path</em>) – Path to FITS file.</p></li>
+<li><p><strong>xcoord</strong> (<em>numpy.ndarray</em><em> | </em><em>float</em>) – x-coordinate of central pixel in units given in the header.</p></li>
+<li><p><strong>ycoord</strong> (<em>numpy.ndarray</em><em> | </em><em>float</em>) – y-coordinate of central pixel in units given in the header.</p></li>
+<li><p><strong>r</strong> (<em>float</em>) – Radius of region in units of arcseconds.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>pixel_coords</strong> (<em>List</em>) – List of pixel coordinates [(y0,x0),(y1,x1),…].</p></li>
+<li><p><strong>indices_np</strong> (<em>Tuple</em>) – Tuple of pixel indices ((y0,y1,…),(x0,x1,…)) to index a numpy.ndarray.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.pixel_circle_calculation_px">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">pixel_circle_calculation_px</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fitsfile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#pixel_circle_calculation_px"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.pixel_circle_calculation_px" title="Permalink to this definition">#</a></dt>
+<dd><p>Extract both a list of pixels [(y0,x0),(y1,x1),…] and a tuple ((y0,y1,…),(x0,x1,…))
+corresponding to the circle region with central pixels x, y, and radius r.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fitsfile</strong> (<em>Path</em>) – Path to FITS file.</p></li>
+<li><p><strong>x</strong> (<em>numpy.ndarray</em><em> or </em><em>float</em>) – Central x pixel.</p></li>
+<li><p><strong>y</strong> (<em>numpy.ndarray</em><em> or </em><em>float</em>) – Central y pixel.</p></li>
+<li><p><strong>r</strong> (<em>float</em>) – Radius of region in units of arcseconds.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>pixel_array</strong> (<em>List</em>) – List of pixel coordinates [(y0,x0),(y1,x1),…].</p></li>
+<li><p><strong>indices_np</strong> (<em>Tuple</em>) – Tuple of pixel indices ((y0,y1,…),(x0,x1,…)) to index a numpy.ndarray.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.pixel_ellipse_annulus_calculation">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">pixel_ellipse_annulus_calculation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">center_x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">center_y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_out</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_out</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#pixel_ellipse_annulus_calculation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.pixel_ellipse_annulus_calculation" title="Permalink to this definition">#</a></dt>
+<dd><p>Extract both a list of pixels [(y0,x0),(y1,x1),…,(yn,xn)] and a tuple ((y0,y1,…,yn),(x0,x1,…,xn))
+corresponding to the ellipse annulus region with central coordinates center_x, center_y,
+and inner and outer semimajor/semiminor axes x_in, x_out/ y_in, y_out (or the other way around).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>center_x</strong> (<em>int</em>) – x-coordinate of central pixel in pixel units.</p></li>
+<li><p><strong>center_y</strong> (<em>int</em>) – y-coordinate of central pixel in pixel units.</p></li>
+<li><p><strong>x_in</strong> (<em>int</em>) – inner semimajor/minor axis of region along x-axis in pixel units.</p></li>
+<li><p><strong>x_out</strong> (<em>int</em>) – outer semimajor/minor axis of region along x-axis in pixel units.</p></li>
+<li><p><strong>y_in</strong> (<em>int</em>) – inner semimajor/minor axis of region along y-axis in pixel units.</p></li>
+<li><p><strong>y_out</strong> (<em>int</em>) – outer semimajor/minor axis of region along y-axis in pixel units.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>pixel_coords</strong> (<em>list</em>) – List of pixel coordinates [(y0,x0),(y1,x1),…,(yn,xn)].</p></li>
+<li><p><strong>indices_np</strong> (<em>tuple</em>) – Tuple of pixel indices ((y0,y1,…,yn),(x0,x1,…,xn)) to index a numpy.ndarray.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.pixel_ellipse_calculation">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">pixel_ellipse_calculation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">central_pixel_x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">central_pixel_y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a_pixel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b_pixel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#pixel_ellipse_calculation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.pixel_ellipse_calculation" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.pixel_to_world">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">pixel_to_world</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fitsfile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#pixel_to_world"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.pixel_to_world" title="Permalink to this definition">#</a></dt>
+<dd><p>Convert pixel coordinates to world coordinates from a FITS file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fitsfile</strong> (<em>str</em>) – Path to FITS file to get coordinates from.</p></li>
+<li><p><strong>x</strong> (<em>float</em>) – Pixel coordinate on the x-axis of the FITS file.</p></li>
+<li><p><strong>y</strong> (<em>float</em>) – Pixel coordinate on the y-axis of the FITS file.</p></li>
+<li><p><strong>ch</strong> (<em>float</em><em>, </em><em>optional</em>) – Velocity channel to convert (default is 0.).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>result</strong> – Returns the world coordinates. If the input was a single array and origin,
+a single array is returned, otherwise a tuple of arrays is returned.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.rebin">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">rebin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">newshape</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#rebin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.rebin" title="Permalink to this definition">#</a></dt>
+<dd><p>Rebin an array to a new shape.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.reproject_cube">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">reproject_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'spatial'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_to_output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_huge_operations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datatype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'regular'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#reproject_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.reproject_cube" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.save_fits">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">save_fits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename_basis</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'_new'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_to_output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#save_fits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.save_fits" title="Permalink to this definition">#</a></dt>
+<dd><p>Save FITS file with given filename + suffix at a given location.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename_basis</strong> (<em>Path</em>) – Path to FITS file to use as a basis for the new filename.</p></li>
+<li><p><strong>data</strong> (<em>numpy.ndarray</em>) – Data to save under the new filename.</p></li>
+<li><p><strong>header</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Header</span></code>) – <dl class="simple">
+<dt>Header object that is associated with ‘data’.</dt><dd><p>If None, a header of the appropriate type is created for the supplied data.</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>suffix</strong> (<em>str</em><em>, </em><em>optional</em>) – Suffix to append to new filename. Default is ‘_new’.</p></li>
+<li><p><strong>path_to_output</strong> (<em>str</em>) – Path to output where FITS will be saved.</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments are passed to
+<code class="xref py py-func docutils literal notranslate"><span class="pre">writeto()</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.smooth_1d">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">smooth_1d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">11</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'hanning'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#smooth_1d"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.smooth_1d" title="Permalink to this definition">#</a></dt>
+<dd><p>smooth the data using a window with requested size.
+input:</p>
+<blockquote>
+<div><p>x: the input signal
+window_len: the dimension of the smoothing window; should be an odd integer
+window: the type of window from ‘flat’, ‘hanning’, ‘hamming’, ‘bartlett’, ‘blackman’</p>
+<blockquote>
+<div><p>flat window will produce a moving average smoothing.</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="simple">
+<dt>output:</dt><dd><p>the smoothed signal</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.smooth_2">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">smooth_2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spectrum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#smooth_2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.smooth_2" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.smooth_ave">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">smooth_ave</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spectrum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#smooth_ave"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.smooth_ave" title="Permalink to this definition">#</a></dt>
+<dd><p>spectrum has to be of shape (N, 2)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.spatial_smooth">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">spatial_smooth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beam</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">major</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_to_output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_huge_operations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datatype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'regular'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#spatial_smooth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.spatial_smooth" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.velocity_axes">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">velocity_axes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#velocity_axes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.velocity_axes" title="Permalink to this definition">#</a></dt>
+<dd><p>Get velocity axis from FITS file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>Path</em>) – Path to FITS file to get velocity axis from.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>velocity</strong> – Array of velocity axis.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.world_to_pixel">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">world_to_pixel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fitsfile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">longitude</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latitude</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velocity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#world_to_pixel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.world_to_pixel" title="Permalink to this definition">#</a></dt>
+<dd><p>Convert world coordinates to pixel coordinates from a FITS file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fitsfile</strong> (<em>Path</em>) – Path to FITS file to get coordinates from.</p></li>
+<li><p><strong>longitude</strong> (<em>float</em>) – World coordinate value along the x-axis of the FITS file, e.g. longitude.</p></li>
+<li><p><strong>latitude</strong> (<em>float</em>) – World coordinate value along the y-axis of the FITS file, e.g. latitude.</p></li>
+<li><p><strong>velocity</strong> (<em>float</em><em>, </em><em>optional</em>) – Velocity value to convert (default is 0.).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>result</strong> – Returns the pixel coordinates. If the input was a single array and origin,
+a single array is returned, otherwise a tuple of arrays is returned.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 <section id="module-astrojoni_tools.ism">
 <span id="astrojoni-tools-ism-module"></span><h2>astrojoni_tools.ism module<a class="headerlink" href="#module-astrojoni_tools.ism" title="Permalink to this heading">#</a></h2>
@@ -565,7 +1157,48 @@ To convert to FWHM: thermal_lw * np.sqrt(8*np.log(2)).</p>
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#subpackages">Subpackages</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni-tools-functions-module">astrojoni_tools.functions module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-astrojoni_tools.functions">astrojoni_tools.functions module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.add_up_channels"><code class="docutils literal notranslate"><span class="pre">add_up_channels()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.calculateLength"><code class="docutils literal notranslate"><span class="pre">calculateLength()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.calculateLength_from_array"><code class="docutils literal notranslate"><span class="pre">calculateLength_from_array()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.calculateLength_worldcoords"><code class="docutils literal notranslate"><span class="pre">calculateLength_worldcoords()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.calculate_average_value_of_map"><code class="docutils literal notranslate"><span class="pre">calculate_average_value_of_map()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.calculate_pixelArray_along_filament"><code class="docutils literal notranslate"><span class="pre">calculate_pixelArray_along_filament()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.calculate_spectrum"><code class="docutils literal notranslate"><span class="pre">calculate_spectrum()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.channel_averaged"><code class="docutils literal notranslate"><span class="pre">channel_averaged()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.convert_jtok_huge_dataset"><code class="docutils literal notranslate"><span class="pre">convert_jtok_huge_dataset()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.convert_jybeam_to_kelvin"><code class="docutils literal notranslate"><span class="pre">convert_jybeam_to_kelvin()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.estimate_cont_noise"><code class="docutils literal notranslate"><span class="pre">estimate_cont_noise()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.find_common_beam"><code class="docutils literal notranslate"><span class="pre">find_common_beam()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.find_nearest"><code class="docutils literal notranslate"><span class="pre">find_nearest()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.get_off_diagonal"><code class="docutils literal notranslate"><span class="pre">get_off_diagonal()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.getting_ready"><code class="docutils literal notranslate"><span class="pre">getting_ready()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.jansky_to_kelvin"><code class="docutils literal notranslate"><span class="pre">jansky_to_kelvin()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.latitude_axes"><code class="docutils literal notranslate"><span class="pre">latitude_axes()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.longitude_axes"><code class="docutils literal notranslate"><span class="pre">longitude_axes()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.make_lv"><code class="docutils literal notranslate"><span class="pre">make_lv()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.make_subcube"><code class="docutils literal notranslate"><span class="pre">make_subcube()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.md_header_2d"><code class="docutils literal notranslate"><span class="pre">md_header_2d()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.moment_0"><code class="docutils literal notranslate"><span class="pre">moment_0()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.moment_1"><code class="docutils literal notranslate"><span class="pre">moment_1()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.pixel_annulus_calculation"><code class="docutils literal notranslate"><span class="pre">pixel_annulus_calculation()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.pixel_box_calculation"><code class="docutils literal notranslate"><span class="pre">pixel_box_calculation()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.pixel_circle_calculation"><code class="docutils literal notranslate"><span class="pre">pixel_circle_calculation()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.pixel_circle_calculation_px"><code class="docutils literal notranslate"><span class="pre">pixel_circle_calculation_px()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.pixel_ellipse_annulus_calculation"><code class="docutils literal notranslate"><span class="pre">pixel_ellipse_annulus_calculation()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.pixel_ellipse_calculation"><code class="docutils literal notranslate"><span class="pre">pixel_ellipse_calculation()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.pixel_to_world"><code class="docutils literal notranslate"><span class="pre">pixel_to_world()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.rebin"><code class="docutils literal notranslate"><span class="pre">rebin()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.reproject_cube"><code class="docutils literal notranslate"><span class="pre">reproject_cube()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.save_fits"><code class="docutils literal notranslate"><span class="pre">save_fits()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.smooth_1d"><code class="docutils literal notranslate"><span class="pre">smooth_1d()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.smooth_2"><code class="docutils literal notranslate"><span class="pre">smooth_2()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.smooth_ave"><code class="docutils literal notranslate"><span class="pre">smooth_ave()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.spatial_smooth"><code class="docutils literal notranslate"><span class="pre">spatial_smooth()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.velocity_axes"><code class="docutils literal notranslate"><span class="pre">velocity_axes()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.world_to_pixel"><code class="docutils literal notranslate"><span class="pre">world_to_pixel()</span></code></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-astrojoni_tools.ism">astrojoni_tools.ism module</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.ism.calculate_gal_radius_from_distance"><code class="docutils literal notranslate"><span class="pre">calculate_gal_radius_from_distance()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.ism.hi_coldens"><code class="docutils literal notranslate"><span class="pre">hi_coldens()</span></code></a></li>
