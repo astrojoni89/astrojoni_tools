@@ -871,7 +871,8 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
     verbose : bool, optional
         Option to print subcube info and save messages. Default is True.
     """
-    getting_ready('Making subcube')
+    if verbose:
+        getting_ready('Making subcube')
     if cubedata is None:
         data = fits.open(filename)  # Open the FITS file for reading
         try:
@@ -881,7 +882,8 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
         data.close()  # Close the FITS file - we already read it in and don't need it anymore!
     else:
         cube = cubedata
-    print(cube)
+    if verbose:
+        print(cube)
 
     # extract coordinates
     if cube.ndim == 3:
