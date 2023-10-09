@@ -849,7 +849,7 @@ def get_off_diagonal(name, offset=0):
     return pixel_coords, indices_np
 
 
-def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_range=None, path_to_output='.', suffix='', save_file=True, verbose=True):
+def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_range=None, path_to_output='.', suffix='', return_data=False, save_file=True, verbose=True):
     """Create a subcube from an existing SpectralCube (or 2D Projection) given some coordinate ranges.
     
     Parameters
@@ -868,6 +868,8 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
         Path to output where subcube will be saved. By default, the subcube will be saved in the working directory.
     suffix : str, optional
         Suffix that is appended to output filename.
+    return_data : bool, optional
+        Option to return data of the subcube. Default is False.
     save_file : bool, optional
         Whether subcube should be saved as a file. Default is True.
     verbose : bool, optional
@@ -942,6 +944,8 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
         sub_cube.write(pathname, format='fits', overwrite=True)
         if verbose:
             print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
+    if return_data:
+        return sub_cube
 
 
 def make_lv(filename, mode='avg', weights=None, noise=None, path_to_output='.', suffix=''):
