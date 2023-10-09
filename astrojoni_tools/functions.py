@@ -369,7 +369,7 @@ def moment_0(filename: Path, velocity_start: float = None, velocity_end: float =
     newname = filename_base + f'_mom-0_{np.around(velocity[lower_channel],decimals=1):05.1f}_to_{np.around(velocity[upper_channel],decimals=1):05.1f}km-s' + suffix + '.fits'
     pathname = os.path.join(path_to_output, newname)
 
-    if save_file is True:
+    if save_file:
         fits.writeto(pathname, moment_0_map, header=header_save, overwrite=True)
         print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
     else:
@@ -442,7 +442,7 @@ def moment_1(filename: Path,
     newname = filename_base + '_mom-1_' + str(np.around(velocity[lower_channel],decimals=1)) + '_to_' + str(np.around(velocity[upper_channel],decimals=1)) + 'km-s' + suffix + '.fits'
     pathname = os.path.join(path_to_output, newname)
 
-    if save_file is True:
+    if save_file:
         fits.writeto(pathname, moment_1_map, header=header_save, overwrite=True)
         print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
     else:
@@ -501,7 +501,7 @@ def add_up_channels(fitsfile: Path, velocity_start: float,
     newname = filename_base + '_sum_' + str(np.around(velocity[lower_channel],decimals=1)) + '_to_' + str(np.around(velocity[upper_channel],decimals=1)) + 'km-s' + suffix + '.fits'
     pathname = os.path.join(path_to_output, newname)
 
-    if save_file is True:
+    if save_file:
         fits.writeto(pathname, map_sum, header=header, overwrite=True)
         print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
     else:
@@ -849,7 +849,7 @@ def get_off_diagonal(name, offset=0):
     return pixel_coords, indices_np
 
 
-def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_range=None, path_to_output='.', suffix='', verbose=True):
+def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_range=None, path_to_output='.', suffix='', save_file=True, verbose=True):
     """Create a subcube from an existing SpectralCube (or 2D Projection) given some coordinate ranges.
     
     Parameters
@@ -868,6 +868,8 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
         Path to output where subcube will be saved. By default, the subcube will be saved in the working directory.
     suffix : str, optional
         Suffix that is appended to output filename.
+    save_file : bool, optional
+        Whether subcube should be saved as a file. Default is True.
     verbose : bool, optional
         Option to print subcube info and save messages. Default is True.
     """
@@ -932,13 +934,14 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
     if verbose:
         print(sub_cube)
     
-    filename_wext = os.path.basename(filename)
-    filename_base, file_extension = os.path.splitext(filename_wext)
-    newname = filename_base + '_subcube' + suffix + '.fits'
-    pathname = os.path.join(path_to_output, newname)
-    sub_cube.write(pathname, format='fits', overwrite=True)
-    if verbose:
-        print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
+    if save_file:
+        filename_wext = os.path.basename(filename)
+        filename_base, file_extension = os.path.splitext(filename_wext)
+        newname = filename_base + '_subcube' + suffix + '.fits'
+        pathname = os.path.join(path_to_output, newname)
+        sub_cube.write(pathname, format='fits', overwrite=True)
+        if verbose:
+            print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
 
 
 def make_lv(filename, mode='avg', weights=None, noise=None, path_to_output='.', suffix=''):
