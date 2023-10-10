@@ -900,7 +900,8 @@ def make_subcube(filename, cubedata=None, longitudes=None, latitudes=None, velo_
 
     # Define desired coordinate range
     physical_types = cube.wcs.world_axis_physical_types
-    print('\nMake sure to give coordinates in the frame of the data header: {}\n'.format(physical_types))
+    if verbose:
+        print('\nMake sure to give coordinates in the frame of the data header: {}\n'.format(physical_types))
     if latitudes is not None:
         lat_range = latitudes * u.deg
         lat_range_idx = sorted([find_nearest(b, lat_range[0]), find_nearest(b, lat_range[1])])
