@@ -522,6 +522,26 @@ corresponding to off diagonal elements of a 2D numpy.ndarray</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="astrojoni_tools.functions.get_slices">
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">get_slices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#get_slices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.get_slices" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate slices in individual direction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>size</strong> (<em>int</em>) – Size of chunk.</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – Number of chunks.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>slices</strong> – List of slices [slice(start,stop,step),…]</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="astrojoni_tools.functions.getting_ready">
 <span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">getting_ready</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#getting_ready"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.getting_ready" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
@@ -880,7 +900,7 @@ window: the type of window from ‘flat’, ‘hanning’, ‘hamming’, ‘bar
 
 <dl class="py function">
 <dt class="sig sig-object py" id="astrojoni_tools.functions.spectral_smooth">
-<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">spectral_smooth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_to_output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_huge_operations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datatype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'regular'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#spectral_smooth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.spectral_smooth" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">spectral_smooth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_to_output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_huge_operations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datatype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'regular'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#spectral_smooth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.spectral_smooth" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
@@ -1174,6 +1194,7 @@ To convert to FWHM: thermal_lw * np.sqrt(8*np.log(2)).</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.find_common_beam"><code class="docutils literal notranslate"><span class="pre">find_common_beam()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.find_nearest"><code class="docutils literal notranslate"><span class="pre">find_nearest()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.get_off_diagonal"><code class="docutils literal notranslate"><span class="pre">get_off_diagonal()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.get_slices"><code class="docutils literal notranslate"><span class="pre">get_slices()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.getting_ready"><code class="docutils literal notranslate"><span class="pre">getting_ready()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.jansky_to_kelvin"><code class="docutils literal notranslate"><span class="pre">jansky_to_kelvin()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#astrojoni_tools.functions.latitude_axes"><code class="docutils literal notranslate"><span class="pre">latitude_axes()</span></code></a></li>
