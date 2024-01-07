@@ -1213,17 +1213,16 @@ def spectral_smooth(filename, factor=None, target_resolution=None, path_to_outpu
         raise ValueError("Have to specify either `factor` or `target_resolution`.")
     
     if factor is not None:
+        target = factor * velocity_res_1
         spectral_smoothing_kernel = Gaussian1DKernel(stddev=factor/fwhm_to_sigma)
-        res_str = factor * velocity_res_1.value
     elif target_resolution is not None:
-        target_resolution = target_resolution * u.km/u.s
-        fwhm_gaussian = (target_resolution**2 - velocity_res_1**2)**0.5
+        target = target_resolution * u.km/u.s
+        fwhm_gaussian = (target**2 - velocity_res_1**2)**0.5
         spectral_smoothing_kernel = Gaussian1DKernel(stddev=fwhm_gaussian.to(u.km/u.s).value / fwhm_to_sigma)
-        res_str = target_resolution.value
 
     filename_wext = os.path.basename(filename)
     filename_base, file_extension = os.path.splitext(filename_wext)
-    newname = filename_base + f'_spectral_smooth_{res_str:.1f}kms' + suffix + '.fits'
+    newname = filename_base + f'_spectral_smooth_{target.value:.1f}kms' + suffix + '.fits'
     pathname = os.path.join(path_to_output, newname)
 
     if allow_huge_operations:
@@ -1238,10 +1237,11 @@ def spectral_smooth(filename, factor=None, target_resolution=None, path_to_outpu
         with tqdm(total=len(x_slices)) as pbar:
             for x_slice in x_slices:
                 smooth_slice = cube[slice(None,None,None),slice(None,None,None),x_slice].spectral_smooth(spectral_smoothing_kernel, **kwargs)
-                outfh[0].data[slice(None,None,None),slice(None,None,None),x_slice] = smooth_slice.array
+                outfh[0].data[slice(None,None,None),slice(None,None,None),x_slice] = smooth_slice.unmasked_data
                 outfh.flush() # write the data to disk
                 pbar.update(1)
-        outfh[0].header.update({'CDELT3' : res_str})
+        outfh[0].header.update({'CDELT3' : target.to(u.m/u.s).value})
+        outfh[0].header.update({'CUNIT3' : target.to(u.m/u.s).unit.to_string()})
         outfh.flush()
         print("\n\033[92mSAVED FILE:\033[0m '{}'".format(newname))
     else:
