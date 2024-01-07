@@ -43,6 +43,33 @@ def find_nearest(array: np.ndarray, value: float) -> int:
     return np.abs(array-value).argmin()
 
 
+def get_slices(size, n):
+    """Calculate slices in individual direction.
+    
+    Parameters
+    ----------
+    size : int
+        Size of chunk.
+    n : int
+        Number of chunks.
+
+    Returns
+    -------
+    slices : list
+        List of slices [slice(start,stop,step),...]
+    """
+    limits, slices = ([] for _ in range(2))
+
+    for i in range(n):
+        limits.append(i * size)
+    limits.append(None)
+
+    for a, b in zip(limits[:-1], limits[1:]):
+        slices.append(slice(a, b))
+
+    return slices
+
+
 def md_header_2d(hdr):
     """Get 2D header from FITS file.
 
@@ -1173,7 +1200,7 @@ def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_ou
         print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
 
 
-def spectral_smooth(filename, factor=None, target_resolution=None, path_to_output='.', suffix='', allow_huge_operations=False, datatype='regular', **kwargs): # smooth image with 2D Gaussian
+def spectral_smooth(filename, factor=None, target_resolution=None, path_to_output='.', suffix='', allow_huge_operations=False, datatype='regular', chunks=20, **kwargs): # smooth cube spectrally
     try:
         cube = SpectralCube.read(filename)
     except:
@@ -1204,10 +1231,14 @@ def spectral_smooth(filename, factor=None, target_resolution=None, path_to_outpu
     if datatype=='large':
         shutil.copy(filename, pathname)
         outfh = fits.open(newname, mode='update')
-        with tqdm(total=cube.shape[2]) as pbar:
-            for index in range(cube.shape[2]):
-                smooth_slice = cube[:,:,index].spectral_smooth(spectral_smoothing_kernel, **kwargs)
-                outfh[0].data[:,:,index] = smooth_slice.array
+        x = cube.header['NAXIS1']
+        x_size = int(x / chunks)
+        x_slices = get_slices(x_size, chunks)
+
+        with tqdm(total=len(x_slices)) as pbar:
+            for x_slice in x_slices:
+                smooth_slice = cube[slice(None,None,None),slice(None,None,None),x_slice].spectral_smooth(spectral_smoothing_kernel, **kwargs)
+                outfh[0].data[slice(None,None,None),slice(None,None,None),x_slice] = smooth_slice.array
                 outfh.flush() # write the data to disk
                 pbar.update(1)
         outfh[0].header.update({'CDELT3' : res_str})
