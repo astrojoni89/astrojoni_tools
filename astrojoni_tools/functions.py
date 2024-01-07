@@ -1,5 +1,6 @@
 import os
 import shutil
+import math
 from pathlib import Path
 from typing import Union, Optional, List, Tuple
 
@@ -11,6 +12,7 @@ from astropy.io import fits
 from astropy import constants as const
 from astropy.wcs import WCS, WCSSUB_SPECTRAL
 from spectral_cube import SpectralCube, Projection
+from astropy.convolution import Gaussian1DKernel
 from tqdm import tqdm, trange
 
 from .utils.wcs_utils import sanitize_wcs
@@ -745,13 +747,14 @@ def pixel_annulus_calculation(fitsfile, longitude, latitude, r_in, r_out):
     pixel_array = []
     for i_x in trange(int(np.round(px_start[0],decimals=0)-1),int(np.round(px_end[0],decimals=0)+1)):
         for i_y in range(int(np.round(px_start[1],decimals=0)-1),int(np.round(px_end[1],decimals=0)+1)):
-            if (sqrt((i_x-central_px[0])**2+(i_y-central_px[1])**2) > circle_in_px/2.) and (sqrt((i_x-central_px[0])**2+(i_y-central_px[1])**2)) < circle_out_px/2.:
+            if (np.sqrt((i_x-central_px[0])**2+(i_y-central_px[1])**2) > circle_in_px/2.) and (np.sqrt((i_x-central_px[0])**2+(i_y-central_px[1])**2)) < circle_out_px/2.:
                 pixel_array.append((i_x,i_y))
     return pixel_array
 
 
 #Calculate ellipse pixel:
 #TODO
+'''
 def pixel_ellipse_calculation(central_pixel_x,central_pixel_y,a_pixel,b_pixel):
     header = fits.getheader(fits_file)
     delta = -1*header['CDELT1'] #in degree
@@ -772,7 +775,7 @@ def pixel_ellipse_calculation(central_pixel_x,central_pixel_y,a_pixel,b_pixel):
             else:
                 u = 1
     return pixel_array
-
+'''
 
 #Calculate ellipse pixel annulus:
 def pixel_ellipse_annulus_calculation(center_x,center_y,x_in,x_out,y_in,y_out):
@@ -1169,6 +1172,52 @@ def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_ou
         smoothcube.write(pathname, format='fits', overwrite=True)
         print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
 
+
+def spectral_smooth(filename, factor=None, target_resolution=None, path_to_output='.', suffix='', allow_huge_operations=False, datatype='regular', **kwargs): # smooth image with 2D Gaussian
+    try:
+        cube = SpectralCube.read(filename)
+    except:
+        print("Could not open file as SpectralCube. Check the dimensions.")
+
+    fwhm_to_sigma = np.sqrt(8*np.log(2))
+    velocity_res_1 = np.diff(cube.spectral_axis)[0]
+
+    if factor is None and target_resolution is None:
+        raise ValueError("Have to specify either `factor` or `target_resolution`.")
+    
+    if factor is not None:
+        spectral_smoothing_kernel = Gaussian1DKernel(stddev=factor/fwhm_to_sigma)
+        res_str = factor * velocity_res_1.value
+    elif target_resolution is not None:
+        target_resolution = target_resolution * u.km/u.s
+        fwhm_gaussian = (target_resolution**2 - velocity_res_1**2)**0.5
+        spectral_smoothing_kernel = Gaussian1DKernel(stddev=fwhm_gaussian.to(u.km/u.s).value / fwhm_to_sigma)
+        res_str = target_resolution.value
+
+    filename_wext = os.path.basename(filename)
+    filename_base, file_extension = os.path.splitext(filename_wext)
+    newname = filename_base + f'_spectral_smooth_{res_str:.1f}kms' + suffix + '.fits'
+    pathname = os.path.join(path_to_output, newname)
+
+    if allow_huge_operations:
+        cube.allow_huge_operations = True
+    if datatype=='large':
+        shutil.copy(filename, pathname)
+        outfh = fits.open(newname, mode='update')
+        with tqdm(total=cube.shape[2]) as pbar:
+            for index in range(cube.shape[2]):
+                smooth_slice = cube[:,:,index].spectral_smooth(spectral_smoothing_kernel, **kwargs)
+                outfh[0].data[:,:,index] = smooth_slice.array
+                outfh.flush() # write the data to disk
+                pbar.update(1)
+        outfh[0].header.update({'CDELT3' : res_str})
+        outfh.flush()
+        print("\n\033[92mSAVED FILE:\033[0m '{}'".format(newname))
+    else:
+        smoothcube = cube.spectral_smooth(spectral_smoothing_kernel, **kwargs)
+        smoothcube.write(pathname, format='fits', overwrite=True)
+        print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
+
 	
 def reproject_cube(filename, template, axes='spatial', path_to_output='.', suffix='', allow_huge_operations=False, datatype='regular'):
     try:
@@ -1248,14 +1297,14 @@ def smooth_1d(x,window_len=11,window='hanning'): # smooth spectrum
     if not window in ['flat', 'hanning', 'hamming', 'bartlett', 'blackman']:
         raise ValueError("Window is on of 'flat', 'hanning', 'hamming', 'bartlett', 'blackman'")
 
-    s=numpy.r_[x[window_len-1:0:-1],x,x[-2:-window_len-1:-1]]
+    s=np.r_[x[window_len-1:0:-1],x,x[-2:-window_len-1:-1]]
     #print(len(s))
     if window == 'flat': #moving average
-        w=numpy.ones(window_len,'d')
+        w=np.ones(window_len,'d')
     else:
         w=eval('numpy.'+window+'(window_len)')
 
-    y=numpy.convolve(w/w.sum(),s,mode='valid')
+    y=np.convolve(w/w.sum(),s,mode='valid')
     return y[(round(window_len/2-1)):-(round(window_len/2))]
 
 
@@ -1265,7 +1314,7 @@ def rebin(a, newshape):
     assert len(a.shape) == len(newshape)
 
     slices = [slice(0,old, float(old)/new) for old,new in zip(a.shape,newshape)]
-    coordinates = mgrid[slices]
+    coordinates = np.mgrid[slices]
     indices = coordinates.astype('i') #choose the biggest smaller integer index
     return a[tuple(indices)]
 
@@ -1288,7 +1337,7 @@ def smooth_ave(spectrum):
 def smooth_2(spectrum):
     new_spectrum = np.repeat(np.nanmean(np.pad(spectrum.astype(float), ( 0, ((2 - spectrum.size%2) % 2) ), mode='edge').reshape(-1, 2), axis=1), repeats=2) #pad with edge_values at the end if odd number of channels
     if spectrum.size%2 == 0:
-        return y
+        return new_spectrum
     elif spectrum.size%2 == 1:
         return new_spectrum[:-1]
     else:
