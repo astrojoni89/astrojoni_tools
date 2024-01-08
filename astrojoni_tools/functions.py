@@ -1216,7 +1216,7 @@ def spectral_smooth(filename, factor=None, target_resolution=None, path_to_outpu
         target = factor * velocity_res_1
         spectral_smoothing_kernel = Gaussian1DKernel(stddev=factor/fwhm_to_sigma)
     elif target_resolution is not None:
-        target = target_resolution * u.km/u.s
+        target = target_resolution.to(u.km/u.s)
         fwhm_gaussian = (target**2 - velocity_res_1**2)**0.5
         spectral_smoothing_kernel = Gaussian1DKernel(stddev=fwhm_gaussian.to(u.km/u.s).value / fwhm_to_sigma)
 
@@ -1236,8 +1236,8 @@ def spectral_smooth(filename, factor=None, target_resolution=None, path_to_outpu
 
         with tqdm(total=len(x_slices)) as pbar:
             for x_slice in x_slices:
-                smooth_slice = cube[slice(None,None,None),slice(None,None,None),x_slice].spectral_smooth(spectral_smoothing_kernel, **kwargs)
-                outfh[0].data[slice(None,None,None),slice(None,None,None),x_slice] = smooth_slice.unmasked_data
+                smooth_slice = cube[:,:,x_slice].spectral_smooth(spectral_smoothing_kernel, **kwargs)
+                outfh[0].data[:,:,x_slice] = smooth_slice.unmasked_data[:].value
                 outfh.flush() # write the data to disk
                 pbar.update(1)
         outfh[0].header.update({'CDELT3' : target.to(u.m/u.s).value})
