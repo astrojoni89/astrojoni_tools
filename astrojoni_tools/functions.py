@@ -1240,8 +1240,9 @@ def spectral_smooth(filename, factor=None, target_resolution=None, path_to_outpu
                 outfh[0].data[:,:,x_slice] = smooth_slice.unmasked_data[:].value
                 outfh.flush() # write the data to disk
                 pbar.update(1)
-        outfh[0].header.update({'CDELT3' : target.to(u.m/u.s).value})
-        outfh[0].header.update({'CUNIT3' : target.to(u.m/u.s).unit.to_string()})
+        #CDELT (SAMPLING) IS STILL THE SAME; BUT RESOLUTION CHANGED
+        #outfh[0].header.update({'CDELT3' : target.to(u.m/u.s).value})
+        #outfh[0].header.update({'CUNIT3' : target.to(u.m/u.s).unit.to_string()})
         outfh.flush()
         print("\n\033[92mSAVED FILE:\033[0m '{}'".format(newname))
     else:
