@@ -339,11 +339,7 @@ document.write(`
 <li><p><strong>fitsfile</strong> (<em>Path</em>) – Path to FITS file.</p></li>
 <li><p><strong>velocity_start</strong> (<em>float</em>) – Start velocity from which to sum up channels.</p></li>
 <li><p><strong>velocity_end</strong> (<em>float</em>) – End velocity up to which data summed up.</p></li>
-<li><p><strong>path_to_output</strong> (<em>str</em><em>, </em><em>optional</em>) – <dl class="simple">
-<dt>Path to output where moment 1 map will be saved.</dt><dd><p>By default, the subcube will be saved in the working directory.</p>
-</dd>
-</dl>
-</p></li>
+<li><p><strong>path_to_output</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to output where moment 1 map will be saved. By default, the subcube will be saved in the working directory.</p></li>
 <li><p><strong>save_file</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether moment 1 map should be saved as a file. Default is True.</p></li>
 <li><p><strong>suffix</strong> (<em>str</em><em>, </em><em>optional</em>) – Suffix of moment 1 filename.</p></li>
 </ul>
@@ -381,18 +377,13 @@ If NaN values are present at specific coordinates, these coordinates will be ign
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fitsfile</strong> (<em>path-like object</em><em> or </em><em>file-like object</em>) – Path to FITS file to get average value from.</p></li>
-<li><p><strong>pixel_array</strong> (<em>list</em>) – <dl class="simple">
-<dt>List of tuples containing pixel coordinates [(y0,x0),(y1,x1),…]</dt><dd><p>over which to average.</p>
-</dd>
-</dl>
-</p></li>
+<li><p><strong>pixel_array</strong> (<em>list</em>) – List of tuples containing pixel coordinates [(y0,x0),(y1,x1),…] over which to average.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><strong>value_average</strong> (<em>float</em>) – Averaged value.</p></li>
-<li><p><strong>pixel_list_without_nan_values</strong> (<em>list</em>) – List of tuples containing pixel coordinates [(y0,x0),(y1,x1),…]
-at which data contain finite values.</p></li>
+<li><p><strong>pixel_list_without_nan_values</strong> (<em>list</em>) – List of tuples containing pixel coordinates [(y0,x0),(y1,x1),…] at which data contain finite values.</p></li>
 </ul>
 </p>
 </dd>
@@ -413,18 +404,13 @@ If NaN values are present at specific coordinates, these coordinates will be ign
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fitsfile</strong> (<em>Path</em>) – Path to FITS file to get average spectrum from.</p></li>
-<li><p><strong>pixel_array</strong> (<em>List</em>) – <dl class="simple">
-<dt>List of tuples containing pixel coordinates [(y0,x0),(y1,x1),…]</dt><dd><p>over which to average.</p>
-</dd>
-</dl>
-</p></li>
+<li><p><strong>pixel_array</strong> (<em>List</em>) – List of tuples containing pixel coordinates [(y0,x0),(y1,x1),…] over which to average.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><strong>spectrum_average</strong> (<em>numpy.ndarray</em>) – Averaged spectrum.</p></li>
-<li><p><strong>pixel_list_without_nan_values</strong> (<em>List</em>) – List of tuples containing pixel coordinates [(y0,x0),(y1,x1),…]
-at which data contain finite values.</p></li>
+<li><p><strong>pixel_list_without_nan_values</strong> (<em>List</em>) – List of tuples containing pixel coordinates [(y0,x0),(y1,x1),…] at which data contain finite values.</p></li>
 </ul>
 </p>
 </dd>
@@ -441,11 +427,7 @@ at which data contain finite values.</p></li>
 <li><p><strong>fitsfile</strong> (<em>path-like object</em><em> or </em><em>file-like object</em>) – Path to FITS file.</p></li>
 <li><p><strong>velocity_start</strong> (<em>float</em>) – Start velocity from which to sum up channels.</p></li>
 <li><p><strong>velocity_end</strong> (<em>float</em>) – End velocity up to which data summed up.</p></li>
-<li><p><strong>path_to_output</strong> (<em>str</em><em>, </em><em>optional</em>) – <dl class="simple">
-<dt>Path to output where moment 1 map will be saved.</dt><dd><p>By default, the subcube will be saved in the working directory.</p>
-</dd>
-</dl>
-</p></li>
+<li><p><strong>path_to_output</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to output where moment 1 map will be saved. By default, the subcube will be saved in the working directory.</p></li>
 <li><p><strong>save_file</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether moment 1 map should be saved as a file. Default is True.</p></li>
 <li><p><strong>suffix</strong> (<em>str</em><em>, </em><em>optional</em>) – Suffix of moment 1 filename.</p></li>
 </ul>
@@ -593,7 +575,8 @@ corresponding to off diagonal elements of a 2D numpy.ndarray</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>filename</strong> (<em>str</em>) – Path to file to create a longitude-velocity map from.</p></li>
-<li><p><strong>mode</strong> (<em>str</em>) – Mode to compute the value of collapsed latitude axis.
+<li><p><strong>mode</strong> (<em>str</em>) – 
+Mode to compute the value of collapsed latitude axis.
 <cite>‘avg’</cite> is the arithmetic mean along the latitude axis.
 <cite>‘max’</cite> gives the maximum value along the latitude axis.
 <cite>‘sum’</cite> gives thes sum along the latitude axis.
@@ -656,16 +639,8 @@ corresponding to off diagonal elements of a 2D numpy.ndarray</p>
 <li><p><strong>filename</strong> (<em>Path</em>) – Path to FITS file.</p></li>
 <li><p><strong>velocity_start</strong> (<em>float</em>) – Start velocity from which to integrate.</p></li>
 <li><p><strong>velocity_end</strong> (<em>float</em>) – End velocity up to which data are integrated.</p></li>
-<li><p><strong>noise</strong> (<em>float</em><em>, </em><em>optional</em>) – <dl class="simple">
-<dt>Noise value of p-p-v data. If noise is given,</dt><dd><p>noise of the zeroth moment will be calculated.</p>
-</dd>
-</dl>
-</p></li>
-<li><p><strong>path_to_output</strong> (<em>str</em><em>, </em><em>optional</em>) – <dl class="simple">
-<dt>Path to output where moment 0 map will be saved.</dt><dd><p>By default, the subcube will be saved in the working directory.</p>
-</dd>
-</dl>
-</p></li>
+<li><p><strong>noise</strong> (<em>float</em><em>, </em><em>optional</em>) – Noise value of p-p-v data. If noise is given, noise of the zeroth moment will be calculated.</p></li>
+<li><p><strong>path_to_output</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to output where moment 0 map will be saved. By default, the subcube will be saved in the working directory.</p></li>
 <li><p><strong>save_file</strong> (<em>bool</em>) – Whether moment 0 map should be saved as a file. Default is True.</p></li>
 <li><p><strong>output_noise</strong> (<em>bool</em>) – Whether moment 0 noise should be stored in a .txt file. Default is True.</p></li>
 <li><p><strong>suffix</strong> (<em>str</em>) – Suffix of moment 0 filename.</p></li>
@@ -690,11 +665,7 @@ corresponding to off diagonal elements of a 2D numpy.ndarray</p>
 <li><p><strong>filename</strong> (<em>Path</em>) – Path to FITS file.</p></li>
 <li><p><strong>velocity_start</strong> (<em>float</em>) – Start velocity from which to integrate.</p></li>
 <li><p><strong>velocity_end</strong> (<em>float</em>) – End velocity up to which data are integrated.</p></li>
-<li><p><strong>path_to_output</strong> (<em>str</em><em>, </em><em>optional</em>) – <dl class="simple">
-<dt>Path to output where moment 1 map will be saved.</dt><dd><p>By default, the subcube will be saved in the working directory.</p>
-</dd>
-</dl>
-</p></li>
+<li><p><strong>path_to_output</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to output where moment 1 map will be saved. By default, the subcube will be saved in the working directory.</p></li>
 <li><p><strong>save_file</strong> (<em>bool</em>) – Whether moment 1 map should be saved as a file. Default is True.</p></li>
 <li><p><strong>suffix</strong> (<em>str</em><em>, </em><em>optional</em>) – Suffix of moment 1 filename.</p></li>
 </ul>
@@ -716,7 +687,8 @@ corresponding to off diagonal elements of a 2D numpy.ndarray</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="astrojoni_tools.functions.pixel_box_calculation">
 <span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">pixel_box_calculation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fitsfile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">longitude</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latitude</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#pixel_box_calculation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.pixel_box_calculation" title="Permalink to this definition">#</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Given central coordinates, size of box, and fitsfile, return array with the corresponding pixels.</p>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>longitude</strong> (<em>float</em>) – [deg]</p></li>
@@ -725,8 +697,11 @@ corresponding to off diagonal elements of a 2D numpy.ndarray</p>
 <li><p><strong>b</strong> (<em>total size</em><em> of </em><em>longitude</em><em>,</em><em>latitude box in arcsec</em>) – </p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>give central coordinates, size of box and fitsfile and it returns array with the corresponding pixels</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>pixel_array</strong> – List of pixel coordinates within the box [(x1,y1), (x2,y2), …]</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
 </dd>
 </dl>
 </dd></dl>
@@ -820,8 +795,7 @@ and inner and outer semimajor/semiminor axes x_in, x_out/ y_in, y_out (or the ot
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>result</strong> – Returns the world coordinates. If the input was a single array and origin,
-a single array is returned, otherwise a tuple of arrays is returned.</p>
+<dd class="field-even"><p><strong>result</strong> – Returns the world coordinates. If the input was a single array and origin, a single array is returned, otherwise a tuple of arrays is returned.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>numpy.ndarray</p>
@@ -849,15 +823,10 @@ a single array is returned, otherwise a tuple of arrays is returned.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>filename_basis</strong> (<em>Path</em>) – Path to FITS file to use as a basis for the new filename.</p></li>
 <li><p><strong>data</strong> (<em>numpy.ndarray</em>) – Data to save under the new filename.</p></li>
-<li><p><strong>header</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Header</span></code>) – <dl class="simple">
-<dt>Header object that is associated with ‘data’.</dt><dd><p>If None, a header of the appropriate type is created for the supplied data.</p>
-</dd>
-</dl>
-</p></li>
+<li><p><strong>header</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Header</span></code>) – Header object that is associated with ‘data’. If None, a header of the appropriate type is created for the supplied data.</p></li>
 <li><p><strong>suffix</strong> (<em>str</em><em>, </em><em>optional</em>) – Suffix to append to new filename. Default is ‘_new’.</p></li>
 <li><p><strong>path_to_output</strong> (<em>str</em>) – Path to output where FITS will be saved.</p></li>
-<li><p><strong>**kwargs</strong> – Additional arguments are passed to
-<code class="xref py py-func docutils literal notranslate"><span class="pre">writeto()</span></code>.</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments are passed to <code class="xref py py-func docutils literal notranslate"><span class="pre">writeto()</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -896,7 +865,7 @@ window: the type of window from ‘flat’, ‘hanning’, ‘hamming’, ‘bar
 <dl class="py function">
 <dt class="sig sig-object py" id="astrojoni_tools.functions.spatial_smooth">
 <span class="sig-prename descclassname"><span class="pre">astrojoni_tools.functions.</span></span><span class="sig-name descname"><span class="pre">spatial_smooth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beam</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">major</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_to_output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_huge_operations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datatype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'regular'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/astrojoni_tools/functions.html#spatial_smooth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrojoni_tools.functions.spatial_smooth" title="Permalink to this definition">#</a></dt>
-<dd><p>Smooth an image or cube channel by channel with a 2D Gaussian</p>
+<dd><p>Smooth an image or cube channel by channel with a 2D Gaussian.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -908,10 +877,8 @@ window: the type of window from ‘flat’, ‘hanning’, ‘hamming’, ‘bar
 <li><p><strong>path_to_output</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to output where smoothed file will be saved. By default, the subcube will be saved in the working directory.</p></li>
 <li><p><strong>suffix</strong> (<em>str</em><em>, </em><em>optional</em>) – Suffix that is appended to output filename.</p></li>
 <li><p><strong>allow_huge_operations</strong> (<em>bool</em><em>, </em><em>optional</em>) – Option to read in files of size &gt;1gb. Default is False.</p></li>
-<li><p><strong>datatype</strong> (<em>str</em><em>, </em><em>optional</em>) – Allows the user to perform smoothing on whole file at once (<cite>‘regular’</cite>) or to write file channel by channel (<cite>‘large’</cite>).
-Default is ‘regular’.</p></li>
-<li><p><strong>**kwargs</strong> – Additional keyword arguments are passed to
-<code class="xref py py-func docutils literal notranslate"><span class="pre">convolve_to()</span></code> and the convolution function <code class="xref py py-func docutils literal notranslate"><span class="pre">convolve()</span></code>.</p></li>
+<li><p><strong>datatype</strong> (<em>str</em><em>, </em><em>optional</em>) – Allows the user to perform smoothing on whole file at once (<cite>‘regular’</cite>) or to write file channel by channel (<cite>‘large’</cite>). Default is ‘regular’.</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments are passed to <code class="xref py py-func docutils literal notranslate"><span class="pre">convolve_to()</span></code> and the convolution function <code class="xref py py-func docutils literal notranslate"><span class="pre">convolve()</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -930,11 +897,9 @@ Default is ‘regular’.</p></li>
 <li><p><strong>path_to_output</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to output where smoothed file will be saved. By default, the subcube will be saved in the working directory.</p></li>
 <li><p><strong>suffix</strong> (<em>str</em><em>, </em><em>optional</em>) – Suffix that is appended to output filename.</p></li>
 <li><p><strong>allow_huge_operations</strong> (<em>bool</em><em>, </em><em>optional</em>) – Option to read in files of size &gt;1gb. Default is False.</p></li>
-<li><p><strong>datatype</strong> (<em>str</em><em>, </em><em>optional</em>) – Allows the user to perform smoothing on whole file at once (<cite>‘regular’</cite>) or to write file channel by channel (<cite>‘large’</cite>).
-Default is ‘regular’.</p></li>
+<li><p><strong>datatype</strong> (<em>str</em><em>, </em><em>optional</em>) – Allows the user to perform smoothing on whole file at once (<cite>‘regular’</cite>) or to write file channel by channel (<cite>‘large’</cite>). Default is ‘regular’.</p></li>
 <li><p><strong>chunks</strong> (<em>int</em>) – Number of chunks data will be divided into if <cite>datatype=’large’</cite>. Default is 20.</p></li>
-<li><p><strong>**kwargs</strong> – Additional keyword arguments are passed to
-<code class="xref py py-func docutils literal notranslate"><span class="pre">spectral_smooth()</span></code>.</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments are passed to <code class="xref py py-func docutils literal notranslate"><span class="pre">spectral_smooth()</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -971,8 +936,7 @@ Default is ‘regular’.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>result</strong> – Returns the pixel coordinates. If the input was a single array and origin,
-a single array is returned, otherwise a tuple of arrays is returned.</p>
+<dd class="field-even"><p><strong>result</strong> – Returns the pixel coordinates. If the input was a single array and origin, a single array is returned, otherwise a tuple of arrays is returned.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>numpy.ndarray</p>
