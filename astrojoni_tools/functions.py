@@ -107,15 +107,13 @@ def save_fits(filename_basis: Path, data: np.ndarray,
     data : numpy.ndarray
         Data to save under the new filename.
     header : :class:`~astropy.io.fits.Header`
-        Header object that is associated with 'data'.
-	    If None, a header of the appropriate type is created for the supplied data.
+        Header object that is associated with 'data'. If None, a header of the appropriate type is created for the supplied data.
     suffix : str, optional
         Suffix to append to new filename. Default is '_new'.
     path_to_output : str
         Path to output where FITS will be saved.
     **kwargs
-        Additional arguments are passed to
-        :func:`~astropy.io.fits.writeto()`.
+        Additional arguments are passed to :func:`~astropy.io.fits.writeto()`.
     """
     filename_wext = os.path.basename(filename_basis)
     filename_base, file_extension = os.path.splitext(filename_wext)
@@ -203,8 +201,7 @@ def world_to_pixel(fitsfile: Path, longitude: float,
     Returns
     -------
     result : numpy.ndarray
-        Returns the pixel coordinates. If the input was a single array and origin,
-	a single array is returned, otherwise a tuple of arrays is returned.
+        Returns the pixel coordinates. If the input was a single array and origin, a single array is returned, otherwise a tuple of arrays is returned.
     """
     w = WCS(fitsfile)
     if w.wcs.naxis == 3:
@@ -232,8 +229,7 @@ def pixel_to_world(fitsfile: Path, x: float,
     Returns
     -------
     result : numpy.ndarray
-        Returns the world coordinates. If the input was a single array and origin,
-	a single array is returned, otherwise a tuple of arrays is returned.
+        Returns the world coordinates. If the input was a single array and origin, a single array is returned, otherwise a tuple of arrays is returned.
     """
     w = WCS(fitsfile)
     if w.wcs.naxis == 3:
@@ -253,16 +249,14 @@ def calculate_spectrum(fitsfile: Path, pixel_array: List) -> Tuple[np.ndarray, L
     fitsfile : Path
         Path to FITS file to get average spectrum from.
     pixel_array : List
-        List of tuples containing pixel coordinates [(y0,x0),(y1,x1),...]
-	    over which to average.
+        List of tuples containing pixel coordinates [(y0,x0),(y1,x1),...] over which to average.
 
     Returns
     -------
     spectrum_average : numpy.ndarray
         Averaged spectrum.
     pixel_list_without_nan_values : List
-        List of tuples containing pixel coordinates [(y0,x0),(y1,x1),...]
-	at which data contain finite values.
+        List of tuples containing pixel coordinates [(y0,x0),(y1,x1),...] at which data contain finite values.
     """
     header = fits.getheader(fitsfile)
     image = fits.getdata(fitsfile)
@@ -294,16 +288,14 @@ def calculate_average_value_of_map(fitsfile: Path, pixel_array: List) -> Tuple[f
     fitsfile : path-like object or file-like object
         Path to FITS file to get average value from.
     pixel_array : list
-        List of tuples containing pixel coordinates [(y0,x0),(y1,x1),...]
-	    over which to average.
+        List of tuples containing pixel coordinates [(y0,x0),(y1,x1),...] over which to average.
 
     Returns
     -------
     value_average : float
         Averaged value.
     pixel_list_without_nan_values : list
-        List of tuples containing pixel coordinates [(y0,x0),(y1,x1),...]
-	at which data contain finite values.
+        List of tuples containing pixel coordinates [(y0,x0),(y1,x1),...] at which data contain finite values.
     """
     image = fits.getdata(fitsfile)
     value_add = 0
@@ -341,11 +333,9 @@ def moment_0(filename: Path, velocity_start: float = None, velocity_end: float =
     velocity_end : float
         End velocity up to which data are integrated.
     noise : float, optional
-        Noise value of p-p-v data. If noise is given,
-	    noise of the zeroth moment will be calculated.
+        Noise value of p-p-v data. If noise is given, noise of the zeroth moment will be calculated.
     path_to_output : str, optional
-        Path to output where moment 0 map will be saved.
-	    By default, the subcube will be saved in the working directory.
+        Path to output where moment 0 map will be saved. By default, the subcube will be saved in the working directory.
     save_file : bool
         Whether moment 0 map should be saved as a file. Default is True.
     output_noise : bool
@@ -432,8 +422,7 @@ def moment_1(filename: Path,
     velocity_end : float
         End velocity up to which data are integrated.
     path_to_output : str, optional
-        Path to output where moment 1 map will be saved.
-	    By default, the subcube will be saved in the working directory.
+        Path to output where moment 1 map will be saved. By default, the subcube will be saved in the working directory.
     save_file : bool
         Whether moment 1 map should be saved as a file. Default is True.
     suffix : str, optional
@@ -495,8 +484,7 @@ def add_up_channels(fitsfile: Path, velocity_start: float,
     velocity_end : float
         End velocity up to which data summed up.
     path_to_output : str, optional
-        Path to output where moment 1 map will be saved.
-	    By default, the subcube will be saved in the working directory.
+        Path to output where moment 1 map will be saved. By default, the subcube will be saved in the working directory.
     save_file : bool, optional
         Whether moment 1 map should be saved as a file. Default is True.
     suffix : str, optional
@@ -554,8 +542,7 @@ def channel_averaged(fitsfile: Path, velocity_start: float,
     velocity_end : float
         End velocity up to which data summed up.
     path_to_output : str, optional
-        Path to output where moment 1 map will be saved.
-	    By default, the subcube will be saved in the working directory.
+        Path to output where moment 1 map will be saved. By default, the subcube will be saved in the working directory.
     save_file : bool, optional
         Whether moment 1 map should be saved as a file. Default is True.
     suffix : str, optional
@@ -710,7 +697,8 @@ def pixel_circle_calculation_px(fitsfile: Path,
 
 def pixel_box_calculation(fitsfile: Path, longitude: float,
                           latitude: float, a: float, b: float):
-    """
+    """Given central coordinates, size of box, and fitsfile, return array with the corresponding pixels.
+
     Parameters
     ----------
     longitude : float
@@ -721,7 +709,8 @@ def pixel_box_calculation(fitsfile: Path, longitude: float,
 
     Returns
     -------
-    give central coordinates, size of box and fitsfile and it returns array with the corresponding pixels 
+    pixel_array : list
+       List of pixel coordinates within the box [(x1,y1), (x2,y2), ...]
     """
     header = fits.getheader(fitsfile)
     w = WCS(fitsfile)
@@ -987,6 +976,7 @@ def make_lv(filename, mode='avg', weights=None, noise=None, path_to_output='.', 
     filename : str
         Path to file to create a longitude-velocity map from.
     mode : str
+        \b
         Mode to compute the value of collapsed latitude axis.
         `'avg'` is the arithmetic mean along the latitude axis.
         `'max'` gives the maximum value along the latitude axis.
@@ -1158,8 +1148,7 @@ def find_common_beam(filenames):
 
 
 def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_output='.', suffix='', allow_huge_operations=False, datatype='regular', **kwargs):
-    """
-    Smooth an image or cube channel by channel with a 2D Gaussian
+    """Smooth an image or cube channel by channel with a 2D Gaussian.
 
     Parameters
     ----------
@@ -1180,11 +1169,9 @@ def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_ou
     allow_huge_operations : bool, optional
         Option to read in files of size >1gb. Default is False.
     datatype : str, optional
-        Allows the user to perform smoothing on whole file at once (`'regular'`) or to write file channel by channel (`'large'`).
-        Default is 'regular'.
+        Allows the user to perform smoothing on whole file at once (`'regular'`) or to write file channel by channel (`'large'`). Default is 'regular'.
     **kwargs
-        Additional keyword arguments are passed to
-        :func:`~spectral_cube.SpectralCube.convolve_to()` and the convolution function :func:`~astropy.convolution.convolve()`.
+        Additional keyword arguments are passed to :func:`~spectral_cube.SpectralCube.convolve_to()` and the convolution function :func:`~astropy.convolution.convolve()`.
     """
     try:
         cube = SpectralCube.read(filename)
@@ -1229,8 +1216,7 @@ def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_ou
 
 
 def spectral_smooth(filename, factor=None, target_resolution=None, path_to_output='.', suffix='', allow_huge_operations=False, datatype='regular', chunks=20, **kwargs):
-    """
-    Smooth a cube spectrally.
+    """Smooth a cube spectrally.
 
     Parameters
     ----------
@@ -1247,13 +1233,11 @@ def spectral_smooth(filename, factor=None, target_resolution=None, path_to_outpu
     allow_huge_operations : bool, optional
         Option to read in files of size >1gb. Default is False.
     datatype : str, optional
-        Allows the user to perform smoothing on whole file at once (`'regular'`) or to write file channel by channel (`'large'`).
-        Default is 'regular'.
+        Allows the user to perform smoothing on whole file at once (`'regular'`) or to write file channel by channel (`'large'`). Default is 'regular'.
     chunks : int
         Number of chunks data will be divided into if `datatype='large'`. Default is 20.
     **kwargs
-        Additional keyword arguments are passed to
-        :func:`~spectral_cube.SpectralCube.spectral_smooth()`.
+        Additional keyword arguments are passed to :func:`~spectral_cube.SpectralCube.spectral_smooth()`.
     """
     try:
         cube = SpectralCube.read(filename)
