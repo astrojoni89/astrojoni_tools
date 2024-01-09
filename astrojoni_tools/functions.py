@@ -38,7 +38,7 @@ def find_nearest(array: np.ndarray, value: float) -> int:
     Returns
     -------
     idx : int
-        Index of the element with value closest to 'value'.
+        Index of the element with value closest to `value`.
     """
     return np.abs(array-value).argmin()
 
@@ -79,7 +79,7 @@ def md_header_2d(hdr):
         Path to FITS file to get header from.
     Returns
     -------
-    header_2d : :class:`~astropy.io.fits.Header`
+    header_2d : `~astropy.io.fits.Header <https://docs.astropy.org/en/stable/io/fits/api/headers.html#astropy.io.fits.Header>`__
         Header object without third axis.
     """
     if isinstance(hdr, (Path, str)):
@@ -106,14 +106,14 @@ def save_fits(filename_basis: Path, data: np.ndarray,
         Path to FITS file to use as a basis for the new filename.
     data : numpy.ndarray
         Data to save under the new filename.
-    header : :class:`~astropy.io.fits.Header`
-        Header object that is associated with 'data'. If None, a header of the appropriate type is created for the supplied data.
+    header : `~astropy.io.fits.Header <https://docs.astropy.org/en/stable/io/fits/api/headers.html#astropy.io.fits.Header>`__
+        Header object that is associated with `data`. If None, a header of the appropriate type is created for the supplied data.
     suffix : str, optional
         Suffix to append to new filename. Default is '_new'.
     path_to_output : str
         Path to output where FITS will be saved.
     **kwargs
-        Additional arguments are passed to :func:`astropy.io.fits.writeto()`.
+        Additional arguments are passed to :meth:`astropy.io.fits.writeto()`.
     """
     filename_wext = os.path.basename(filename_basis)
     filename_base, file_extension = os.path.splitext(filename_wext)
@@ -294,7 +294,7 @@ def calculate_average_value_of_map(fitsfile: Path, pixel_array: List) -> Tuple[f
     -------
     value_average : float
         Averaged value.
-    pixel_list_without_nan_values : list
+    pixel_list_without_nan_values : List
         List of tuples containing pixel coordinates [(y0,x0),(y1,x1),...] at which data contain finite values.
     """
     image = fits.getdata(fitsfile)
