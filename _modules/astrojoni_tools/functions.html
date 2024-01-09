@@ -1279,10 +1279,10 @@ document.write(`
 <span class="sd">        Path to file to create a longitude-velocity map from.</span>
 <span class="sd">    mode : str</span>
 <span class="sd">        Mode to compute the value of collapsed latitude axis.</span>
-<span class="sd">        &#39;avg&#39; is the arithmetic mean along the latitude axis.</span>
-<span class="sd">        &#39;max&#39; gives the maximum value along the latitude axis.</span>
-<span class="sd">        &#39;sum&#39; gives thes sum along the latitude axis.</span>
-<span class="sd">        &#39;weighted&#39; gives a weighted arithmetic mean along the latitude axis.</span>
+<span class="sd">        `&#39;avg&#39;` is the arithmetic mean along the latitude axis.</span>
+<span class="sd">        `&#39;max&#39;` gives the maximum value along the latitude axis.</span>
+<span class="sd">        `&#39;sum&#39;` gives thes sum along the latitude axis.</span>
+<span class="sd">        `&#39;weighted&#39;` gives a weighted arithmetic mean along the latitude axis.</span>
 <span class="sd">    weights : str, optional</span>
 <span class="sd">        Path to file containing weights. Needs to be of same shape as data of filename.</span>
 <span class="sd">    noise : float</span>
@@ -1448,7 +1448,35 @@ document.write(`
     <span class="k">return</span> <span class="n">common_beam</span></div>
 
 
-<div class="viewcode-block" id="spatial_smooth"><a class="viewcode-back" href="../../astrojoni_tools.html#astrojoni_tools.functions.spatial_smooth">[docs]</a><span class="k">def</span> <span class="nf">spatial_smooth</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">beam</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">major</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">minor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pa</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">path_to_output</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">allow_huge_operations</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="s1">&#39;regular&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> <span class="c1"># smooth image with 2D Gaussian</span>
+<div class="viewcode-block" id="spatial_smooth"><a class="viewcode-back" href="../../astrojoni_tools.html#astrojoni_tools.functions.spatial_smooth">[docs]</a><span class="k">def</span> <span class="nf">spatial_smooth</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">beam</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">major</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">minor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pa</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">path_to_output</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">allow_huge_operations</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="s1">&#39;regular&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Smooth an image or cube channel by channel with a 2D Gaussian</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    filename : str</span>
+<span class="sd">        Path to file to smooth.</span>
+<span class="sd">    beam : `~radio_beam.Beam &lt;https://radio-beam.readthedocs.io/en/latest/api/radio_beam.Beam.html#radio_beam.Beam&gt;`</span>
+<span class="sd">        Beam of the target resolution.</span>
+<span class="sd">    major : float</span>
+<span class="sd">        The FWHM major axis in units of [arcsec]. Has to be specified if no `beam` is given.</span>
+<span class="sd">    minor : float</span>
+<span class="sd">        The FWHM minor axis in units of [arcsec]. If not specified, will be assumed to be equal to `major`.</span>
+<span class="sd">    pa : float</span>
+<span class="sd">        The beam position angle.</span>
+<span class="sd">    path_to_output : str, optional</span>
+<span class="sd">        Path to output where smoothed file will be saved. By default, the subcube will be saved in the working directory.</span>
+<span class="sd">    suffix : str, optional</span>
+<span class="sd">        Suffix that is appended to output filename.</span>
+<span class="sd">    allow_huge_operations : bool, optional</span>
+<span class="sd">        Option to read in files of size &gt;1gb. Default is False.</span>
+<span class="sd">    datatype : str, optional</span>
+<span class="sd">        Allows the user to perform smoothing on whole file at once (`&#39;regular&#39;`) or to write file channel by channel (`&#39;large&#39;`).</span>
+<span class="sd">        Default is &#39;regular&#39;.</span>
+<span class="sd">    **kwargs</span>
+<span class="sd">        Additional keyword arguments are passed to</span>
+<span class="sd">        :func:`~spectral_cube.SpectralCube.convolve_to()` and the convolution function :func:`~astropy.convolution.convolve()`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">cube</span> <span class="o">=</span> <span class="n">SpectralCube</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
     <span class="k">except</span><span class="p">:</span>
@@ -1461,13 +1489,13 @@ document.write(`
         <span class="n">beam</span> <span class="o">=</span> <span class="n">radio_beam</span><span class="o">.</span><span class="n">Beam</span><span class="p">(</span><span class="n">major</span><span class="o">=</span><span class="n">major</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">arcsec</span><span class="p">,</span> <span class="n">minor</span><span class="o">=</span><span class="n">minor</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">arcsec</span><span class="p">,</span> <span class="n">pa</span><span class="o">=</span><span class="n">pa</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">beam</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">beam</span> <span class="o">=</span> <span class="n">beam</span>
-        <span class="n">major</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">beam</span><span class="o">.</span><span class="n">major</span><span class="o">.</span><span class="n">value</span> <span class="o">*</span> <span class="mi">3600</span><span class="p">,</span> <span class="n">decimals</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-        <span class="n">minor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">beam</span><span class="o">.</span><span class="n">minor</span><span class="o">.</span><span class="n">value</span> <span class="o">*</span> <span class="mi">3600</span><span class="p">,</span> <span class="n">decimals</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">major</span> <span class="o">=</span> <span class="n">beam</span><span class="o">.</span><span class="n">major</span>
+        <span class="n">minor</span> <span class="o">=</span> <span class="n">beam</span><span class="o">.</span><span class="n">minor</span>
     <span class="n">meanbeam</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">major</span><span class="o">*</span><span class="n">minor</span><span class="p">)</span> <span class="c1"># geometric mean</span>
 
     <span class="n">filename_wext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
     <span class="n">filename_base</span><span class="p">,</span> <span class="n">file_extension</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filename_wext</span><span class="p">)</span>
-    <span class="n">newname</span> <span class="o">=</span> <span class="n">filename_base</span> <span class="o">+</span> <span class="s1">&#39;_smooth&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">meanbeam</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;_arcsec&#39;</span> <span class="o">+</span> <span class="n">suffix</span> <span class="o">+</span> <span class="s1">&#39;.fits&#39;</span>
+    <span class="n">newname</span> <span class="o">=</span> <span class="n">filename_base</span> <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;_smooth_</span><span class="si">{</span><span class="n">meanbeam</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">meanbeam</span><span class="o">.</span><span class="n">unit</span><span class="si">}</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">suffix</span> <span class="o">+</span> <span class="s1">&#39;.fits&#39;</span>
     <span class="n">pathname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_to_output</span><span class="p">,</span> <span class="n">newname</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">allow_huge_operations</span><span class="p">:</span>
@@ -1491,7 +1519,33 @@ document.write(`
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\033</span><span class="s2">[92mSAVED FILE:</span><span class="se">\033</span><span class="s2">[0m &#39;</span><span class="si">{}</span><span class="s2">&#39; in &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">newname</span><span class="p">,</span><span class="n">path_to_output</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="spectral_smooth"><a class="viewcode-back" href="../../astrojoni_tools.html#astrojoni_tools.functions.spectral_smooth">[docs]</a><span class="k">def</span> <span class="nf">spectral_smooth</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">factor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target_resolution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">path_to_output</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">allow_huge_operations</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="s1">&#39;regular&#39;</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> <span class="c1"># smooth cube spectrally</span>
+<div class="viewcode-block" id="spectral_smooth"><a class="viewcode-back" href="../../astrojoni_tools.html#astrojoni_tools.functions.spectral_smooth">[docs]</a><span class="k">def</span> <span class="nf">spectral_smooth</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">factor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target_resolution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">path_to_output</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">allow_huge_operations</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="s1">&#39;regular&#39;</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Smooth a cube spectrally.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    filename : str</span>
+<span class="sd">        Path to file to smooth.</span>
+<span class="sd">    factor : float</span>
+<span class="sd">        Factor by which to smooth the spectra. Will be used if no `target_resolution` is given.</span>
+<span class="sd">    target_resolution : `~astropy.units.Quantity &lt;https://docs.astropy.org/en/stable/api/astropy.units.Quantity.html#astropy.units.Quantity&gt;`</span>
+<span class="sd">        Target resolution of spectrally smoothed data.</span>
+<span class="sd">    path_to_output : str, optional</span>
+<span class="sd">        Path to output where smoothed file will be saved. By default, the subcube will be saved in the working directory.</span>
+<span class="sd">    suffix : str, optional</span>
+<span class="sd">        Suffix that is appended to output filename.</span>
+<span class="sd">    allow_huge_operations : bool, optional</span>
+<span class="sd">        Option to read in files of size &gt;1gb. Default is False.</span>
+<span class="sd">    datatype : str, optional</span>
+<span class="sd">        Allows the user to perform smoothing on whole file at once (`&#39;regular&#39;`) or to write file channel by channel (`&#39;large&#39;`).</span>
+<span class="sd">        Default is &#39;regular&#39;.</span>
+<span class="sd">    chunks : int</span>
+<span class="sd">        Number of chunks data will be divided into if `datatype=&#39;large&#39;`. Default is 20.</span>
+<span class="sd">    **kwargs</span>
+<span class="sd">        Additional keyword arguments are passed to</span>
+<span class="sd">        :func:`~spectral_cube.SpectralCube.spectral_smooth()`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">cube</span> <span class="o">=</span> <span class="n">SpectralCube</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
     <span class="k">except</span><span class="p">:</span>
@@ -1532,7 +1586,7 @@ document.write(`
                 <span class="n">outfh</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span> <span class="c1"># write the data to disk</span>
                 <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="c1">#CDELT (SAMPLING) IS STILL THE SAME; BUT RESOLUTION CHANGED</span>
-        <span class="n">outfh</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">comments</span><span class="p">[</span><span class="s1">&#39;CDELT3&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Channel width but spectral res. is </span><span class="si">{</span><span class="n">target</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">target</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="n">outfh</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">comments</span><span class="p">[</span><span class="s1">&#39;CDELT3&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Channel width but spectral res. is &#39;</span> <span class="o">+</span> <span class="n">target</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">outfh</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\033</span><span class="s2">[92mSAVED FILE:</span><span class="se">\033</span><span class="s2">[0m &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">newname</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
