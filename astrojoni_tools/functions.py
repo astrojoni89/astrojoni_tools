@@ -113,7 +113,7 @@ def save_fits(filename_basis: Path, data: np.ndarray,
     path_to_output : str
         Path to output where FITS will be saved.
     **kwargs
-        Additional arguments are passed to :func:`~astropy.io.fits.writeto()`.
+        Additional arguments are passed to :func:`astropy.io.fits.writeto()`.
     """
     filename_wext = os.path.basename(filename_basis)
     filename_base, file_extension = os.path.splitext(filename_wext)
@@ -1154,7 +1154,7 @@ def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_ou
     ----------
     filename : str
         Path to file to smooth.
-    beam : `~radio_beam.Beam <https://radio-beam.readthedocs.io/en/latest/api/radio_beam.Beam.html#radio_beam.Beam>`
+    beam : `~radio_beam.Beam <https://radio-beam.readthedocs.io/en/latest/api/radio_beam.Beam.html#radio_beam.Beam>`__
         Beam of the target resolution.
     major : float
         The FWHM major axis in units of [arcsec]. Has to be specified if no `beam` is given.
@@ -1171,7 +1171,7 @@ def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_ou
     datatype : str, optional
         Allows the user to perform smoothing on whole file at once (`'regular'`) or to write file channel by channel (`'large'`). Default is 'regular'.
     **kwargs
-        Additional keyword arguments are passed to :func:`~spectral_cube.SpectralCube.convolve_to()` and the convolution function :func:`~astropy.convolution.convolve()`.
+        Additional keyword arguments are passed to :meth:`spectral_cube.SpectralCube.convolve_to()` and the convolution function :meth:`astropy.convolution.convolve()`.
     """
     try:
         cube = SpectralCube.read(filename)
@@ -1224,7 +1224,7 @@ def spectral_smooth(filename, factor=None, target_resolution=None, path_to_outpu
         Path to file to smooth.
     factor : float
         Factor by which to smooth the spectra. Will be used if no `target_resolution` is given.
-    target_resolution : `~astropy.units.Quantity <https://docs.astropy.org/en/stable/api/astropy.units.Quantity.html#astropy.units.Quantity>`
+    target_resolution : `~astropy.units.Quantity <https://docs.astropy.org/en/stable/api/astropy.units.Quantity.html#astropy.units.Quantity>`__
         Target resolution of spectrally smoothed data.
     path_to_output : str, optional
         Path to output where smoothed file will be saved. By default, the subcube will be saved in the working directory.
@@ -1237,7 +1237,7 @@ def spectral_smooth(filename, factor=None, target_resolution=None, path_to_outpu
     chunks : int
         Number of chunks data will be divided into if `datatype='large'`. Default is 20.
     **kwargs
-        Additional keyword arguments are passed to :func:`~spectral_cube.SpectralCube.spectral_smooth()`.
+        Additional keyword arguments are passed to :meth:`spectral_cube.SpectralCube.spectral_smooth()`.
     """
     try:
         cube = SpectralCube.read(filename)
