@@ -959,8 +959,7 @@ and the Galactocentric distance of the sun.</p>
 <li><p><strong>distance</strong> (<em>float</em><em> or </em><em>numpy.ndarray</em>) – Heliocentric distance of the source [kpc].</p></li>
 <li><p><strong>longitude</strong> (<em>float</em><em> or </em><em>numpy.ndarray</em>) – Galactic longitude of the source [deg].</p></li>
 <li><p><strong>latitude</strong> (<em>float</em><em> or </em><em>numpy.ndarray</em>) – Galactic latitude of the source [deg].</p></li>
-<li><p><strong>R_sun</strong> (<em>float</em><em>, </em><em>optional</em>) – The Galactocentric distance of the sun [kpc].
-The default is R_sun=8.15 (Reid et al. 2019).</p></li>
+<li><p><strong>R_sun</strong> (<em>float</em><em>, </em><em>optional</em>) – The Galactocentric distance of the sun [kpc]. The default is R_sun=8.15 (Reid et al. 2019).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1003,8 +1002,7 @@ given a spin temperature, optical depth and velocity resolution element.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>l</strong> (<em>float</em><em> or </em><em>numpy.ndarray</em>) – Galactic longitude in degrees.</p></li>
 <li><p><strong>r</strong> (<em>float</em>) – Galactocentric distance of source in units of kiloparsec.</p></li>
-<li><p><strong>rotvel</strong> (<em>float</em><em> or </em><em>numpy.ndarray</em>) – Value of rotation velocity at distance r in units of sun’s orbital velocity v0
-(absolute value would be rotvel*v0).</p></li>
+<li><p><strong>rotvel</strong> (<em>float</em><em> or </em><em>numpy.ndarray</em>) – Value of rotation velocity at distance r in units of sun’s orbital velocity v0 (absolute value would be rotvel*v0).</p></li>
 <li><p><strong>v0</strong> (<em>float</em>) – Rotational velocity of the sun in units of km/s. Default is v0=220.</p></li>
 <li><p><strong>r0</strong> (<em>float</em>) – Galactocentric distance of sun in units of kiloparsec. Default is r0=8.5.</p></li>
 </ul>
@@ -1099,7 +1097,8 @@ and the continuum brightness.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>t_kin</strong> (<em>float</em><em> or </em><em>numpy.ndarray</em>) – Gas kinetic temperature [Kelvin].</p></li>
-<li><p><strong>mu</strong> (<em>float</em><em> or </em><em>numpy.ndarray</em>) – Mean molecular weight. Default is ‘1.27’ [atomic hydrogen].
+<li><p><strong>mu</strong> (<em>float</em><em> or </em><em>numpy.ndarray</em>) – 
+Mean molecular weight. Default is ‘1.27’ [atomic hydrogen].
 Another prominent example is: ‘2.34’ [carbon monoxide].</p></li>
 </ul>
 </dd>
