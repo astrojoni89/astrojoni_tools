@@ -84,8 +84,7 @@ def calculate_gal_radius_from_distance(distance,longitude,latitude,R_sun=8.15):
     latitude : float or numpy.ndarray
         Galactic latitude of the source [deg].
     R_sun : float, optional
-        The Galactocentric distance of the sun [kpc].
-        The default is R_sun=8.15 (Reid et al. 2019).
+        The Galactocentric distance of the sun [kpc]. The default is R_sun=8.15 (Reid et al. 2019).
     Returns
     -------
     R_gal_distance : float or numpy.ndarray
@@ -114,6 +113,7 @@ def thermal_linewidth(t_kin, mu=1.27):
     t_kin : float or numpy.ndarray
         Gas kinetic temperature [Kelvin].
     mu : float or numpy.ndarray
+        \b
         Mean molecular weight. Default is '1.27' [atomic hydrogen].
         Another prominent example is: '2.34' [carbon monoxide]. 
     Returns
@@ -137,8 +137,7 @@ def radial_velocity(l,r,rotvel=220.,v0=220.,r0=8.5):
     r : float
         Galactocentric distance of source in units of kiloparsec. 
     rotvel : float or numpy.ndarray
-        Value of rotation velocity at distance r in units of sun's orbital velocity v0
-        (absolute value would be rotvel*v0).
+        Value of rotation velocity at distance r in units of sun's orbital velocity v0 (absolute value would be rotvel*v0).
     v0 : float
         Rotational velocity of the sun in units of km/s. Default is v0=220.
     r0 : float
