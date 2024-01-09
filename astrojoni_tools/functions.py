@@ -1186,7 +1186,7 @@ def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_ou
         outfh = fits.open(newname, mode='update')
         with tqdm(total=cube.shape[0]) as pbar:
             for index in range(cube.shape[0]):
-                smooth_slice = cube[index].convolve_to(beam, **kwargs)
+                smooth_slice = cube[index].convolve_to(beam, **kwargs) # still reads in copy of cube to store convolution; should be fixed
                 outfh[0].data[index] = smooth_slice.array
                 outfh.flush() # write the data to disk
                 pbar.update(1)
@@ -1241,8 +1241,7 @@ def spectral_smooth(filename, factor=None, target_resolution=None, path_to_outpu
                 outfh.flush() # write the data to disk
                 pbar.update(1)
         #CDELT (SAMPLING) IS STILL THE SAME; BUT RESOLUTION CHANGED
-        #outfh[0].header.update({'CDELT3' : target.to(u.m/u.s).value})
-        #outfh[0].header.update({'CUNIT3' : target.to(u.m/u.s).unit.to_string()})
+        outfh[0].header.comments['CDELT3'] = f'Channel width but spectral res. is {target.to(u.m/u.s).value} {target.to(u.m/u.s).unit.to_string()}'
         outfh.flush()
         print("\n\033[92mSAVED FILE:\033[0m '{}'".format(newname))
     else:
