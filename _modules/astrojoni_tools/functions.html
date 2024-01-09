@@ -329,7 +329,7 @@ document.write(`
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    idx : int</span>
-<span class="sd">        Index of the element with value closest to &#39;value&#39;.</span>
+<span class="sd">        Index of the element with value closest to `value`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">array</span><span class="o">-</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span></div>
 
@@ -370,7 +370,7 @@ document.write(`
 <span class="sd">        Path to FITS file to get header from.</span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    header_2d : :class:`~astropy.io.fits.Header`</span>
+<span class="sd">    header_2d : `~astropy.io.fits.Header &lt;https://docs.astropy.org/en/stable/io/fits/api/headers.html#astropy.io.fits.Header&gt;`__</span>
 <span class="sd">        Header object without third axis.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hdr</span><span class="p">,</span> <span class="p">(</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">)):</span>
@@ -397,14 +397,14 @@ document.write(`
 <span class="sd">        Path to FITS file to use as a basis for the new filename.</span>
 <span class="sd">    data : numpy.ndarray</span>
 <span class="sd">        Data to save under the new filename.</span>
-<span class="sd">    header : :class:`~astropy.io.fits.Header`</span>
-<span class="sd">        Header object that is associated with &#39;data&#39;. If None, a header of the appropriate type is created for the supplied data.</span>
+<span class="sd">    header : `~astropy.io.fits.Header &lt;https://docs.astropy.org/en/stable/io/fits/api/headers.html#astropy.io.fits.Header&gt;`__</span>
+<span class="sd">        Header object that is associated with `data`. If None, a header of the appropriate type is created for the supplied data.</span>
 <span class="sd">    suffix : str, optional</span>
 <span class="sd">        Suffix to append to new filename. Default is &#39;_new&#39;.</span>
 <span class="sd">    path_to_output : str</span>
 <span class="sd">        Path to output where FITS will be saved.</span>
 <span class="sd">    **kwargs</span>
-<span class="sd">        Additional arguments are passed to :func:`astropy.io.fits.writeto()`.</span>
+<span class="sd">        Additional arguments are passed to :meth:`astropy.io.fits.writeto()`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">filename_wext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename_basis</span><span class="p">)</span>
     <span class="n">filename_base</span><span class="p">,</span> <span class="n">file_extension</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filename_wext</span><span class="p">)</span>
@@ -585,7 +585,7 @@ document.write(`
 <span class="sd">    -------</span>
 <span class="sd">    value_average : float</span>
 <span class="sd">        Averaged value.</span>
-<span class="sd">    pixel_list_without_nan_values : list</span>
+<span class="sd">    pixel_list_without_nan_values : List</span>
 <span class="sd">        List of tuples containing pixel coordinates [(y0,x0),(y1,x1),...] at which data contain finite values.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">image</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">getdata</span><span class="p">(</span><span class="n">fitsfile</span><span class="p">)</span>
