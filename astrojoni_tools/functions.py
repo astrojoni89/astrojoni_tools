@@ -988,10 +988,10 @@ def make_lv(filename, mode='avg', weights=None, noise=None, path_to_output='.', 
         Path to file to create a longitude-velocity map from.
     mode : str
         Mode to compute the value of collapsed latitude axis.
-        'avg' is the arithmetic mean along the latitude axis.
-        'max' gives the maximum value along the latitude axis.
-        'sum' gives thes sum along the latitude axis.
-        'weighted' gives a weighted arithmetic mean along the latitude axis.
+        `'avg'` is the arithmetic mean along the latitude axis.
+        `'max'` gives the maximum value along the latitude axis.
+        `'sum'` gives thes sum along the latitude axis.
+        `'weighted'` gives a weighted arithmetic mean along the latitude axis.
     weights : str, optional
         Path to file containing weights. Needs to be of same shape as data of filename.
     noise : float
@@ -1157,7 +1157,35 @@ def find_common_beam(filenames):
     return common_beam
 
 
-def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_output='.', suffix='', allow_huge_operations=False, datatype='regular', **kwargs): # smooth image with 2D Gaussian
+def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_output='.', suffix='', allow_huge_operations=False, datatype='regular', **kwargs):
+    """
+    Smooth an image or cube channel by channel with a 2D Gaussian
+
+    Parameters
+    ----------
+    filename : str
+        Path to file to smooth.
+    beam : `~radio_beam.Beam <https://radio-beam.readthedocs.io/en/latest/api/radio_beam.Beam.html#radio_beam.Beam>`
+        Beam of the target resolution.
+    major : float
+        The FWHM major axis in units of [arcsec]. Has to be specified if no `beam` is given.
+    minor : float
+        The FWHM minor axis in units of [arcsec]. If not specified, will be assumed to be equal to `major`.
+    pa : float
+        The beam position angle.
+    path_to_output : str, optional
+        Path to output where smoothed file will be saved. By default, the subcube will be saved in the working directory.
+    suffix : str, optional
+        Suffix that is appended to output filename.
+    allow_huge_operations : bool, optional
+        Option to read in files of size >1gb. Default is False.
+    datatype : str, optional
+        Allows the user to perform smoothing on whole file at once (`'regular'`) or to write file channel by channel (`'large'`).
+        Default is 'regular'.
+    **kwargs
+        Additional keyword arguments are passed to
+        :func:`~spectral_cube.SpectralCube.convolve_to()` and the convolution function :func:`~astropy.convolution.convolve()`.
+    """
     try:
         cube = SpectralCube.read(filename)
     except:
@@ -1170,13 +1198,13 @@ def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_ou
         beam = radio_beam.Beam(major=major*u.arcsec, minor=minor*u.arcsec, pa=pa*u.deg)
     elif beam is not None:
         beam = beam
-        major = np.around(beam.major.value * 3600, decimals=2)
-        minor = np.around(beam.minor.value * 3600, decimals=2)
+        major = beam.major
+        minor = beam.minor
     meanbeam = np.sqrt(major*minor) # geometric mean
 
     filename_wext = os.path.basename(filename)
     filename_base, file_extension = os.path.splitext(filename_wext)
-    newname = filename_base + '_smooth' + str(meanbeam) + '_arcsec' + suffix + '.fits'
+    newname = filename_base + f'_smooth_{meanbeam.value}_{meanbeam.unit}' + suffix + '.fits'
     pathname = os.path.join(path_to_output, newname)
 
     if allow_huge_operations:
@@ -1200,7 +1228,33 @@ def spatial_smooth(filename, beam=None, major=None, minor=None, pa=0, path_to_ou
         print("\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname,path_to_output))
 
 
-def spectral_smooth(filename, factor=None, target_resolution=None, path_to_output='.', suffix='', allow_huge_operations=False, datatype='regular', chunks=20, **kwargs): # smooth cube spectrally
+def spectral_smooth(filename, factor=None, target_resolution=None, path_to_output='.', suffix='', allow_huge_operations=False, datatype='regular', chunks=20, **kwargs):
+    """
+    Smooth a cube spectrally.
+
+    Parameters
+    ----------
+    filename : str
+        Path to file to smooth.
+    factor : float
+        Factor by which to smooth the spectra. Will be used if no `target_resolution` is given.
+    target_resolution : `~astropy.units.Quantity <https://docs.astropy.org/en/stable/api/astropy.units.Quantity.html#astropy.units.Quantity>`
+        Target resolution of spectrally smoothed data.
+    path_to_output : str, optional
+        Path to output where smoothed file will be saved. By default, the subcube will be saved in the working directory.
+    suffix : str, optional
+        Suffix that is appended to output filename.
+    allow_huge_operations : bool, optional
+        Option to read in files of size >1gb. Default is False.
+    datatype : str, optional
+        Allows the user to perform smoothing on whole file at once (`'regular'`) or to write file channel by channel (`'large'`).
+        Default is 'regular'.
+    chunks : int
+        Number of chunks data will be divided into if `datatype='large'`. Default is 20.
+    **kwargs
+        Additional keyword arguments are passed to
+        :func:`~spectral_cube.SpectralCube.spectral_smooth()`.
+    """
     try:
         cube = SpectralCube.read(filename)
     except:
@@ -1241,7 +1295,7 @@ def spectral_smooth(filename, factor=None, target_resolution=None, path_to_outpu
                 outfh.flush() # write the data to disk
                 pbar.update(1)
         #CDELT (SAMPLING) IS STILL THE SAME; BUT RESOLUTION CHANGED
-        outfh[0].header.comments['CDELT3'] = f'Channel width but spectral res. is {target.to(u.m/u.s).value} {target.to(u.m/u.s).unit.to_string()}'
+        outfh[0].header.comments['CDELT3'] = 'Channel width but spectral res. is ' + target.to_string(unit=u.m/u.s, precision=1)
         outfh.flush()
         print("\n\033[92mSAVED FILE:\033[0m '{}'".format(newname))
     else:
