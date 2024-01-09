@@ -75,8 +75,8 @@ def md_header_2d(hdr):
 
     Parameters
     ----------
-    fitsfile : path-like object or file-like object
-        Path to FITS file to get header from.
+    hdr : path-like object or file-like object or `~astropy.io.fits.Header <https://docs.astropy.org/en/stable/io/fits/api/headers.html#astropy.io.fits.Header>`__
+        Path to FITS file to get header from or :class:`~astropy.io.fits.Header` object itself.
     Returns
     -------
     header_2d : `~astropy.io.fits.Header <https://docs.astropy.org/en/stable/io/fits/api/headers.html#astropy.io.fits.Header>`__
