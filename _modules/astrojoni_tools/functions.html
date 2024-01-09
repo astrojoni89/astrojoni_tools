@@ -404,7 +404,7 @@ document.write(`
 <span class="sd">    path_to_output : str</span>
 <span class="sd">        Path to output where FITS will be saved.</span>
 <span class="sd">    **kwargs</span>
-<span class="sd">        Additional arguments are passed to :func:`~astropy.io.fits.writeto()`.</span>
+<span class="sd">        Additional arguments are passed to :func:`astropy.io.fits.writeto()`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">filename_wext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename_basis</span><span class="p">)</span>
     <span class="n">filename_base</span><span class="p">,</span> <span class="n">file_extension</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filename_wext</span><span class="p">)</span>
@@ -1445,7 +1445,7 @@ document.write(`
 <span class="sd">    ----------</span>
 <span class="sd">    filename : str</span>
 <span class="sd">        Path to file to smooth.</span>
-<span class="sd">    beam : `~radio_beam.Beam &lt;https://radio-beam.readthedocs.io/en/latest/api/radio_beam.Beam.html#radio_beam.Beam&gt;`</span>
+<span class="sd">    beam : `~radio_beam.Beam &lt;https://radio-beam.readthedocs.io/en/latest/api/radio_beam.Beam.html#radio_beam.Beam&gt;`__</span>
 <span class="sd">        Beam of the target resolution.</span>
 <span class="sd">    major : float</span>
 <span class="sd">        The FWHM major axis in units of [arcsec]. Has to be specified if no `beam` is given.</span>
@@ -1462,7 +1462,7 @@ document.write(`
 <span class="sd">    datatype : str, optional</span>
 <span class="sd">        Allows the user to perform smoothing on whole file at once (`&#39;regular&#39;`) or to write file channel by channel (`&#39;large&#39;`). Default is &#39;regular&#39;.</span>
 <span class="sd">    **kwargs</span>
-<span class="sd">        Additional keyword arguments are passed to :func:`~spectral_cube.SpectralCube.convolve_to()` and the convolution function :func:`~astropy.convolution.convolve()`.</span>
+<span class="sd">        Additional keyword arguments are passed to :meth:`spectral_cube.SpectralCube.convolve_to()` and the convolution function :meth:`astropy.convolution.convolve()`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">cube</span> <span class="o">=</span> <span class="n">SpectralCube</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
@@ -1515,7 +1515,7 @@ document.write(`
 <span class="sd">        Path to file to smooth.</span>
 <span class="sd">    factor : float</span>
 <span class="sd">        Factor by which to smooth the spectra. Will be used if no `target_resolution` is given.</span>
-<span class="sd">    target_resolution : `~astropy.units.Quantity &lt;https://docs.astropy.org/en/stable/api/astropy.units.Quantity.html#astropy.units.Quantity&gt;`</span>
+<span class="sd">    target_resolution : `~astropy.units.Quantity &lt;https://docs.astropy.org/en/stable/api/astropy.units.Quantity.html#astropy.units.Quantity&gt;`__</span>
 <span class="sd">        Target resolution of spectrally smoothed data.</span>
 <span class="sd">    path_to_output : str, optional</span>
 <span class="sd">        Path to output where smoothed file will be saved. By default, the subcube will be saved in the working directory.</span>
@@ -1528,7 +1528,7 @@ document.write(`
 <span class="sd">    chunks : int</span>
 <span class="sd">        Number of chunks data will be divided into if `datatype=&#39;large&#39;`. Default is 20.</span>
 <span class="sd">    **kwargs</span>
-<span class="sd">        Additional keyword arguments are passed to :func:`~spectral_cube.SpectralCube.spectral_smooth()`.</span>
+<span class="sd">        Additional keyword arguments are passed to :meth:`spectral_cube.SpectralCube.spectral_smooth()`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">cube</span> <span class="o">=</span> <span class="n">SpectralCube</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>

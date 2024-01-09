@@ -826,7 +826,7 @@ and inner and outer semimajor/semiminor axes x_in, x_out/ y_in, y_out (or the ot
 <li><p><strong>header</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Header</span></code>) – Header object that is associated with ‘data’. If None, a header of the appropriate type is created for the supplied data.</p></li>
 <li><p><strong>suffix</strong> (<em>str</em><em>, </em><em>optional</em>) – Suffix to append to new filename. Default is ‘_new’.</p></li>
 <li><p><strong>path_to_output</strong> (<em>str</em>) – Path to output where FITS will be saved.</p></li>
-<li><p><strong>**kwargs</strong> – Additional arguments are passed to <code class="xref py py-func docutils literal notranslate"><span class="pre">writeto()</span></code>.</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments are passed to <code class="xref py py-func docutils literal notranslate"><span class="pre">astropy.io.fits.writeto()</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -870,7 +870,7 @@ window: the type of window from ‘flat’, ‘hanning’, ‘hamming’, ‘bar
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>filename</strong> (<em>str</em>) – Path to file to smooth.</p></li>
-<li><p><strong>beam</strong> (<cite>~radio_beam.Beam &lt;https://radio-beam.readthedocs.io/en/latest/api/radio_beam.Beam.html#radio_beam.Beam&gt;</cite>) – Beam of the target resolution.</p></li>
+<li><p><strong>beam</strong> (<a class="reference external" href="https://radio-beam.readthedocs.io/en/latest/api/radio_beam.Beam.html#radio_beam.Beam">~radio_beam.Beam</a>) – Beam of the target resolution.</p></li>
 <li><p><strong>major</strong> (<em>float</em>) – The FWHM major axis in units of [arcsec]. Has to be specified if no <cite>beam</cite> is given.</p></li>
 <li><p><strong>minor</strong> (<em>float</em>) – The FWHM minor axis in units of [arcsec]. If not specified, will be assumed to be equal to <cite>major</cite>.</p></li>
 <li><p><strong>pa</strong> (<em>float</em>) – The beam position angle.</p></li>
@@ -878,7 +878,7 @@ window: the type of window from ‘flat’, ‘hanning’, ‘hamming’, ‘bar
 <li><p><strong>suffix</strong> (<em>str</em><em>, </em><em>optional</em>) – Suffix that is appended to output filename.</p></li>
 <li><p><strong>allow_huge_operations</strong> (<em>bool</em><em>, </em><em>optional</em>) – Option to read in files of size &gt;1gb. Default is False.</p></li>
 <li><p><strong>datatype</strong> (<em>str</em><em>, </em><em>optional</em>) – Allows the user to perform smoothing on whole file at once (<cite>‘regular’</cite>) or to write file channel by channel (<cite>‘large’</cite>). Default is ‘regular’.</p></li>
-<li><p><strong>**kwargs</strong> – Additional keyword arguments are passed to <code class="xref py py-func docutils literal notranslate"><span class="pre">convolve_to()</span></code> and the convolution function <code class="xref py py-func docutils literal notranslate"><span class="pre">convolve()</span></code>.</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments are passed to <code class="xref py py-meth docutils literal notranslate"><span class="pre">spectral_cube.SpectralCube.convolve_to()</span></code> and the convolution function <code class="xref py py-meth docutils literal notranslate"><span class="pre">astropy.convolution.convolve()</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -893,13 +893,13 @@ window: the type of window from ‘flat’, ‘hanning’, ‘hamming’, ‘bar
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>filename</strong> (<em>str</em>) – Path to file to smooth.</p></li>
 <li><p><strong>factor</strong> (<em>float</em>) – Factor by which to smooth the spectra. Will be used if no <cite>target_resolution</cite> is given.</p></li>
-<li><p><strong>target_resolution</strong> (<cite>~astropy.units.Quantity &lt;https://docs.astropy.org/en/stable/api/astropy.units.Quantity.html#astropy.units.Quantity&gt;</cite>) – Target resolution of spectrally smoothed data.</p></li>
+<li><p><strong>target_resolution</strong> (<a class="reference external" href="https://docs.astropy.org/en/stable/api/astropy.units.Quantity.html#astropy.units.Quantity">~astropy.units.Quantity</a>) – Target resolution of spectrally smoothed data.</p></li>
 <li><p><strong>path_to_output</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to output where smoothed file will be saved. By default, the subcube will be saved in the working directory.</p></li>
 <li><p><strong>suffix</strong> (<em>str</em><em>, </em><em>optional</em>) – Suffix that is appended to output filename.</p></li>
 <li><p><strong>allow_huge_operations</strong> (<em>bool</em><em>, </em><em>optional</em>) – Option to read in files of size &gt;1gb. Default is False.</p></li>
 <li><p><strong>datatype</strong> (<em>str</em><em>, </em><em>optional</em>) – Allows the user to perform smoothing on whole file at once (<cite>‘regular’</cite>) or to write file channel by channel (<cite>‘large’</cite>). Default is ‘regular’.</p></li>
 <li><p><strong>chunks</strong> (<em>int</em>) – Number of chunks data will be divided into if <cite>datatype=’large’</cite>. Default is 20.</p></li>
-<li><p><strong>**kwargs</strong> – Additional keyword arguments are passed to <code class="xref py py-func docutils literal notranslate"><span class="pre">spectral_smooth()</span></code>.</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments are passed to <code class="xref py py-meth docutils literal notranslate"><span class="pre">spectral_cube.SpectralCube.spectral_smooth()</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
