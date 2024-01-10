@@ -1422,11 +1422,7 @@ def spatial_smooth(
         beam = radio_beam.Beam(
             major=major * u.arcsec, minor=minor * u.arcsec, pa=pa * u.deg
         )
-    elif beam is not None:
-        beam = beam
-        major = beam.major
-        minor = beam.minor
-    meanbeam = np.sqrt(major * minor)  # geometric mean
+    meanbeam = np.sqrt(beam.major * beam.minor)  # geometric mean
 
     filename_wext = os.path.basename(filename)
     filename_base, file_extension = os.path.splitext(filename_wext)
