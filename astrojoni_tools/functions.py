@@ -1383,6 +1383,7 @@ def spatial_smooth(
     suffix="",
     allow_huge_operations=False,
     datatype="regular",
+    save_file=True,
     **kwargs,
 ):
     """Smooth an image or cube channel by channel with a 2D Gaussian.
@@ -1410,10 +1411,13 @@ def spatial_smooth(
     **kwargs
         Additional keyword arguments are passed to :meth:`spectral_cube.SpectralCube.convolve_to()` and the convolution function :meth:`astropy.convolution.convolve()`.
     """
-    try:
-        cube = SpectralCube.read(filename)
-    except:
-        cube = Projection.from_hdu(fits.open(filename)[0])
+    if isinstance(filename, (SpectralCube, Projection)):
+        cube = filename
+    else:
+        try:
+            cube = SpectralCube.read(filename)
+        except:
+            cube = Projection.from_hdu(fits.open(filename)[0])
     if beam is None:
         if major is None or minor is None:
             raise ValueError("Need to specify beam size if no beam is given.")
@@ -1454,10 +1458,12 @@ def spatial_smooth(
         print("\n\033[92mSAVED FILE:\033[0m '{}'".format(newname))
     else:
         smoothcube = cube.convolve_to(beam, **kwargs)
-        smoothcube.write(pathname, format="fits", overwrite=True)
-        print(
-            "\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname, path_to_output)
-        )
+        if save_file:
+            smoothcube.write(pathname, format="fits", overwrite=True)
+            print(
+                "\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname, path_to_output)
+            )
+        return smoothcube
 
 
 def spectral_smooth(
@@ -1468,6 +1474,7 @@ def spectral_smooth(
     allow_huge_operations=False,
     datatype="regular",
     chunks=20,
+    save_file=True,
     **kwargs,
 ):
     """Smooth a cube spectrally.
@@ -1540,10 +1547,12 @@ def spectral_smooth(
         print("\n\033[92mSAVED FILE:\033[0m '{}'".format(newname))
     else:
         smoothcube = cube.spectral_smooth(spectral_smoothing_kernel, **kwargs)
-        smoothcube.write(pathname, format="fits", overwrite=True)
-        print(
-            "\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname, path_to_output)
-        )
+        if save_file:
+            smoothcube.write(pathname, format="fits", overwrite=True)
+            print(
+                "\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname, path_to_output)
+            )
+        return smoothcube
 
 
 def reproject_cube(
