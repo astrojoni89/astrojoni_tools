@@ -1674,6 +1674,7 @@ document.write(`
     <span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
     <span class="n">allow_huge_operations</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">datatype</span><span class="o">=</span><span class="s2">&quot;regular&quot;</span><span class="p">,</span>
+    <span class="n">save_file</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Smooth an image or cube channel by channel with a 2D Gaussian.</span>
@@ -1701,10 +1702,13 @@ document.write(`
 <span class="sd">    **kwargs</span>
 <span class="sd">        Additional keyword arguments are passed to :meth:`spectral_cube.SpectralCube.convolve_to()` and the convolution function :meth:`astropy.convolution.convolve()`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">cube</span> <span class="o">=</span> <span class="n">SpectralCube</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-    <span class="k">except</span><span class="p">:</span>
-        <span class="n">cube</span> <span class="o">=</span> <span class="n">Projection</span><span class="o">.</span><span class="n">from_hdu</span><span class="p">(</span><span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="p">(</span><span class="n">SpectralCube</span><span class="p">,</span> <span class="n">Projection</span><span class="p">)):</span>
+        <span class="n">cube</span> <span class="o">=</span> <span class="n">filename</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">cube</span> <span class="o">=</span> <span class="n">SpectralCube</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">cube</span> <span class="o">=</span> <span class="n">Projection</span><span class="o">.</span><span class="n">from_hdu</span><span class="p">(</span><span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
     <span class="k">if</span> <span class="n">beam</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">major</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">minor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Need to specify beam size if no beam is given.&quot;</span><span class="p">)</span>
@@ -1713,11 +1717,7 @@ document.write(`
         <span class="n">beam</span> <span class="o">=</span> <span class="n">radio_beam</span><span class="o">.</span><span class="n">Beam</span><span class="p">(</span>
             <span class="n">major</span><span class="o">=</span><span class="n">major</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">arcsec</span><span class="p">,</span> <span class="n">minor</span><span class="o">=</span><span class="n">minor</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">arcsec</span><span class="p">,</span> <span class="n">pa</span><span class="o">=</span><span class="n">pa</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">deg</span>
         <span class="p">)</span>
-    <span class="k">elif</span> <span class="n">beam</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">beam</span> <span class="o">=</span> <span class="n">beam</span>
-        <span class="n">major</span> <span class="o">=</span> <span class="n">beam</span><span class="o">.</span><span class="n">major</span>
-        <span class="n">minor</span> <span class="o">=</span> <span class="n">beam</span><span class="o">.</span><span class="n">minor</span>
-    <span class="n">meanbeam</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">major</span> <span class="o">*</span> <span class="n">minor</span><span class="p">)</span>  <span class="c1"># geometric mean</span>
+    <span class="n">meanbeam</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">beam</span><span class="o">.</span><span class="n">major</span> <span class="o">*</span> <span class="n">beam</span><span class="o">.</span><span class="n">minor</span><span class="p">)</span>  <span class="c1"># geometric mean</span>
 
     <span class="n">filename_wext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
     <span class="n">filename_base</span><span class="p">,</span> <span class="n">file_extension</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filename_wext</span><span class="p">)</span>
@@ -1749,10 +1749,12 @@ document.write(`
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\033</span><span class="s2">[92mSAVED FILE:</span><span class="se">\033</span><span class="s2">[0m &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">newname</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">smoothcube</span> <span class="o">=</span> <span class="n">cube</span><span class="o">.</span><span class="n">convolve_to</span><span class="p">(</span><span class="n">beam</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="n">smoothcube</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pathname</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;fits&quot;</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span>
-            <span class="s2">&quot;</span><span class="se">\n\033</span><span class="s2">[92mSAVED FILE:</span><span class="se">\033</span><span class="s2">[0m &#39;</span><span class="si">{}</span><span class="s2">&#39; in &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">newname</span><span class="p">,</span> <span class="n">path_to_output</span><span class="p">)</span>
-        <span class="p">)</span></div>
+        <span class="k">if</span> <span class="n">save_file</span><span class="p">:</span>
+            <span class="n">smoothcube</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pathname</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;fits&quot;</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;</span><span class="se">\n\033</span><span class="s2">[92mSAVED FILE:</span><span class="se">\033</span><span class="s2">[0m &#39;</span><span class="si">{}</span><span class="s2">&#39; in &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">newname</span><span class="p">,</span> <span class="n">path_to_output</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">smoothcube</span></div>
 
 
 <div class="viewcode-block" id="spectral_smooth"><a class="viewcode-back" href="../../astrojoni_tools.html#astrojoni_tools.functions.spectral_smooth">[docs]</a><span class="k">def</span> <span class="nf">spectral_smooth</span><span class="p">(</span>
@@ -1763,6 +1765,7 @@ document.write(`
     <span class="n">allow_huge_operations</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">datatype</span><span class="o">=</span><span class="s2">&quot;regular&quot;</span><span class="p">,</span>
     <span class="n">chunks</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="n">save_file</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Smooth a cube spectrally.</span>
@@ -1835,10 +1838,12 @@ document.write(`
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\033</span><span class="s2">[92mSAVED FILE:</span><span class="se">\033</span><span class="s2">[0m &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">newname</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">smoothcube</span> <span class="o">=</span> <span class="n">cube</span><span class="o">.</span><span class="n">spectral_smooth</span><span class="p">(</span><span class="n">spectral_smoothing_kernel</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="n">smoothcube</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pathname</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;fits&quot;</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span>
-            <span class="s2">&quot;</span><span class="se">\n\033</span><span class="s2">[92mSAVED FILE:</span><span class="se">\033</span><span class="s2">[0m &#39;</span><span class="si">{}</span><span class="s2">&#39; in &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">newname</span><span class="p">,</span> <span class="n">path_to_output</span><span class="p">)</span>
-        <span class="p">)</span></div>
+        <span class="k">if</span> <span class="n">save_file</span><span class="p">:</span>
+            <span class="n">smoothcube</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pathname</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;fits&quot;</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;</span><span class="se">\n\033</span><span class="s2">[92mSAVED FILE:</span><span class="se">\033</span><span class="s2">[0m &#39;</span><span class="si">{}</span><span class="s2">&#39; in &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">newname</span><span class="p">,</span> <span class="n">path_to_output</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">smoothcube</span></div>
 
 
 <div class="viewcode-block" id="reproject_cube"><a class="viewcode-back" href="../../astrojoni_tools.html#astrojoni_tools.functions.reproject_cube">[docs]</a><span class="k">def</span> <span class="nf">reproject_cube</span><span class="p">(</span>
