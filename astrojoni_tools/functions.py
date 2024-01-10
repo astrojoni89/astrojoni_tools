@@ -1408,8 +1408,15 @@ def spatial_smooth(
         Option to read in files of size >1gb. Default is False.
     datatype : str, optional
         Allows the user to perform smoothing on whole file at once (`'regular'`) or to write file channel by channel (`'large'`). Default is 'regular'.
+    save_file : bool
+        Option to write smoothcube to file. Only applies if `datatype='regular'`. If `datatype is set to 'large', the smoothcube will always be written to a file. Default is `True`.
     **kwargs
         Additional keyword arguments are passed to :meth:`spectral_cube.SpectralCube.convolve_to()` and the convolution function :meth:`astropy.convolution.convolve()`.
+
+    Returns
+    -------
+    smoothcube : `~spectral_cube.SpectralCube` or `~spectral_cube.Projection`
+        Only returned if `datatype='regular'`.
     """
     if isinstance(filename, (SpectralCube, Projection)):
         cube = filename
@@ -1461,7 +1468,9 @@ def spatial_smooth(
         if save_file:
             smoothcube.write(pathname, format="fits", overwrite=True)
             print(
-                "\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname, path_to_output)
+                "\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(
+                    newname, path_to_output
+                )
             )
         return smoothcube
 
@@ -1495,8 +1504,15 @@ def spectral_smooth(
         Allows the user to perform smoothing on whole file at once (`'regular'`) or to write file channel by channel (`'large'`). Default is 'regular'.
     chunks : int
         Number of chunks data will be divided into if `datatype='large'`. Default is 20.
+    save_file : bool
+        Option to write smoothcube to file. Only applies if `datatype='regular'`. If `datatype is set to 'large', the smoothcube will always be written to a file. Default is `True`.
     **kwargs
         Additional keyword arguments are passed to :meth:`spectral_cube.SpectralCube.spectral_smooth()`.
+
+    Returns
+    -------
+    smoothcube : `~spectral_cube.SpectralCube` or `~spectral_cube.Projection`
+        Only returned if `datatype='regular'`.
     """
     try:
         cube = SpectralCube.read(filename)
@@ -1506,13 +1522,15 @@ def spectral_smooth(
     unit = u.km / u.s
     fwhm_to_sigma = np.sqrt(8 * np.log(2))
     velocity_res_1 = np.diff(cube.spectral_axis)[0].to(unit)
-    pixel_scale =  (cube.wcs.wcs.cdelt[2] * cube.wcs.wcs.cunit[2]).to(unit)
+    pixel_scale = (cube.wcs.wcs.cdelt[2] * cube.wcs.wcs.cunit[2]).to(unit)
 
     if target_resolution is None:
         raise ValueError("Have to specify `target_resolution`.")
     if target_resolution is not None:
         target = target_resolution.to(unit)
-        fwhm_gaussian = ((target**2 - velocity_res_1**2)**0.5 / pixel_scale / fwhm_to_sigma)
+        fwhm_gaussian = (
+            (target**2 - velocity_res_1**2) ** 0.5 / pixel_scale / fwhm_to_sigma
+        )
         spectral_smoothing_kernel = Gaussian1DKernel(fwhm_gaussian.value)
 
     filename_wext = os.path.basename(filename)
@@ -1533,7 +1551,9 @@ def spectral_smooth(
 
         with tqdm(total=len(x_slices)) as pbar:
             for x_slice in x_slices:
-                smooth_slice = cube[:, :, x_slice].spectral_smooth(spectral_smoothing_kernel, **kwargs)
+                smooth_slice = cube[:, :, x_slice].spectral_smooth(
+                    spectral_smoothing_kernel, **kwargs
+                )
                 outfh[0].data[:, :, x_slice] = smooth_slice.unmasked_data[:].value
                 outfh.flush()  # write the data to disk
                 pbar.update(1)
@@ -1550,7 +1570,9 @@ def spectral_smooth(
         if save_file:
             smoothcube.write(pathname, format="fits", overwrite=True)
             print(
-                "\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname, path_to_output)
+                "\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(
+                    newname, path_to_output
+                )
             )
         return smoothcube
 
