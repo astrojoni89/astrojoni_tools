@@ -1699,8 +1699,15 @@ document.write(`
 <span class="sd">        Option to read in files of size &gt;1gb. Default is False.</span>
 <span class="sd">    datatype : str, optional</span>
 <span class="sd">        Allows the user to perform smoothing on whole file at once (`&#39;regular&#39;`) or to write file channel by channel (`&#39;large&#39;`). Default is &#39;regular&#39;.</span>
+<span class="sd">    save_file : bool</span>
+<span class="sd">        Option to write smoothcube to file. Only applies if `datatype=&#39;regular&#39;`. If `datatype is set to &#39;large&#39;, the smoothcube will always be written to a file. Default is `True`.</span>
 <span class="sd">    **kwargs</span>
 <span class="sd">        Additional keyword arguments are passed to :meth:`spectral_cube.SpectralCube.convolve_to()` and the convolution function :meth:`astropy.convolution.convolve()`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    smoothcube : `~spectral_cube.SpectralCube` or `~spectral_cube.Projection`</span>
+<span class="sd">        Only returned if `datatype=&#39;regular&#39;`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="p">(</span><span class="n">SpectralCube</span><span class="p">,</span> <span class="n">Projection</span><span class="p">)):</span>
         <span class="n">cube</span> <span class="o">=</span> <span class="n">filename</span>
@@ -1752,7 +1759,9 @@ document.write(`
         <span class="k">if</span> <span class="n">save_file</span><span class="p">:</span>
             <span class="n">smoothcube</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pathname</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;fits&quot;</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span>
-                <span class="s2">&quot;</span><span class="se">\n\033</span><span class="s2">[92mSAVED FILE:</span><span class="se">\033</span><span class="s2">[0m &#39;</span><span class="si">{}</span><span class="s2">&#39; in &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">newname</span><span class="p">,</span> <span class="n">path_to_output</span><span class="p">)</span>
+                <span class="s2">&quot;</span><span class="se">\n\033</span><span class="s2">[92mSAVED FILE:</span><span class="se">\033</span><span class="s2">[0m &#39;</span><span class="si">{}</span><span class="s2">&#39; in &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">newname</span><span class="p">,</span> <span class="n">path_to_output</span>
+                <span class="p">)</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">smoothcube</span></div>
 
@@ -1786,8 +1795,15 @@ document.write(`
 <span class="sd">        Allows the user to perform smoothing on whole file at once (`&#39;regular&#39;`) or to write file channel by channel (`&#39;large&#39;`). Default is &#39;regular&#39;.</span>
 <span class="sd">    chunks : int</span>
 <span class="sd">        Number of chunks data will be divided into if `datatype=&#39;large&#39;`. Default is 20.</span>
+<span class="sd">    save_file : bool</span>
+<span class="sd">        Option to write smoothcube to file. Only applies if `datatype=&#39;regular&#39;`. If `datatype is set to &#39;large&#39;, the smoothcube will always be written to a file. Default is `True`.</span>
 <span class="sd">    **kwargs</span>
 <span class="sd">        Additional keyword arguments are passed to :meth:`spectral_cube.SpectralCube.spectral_smooth()`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    smoothcube : `~spectral_cube.SpectralCube` or `~spectral_cube.Projection`</span>
+<span class="sd">        Only returned if `datatype=&#39;regular&#39;`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">cube</span> <span class="o">=</span> <span class="n">SpectralCube</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
@@ -1797,13 +1813,15 @@ document.write(`
     <span class="n">unit</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">km</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span>
     <span class="n">fwhm_to_sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">8</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
     <span class="n">velocity_res_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">cube</span><span class="o">.</span><span class="n">spectral_axis</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">unit</span><span class="p">)</span>
-    <span class="n">pixel_scale</span> <span class="o">=</span>  <span class="p">(</span><span class="n">cube</span><span class="o">.</span><span class="n">wcs</span><span class="o">.</span><span class="n">wcs</span><span class="o">.</span><span class="n">cdelt</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">cube</span><span class="o">.</span><span class="n">wcs</span><span class="o">.</span><span class="n">wcs</span><span class="o">.</span><span class="n">cunit</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">unit</span><span class="p">)</span>
+    <span class="n">pixel_scale</span> <span class="o">=</span> <span class="p">(</span><span class="n">cube</span><span class="o">.</span><span class="n">wcs</span><span class="o">.</span><span class="n">wcs</span><span class="o">.</span><span class="n">cdelt</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">cube</span><span class="o">.</span><span class="n">wcs</span><span class="o">.</span><span class="n">wcs</span><span class="o">.</span><span class="n">cunit</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">unit</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">target_resolution</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Have to specify `target_resolution`.&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">target_resolution</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">target</span> <span class="o">=</span> <span class="n">target_resolution</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">unit</span><span class="p">)</span>
-        <span class="n">fwhm_gaussian</span> <span class="o">=</span> <span class="p">((</span><span class="n">target</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">velocity_res_1</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span> <span class="o">/</span> <span class="n">pixel_scale</span> <span class="o">/</span> <span class="n">fwhm_to_sigma</span><span class="p">)</span>
+        <span class="n">fwhm_gaussian</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">target</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">velocity_res_1</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span> <span class="o">/</span> <span class="n">pixel_scale</span> <span class="o">/</span> <span class="n">fwhm_to_sigma</span>
+        <span class="p">)</span>
         <span class="n">spectral_smoothing_kernel</span> <span class="o">=</span> <span class="n">Gaussian1DKernel</span><span class="p">(</span><span class="n">fwhm_gaussian</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 
     <span class="n">filename_wext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
@@ -1824,7 +1842,9 @@ document.write(`
 
         <span class="k">with</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">x_slices</span><span class="p">))</span> <span class="k">as</span> <span class="n">pbar</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">x_slice</span> <span class="ow">in</span> <span class="n">x_slices</span><span class="p">:</span>
-                <span class="n">smooth_slice</span> <span class="o">=</span> <span class="n">cube</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">x_slice</span><span class="p">]</span><span class="o">.</span><span class="n">spectral_smooth</span><span class="p">(</span><span class="n">spectral_smoothing_kernel</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="n">smooth_slice</span> <span class="o">=</span> <span class="n">cube</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">x_slice</span><span class="p">]</span><span class="o">.</span><span class="n">spectral_smooth</span><span class="p">(</span>
+                    <span class="n">spectral_smoothing_kernel</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+                <span class="p">)</span>
                 <span class="n">outfh</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">x_slice</span><span class="p">]</span> <span class="o">=</span> <span class="n">smooth_slice</span><span class="o">.</span><span class="n">unmasked_data</span><span class="p">[:]</span><span class="o">.</span><span class="n">value</span>
                 <span class="n">outfh</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>  <span class="c1"># write the data to disk</span>
                 <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -1841,7 +1861,9 @@ document.write(`
         <span class="k">if</span> <span class="n">save_file</span><span class="p">:</span>
             <span class="n">smoothcube</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pathname</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;fits&quot;</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span>
-                <span class="s2">&quot;</span><span class="se">\n\033</span><span class="s2">[92mSAVED FILE:</span><span class="se">\033</span><span class="s2">[0m &#39;</span><span class="si">{}</span><span class="s2">&#39; in &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">newname</span><span class="p">,</span> <span class="n">path_to_output</span><span class="p">)</span>
+                <span class="s2">&quot;</span><span class="se">\n\033</span><span class="s2">[92mSAVED FILE:</span><span class="se">\033</span><span class="s2">[0m &#39;</span><span class="si">{}</span><span class="s2">&#39; in &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">newname</span><span class="p">,</span> <span class="n">path_to_output</span>
+                <span class="p">)</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">smoothcube</span></div>
 

@@ -878,8 +878,15 @@ window: the type of window from ‘flat’, ‘hanning’, ‘hamming’, ‘bar
 <li><p><strong>suffix</strong> (<em>str</em><em>, </em><em>optional</em>) – Suffix that is appended to output filename.</p></li>
 <li><p><strong>allow_huge_operations</strong> (<em>bool</em><em>, </em><em>optional</em>) – Option to read in files of size &gt;1gb. Default is False.</p></li>
 <li><p><strong>datatype</strong> (<em>str</em><em>, </em><em>optional</em>) – Allows the user to perform smoothing on whole file at once (<cite>‘regular’</cite>) or to write file channel by channel (<cite>‘large’</cite>). Default is ‘regular’.</p></li>
+<li><p><strong>save_file</strong> (<em>bool</em>) – Option to write smoothcube to file. Only applies if <cite>datatype=’regular’</cite>. If <cite>datatype is set to ‘large’, the smoothcube will always be written to a file. Default is `True</cite>.</p></li>
 <li><p><strong>**kwargs</strong> – Additional keyword arguments are passed to <code class="xref py py-meth docutils literal notranslate"><span class="pre">spectral_cube.SpectralCube.convolve_to()</span></code> and the convolution function <code class="xref py py-meth docutils literal notranslate"><span class="pre">astropy.convolution.convolve()</span></code>.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>smoothcube</strong> – Only returned if <cite>datatype=’regular’</cite>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>~spectral_cube.SpectralCube</cite> or <cite>~spectral_cube.Projection</cite></p>
 </dd>
 </dl>
 </dd></dl>
@@ -898,8 +905,15 @@ window: the type of window from ‘flat’, ‘hanning’, ‘hamming’, ‘bar
 <li><p><strong>allow_huge_operations</strong> (<em>bool</em><em>, </em><em>optional</em>) – Option to read in files of size &gt;1gb. Default is False.</p></li>
 <li><p><strong>datatype</strong> (<em>str</em><em>, </em><em>optional</em>) – Allows the user to perform smoothing on whole file at once (<cite>‘regular’</cite>) or to write file channel by channel (<cite>‘large’</cite>). Default is ‘regular’.</p></li>
 <li><p><strong>chunks</strong> (<em>int</em>) – Number of chunks data will be divided into if <cite>datatype=’large’</cite>. Default is 20.</p></li>
+<li><p><strong>save_file</strong> (<em>bool</em>) – Option to write smoothcube to file. Only applies if <cite>datatype=’regular’</cite>. If <cite>datatype is set to ‘large’, the smoothcube will always be written to a file. Default is `True</cite>.</p></li>
 <li><p><strong>**kwargs</strong> – Additional keyword arguments are passed to <code class="xref py py-meth docutils literal notranslate"><span class="pre">spectral_cube.SpectralCube.spectral_smooth()</span></code>.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>smoothcube</strong> – Only returned if <cite>datatype=’regular’</cite>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>~spectral_cube.SpectralCube</cite> or <cite>~spectral_cube.Projection</cite></p>
 </dd>
 </dl>
 </dd></dl>
