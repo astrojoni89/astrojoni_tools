@@ -27,6 +27,7 @@ def tau_hisa(t_hisa, p, t_on, t_off, t_cont):
     tau_hisa = -np.log(1-((t_on-t_off)/(t_hisa-t_cont-p*t_off)))
     return tau_hisa
 
+
 def hi_coldens(t_s, tau, dv):
     """Compute the column density of atomic hydrogen (HI)
     given a spin temperature, optical depth and velocity resolution element.
@@ -46,6 +47,7 @@ def hi_coldens(t_s, tau, dv):
     """
     n_HI = 1.8224 * 10**18 * t_s * tau * dv
     return n_HI
+
 
 def t_hisa_max(p, t_on, t_off, t_cont):
     """Compute the maximum spin temperature of HI self-absorbing gas
@@ -69,6 +71,7 @@ def t_hisa_max(p, t_on, t_off, t_cont):
     """
     t_spin_max = t_on + t_cont - (1-p) * t_off
     return t_spin_max
+
 
 def calculate_gal_radius_from_distance(distance,longitude,latitude,R_sun=8.15):
     """Compute the Galactocentric distance of a source
@@ -105,6 +108,7 @@ def calculate_gal_radius_from_distance(distance,longitude,latitude,R_sun=8.15):
     R_gal_distance = np.sqrt(R_gal_x**2 + R_gal_y**2 + R_gal_z**2)
     return R_gal_distance
 
+
 def thermal_linewidth(t_kin, mu=1.27):
     """Compute the thermal linewidth of a chemical species.
     
@@ -126,6 +130,7 @@ def thermal_linewidth(t_kin, mu=1.27):
     mp = const.u
     thermal_lw = np.sqrt((kB* t_kin)/(mu*mp)) /1000
     return thermal_lw.value
+
 
 def radial_velocity(l,r,rotvel=220.,v0=220.,r0=8.5):
     """Compute the radial velocity of circular motion around the Galactic center.
@@ -151,6 +156,7 @@ def radial_velocity(l,r,rotvel=220.,v0=220.,r0=8.5):
     r0 = r0*3.09e16
     vrad = v0*r0* ((rotvel/r) - 1/r0) * np.sin(np.radians(l))
     return vrad
+
 
 def rotation_curve(r,r0=8.5,a1=1.00767,a2=0.0394,a3=0.00712):
     """Compute the rotational velocity at distance r from the Galactic center.
