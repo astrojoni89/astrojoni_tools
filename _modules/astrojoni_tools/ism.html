@@ -339,6 +339,7 @@ document.write(`
     <span class="k">return</span> <span class="n">tau_hisa</span></div>
 
 
+
 <div class="viewcode-block" id="hi_coldens">
 <a class="viewcode-back" href="../../astrojoni_tools.html#astrojoni_tools.ism.hi_coldens">[docs]</a>
 <span class="k">def</span> <span class="nf">hi_coldens</span><span class="p">(</span><span class="n">t_s</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">dv</span><span class="p">):</span>
@@ -360,6 +361,7 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">n_HI</span> <span class="o">=</span> <span class="mf">1.8224</span> <span class="o">*</span> <span class="mi">10</span><span class="o">**</span><span class="mi">18</span> <span class="o">*</span> <span class="n">t_s</span> <span class="o">*</span> <span class="n">tau</span> <span class="o">*</span> <span class="n">dv</span>
     <span class="k">return</span> <span class="n">n_HI</span></div>
+
 
 
 <div class="viewcode-block" id="t_hisa_max">
@@ -386,6 +388,7 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">t_spin_max</span> <span class="o">=</span> <span class="n">t_on</span> <span class="o">+</span> <span class="n">t_cont</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">)</span> <span class="o">*</span> <span class="n">t_off</span>
     <span class="k">return</span> <span class="n">t_spin_max</span></div>
+
 
 
 <div class="viewcode-block" id="calculate_gal_radius_from_distance">
@@ -426,6 +429,7 @@ document.write(`
     <span class="k">return</span> <span class="n">R_gal_distance</span></div>
 
 
+
 <div class="viewcode-block" id="thermal_linewidth">
 <a class="viewcode-back" href="../../astrojoni_tools.html#astrojoni_tools.ism.thermal_linewidth">[docs]</a>
 <span class="k">def</span> <span class="nf">thermal_linewidth</span><span class="p">(</span><span class="n">t_kin</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mf">1.27</span><span class="p">):</span>
@@ -449,6 +453,7 @@ document.write(`
     <span class="n">mp</span> <span class="o">=</span> <span class="n">const</span><span class="o">.</span><span class="n">u</span>
     <span class="n">thermal_lw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">kB</span><span class="o">*</span> <span class="n">t_kin</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">mu</span><span class="o">*</span><span class="n">mp</span><span class="p">))</span> <span class="o">/</span><span class="mi">1000</span>
     <span class="k">return</span> <span class="n">thermal_lw</span><span class="o">.</span><span class="n">value</span></div>
+
 
 
 <div class="viewcode-block" id="radial_velocity">
@@ -477,6 +482,7 @@ document.write(`
     <span class="n">r0</span> <span class="o">=</span> <span class="n">r0</span><span class="o">*</span><span class="mf">3.09e16</span>
     <span class="n">vrad</span> <span class="o">=</span> <span class="n">v0</span><span class="o">*</span><span class="n">r0</span><span class="o">*</span> <span class="p">((</span><span class="n">rotvel</span><span class="o">/</span><span class="n">r</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="o">/</span><span class="n">r0</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">l</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">vrad</span></div>
+
 
 
 <div class="viewcode-block" id="rotation_curve">
