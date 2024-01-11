@@ -7,6 +7,7 @@ from typing import Union, Optional, List, Tuple
 import numpy as np
 import radio_beam
 import astropy.units as u
+import regions
 
 from astropy.io import fits
 from astropy import constants as const
@@ -1169,6 +1170,87 @@ def make_subcube(
         return sub_cube
 
 
+# requires python >=3.9
+def make_subcube_from_region(
+    filename,
+    cubedata=None,
+    regionfile=None,
+    path_to_output=".",
+    suffix="",
+    return_data=False,
+    save_file=True,
+    verbose=True,
+):
+    """Create a subcube using DS9/CRTF regions. The minimal enclosing subcube will be extracted with a two-dimensional mask corresponding to the DS9/CRTF region.
+
+    Parameters
+    ----------
+    filename : str
+        Path to file to create a subcube from.
+    cubedata : None or :class:`~spectralcube.SpectralCube` or :class:`~spectralcube.Projection`, optional
+        SpectralCube of data if data is already read in. This option avoids reading data into memory again.
+    regionfile : str
+        Region file (.reg, .crtf) containing region.
+    path_to_output : str, optional
+        Path to output where subcube will be saved. By default, the subcube will be saved in the working directory.
+    suffix : str, optional
+        Suffix that is appended to output filename.
+    return_data : bool, optional
+        Option to return data of the subcube. Default is `False`.
+    save_file : bool, optional
+        Whether subcube should be saved as a file. Default is `True`.
+    verbose : bool, optional
+        Option to print subcube info and save messages. Default is `True`.
+    """
+    if verbose:
+        getting_ready("Making subcube")
+    if cubedata is None:
+        data = fits.open(filename)  # Open the FITS file for reading
+        try:
+            cube = SpectralCube.read(data)  # Initiate a SpectralCube
+        except:
+            cube = Projection.from_hdu(data)
+        data.close()  # Close the FITS file - we already read it in and don't need it anymore!
+    else:
+        cube = cubedata
+
+    # check the file format
+    if regionfile is None:
+        raise ValueError("No region file specified")
+    regionfile_wext = os.path.basename(regionfile)
+    _, regionfile_extension = os.path.splitext(regionfile_wext)
+
+    # extract region depending on file format
+    if regionfile_extension.lower() == ".reg":
+        region_list = regions.Regions.read(regionfile)
+    elif regionfile_extension.lower() == ".crtf":
+        region_list = regions.read_crtf(regionfile)
+    else:
+        raise ValueError("Unsupported file format.")
+    if verbose:
+        print(cube)
+
+    sub_cube = cube.subcube_from_regions(region_list)
+
+    if verbose:
+        print(sub_cube)
+
+    if save_file:
+        filename_wext = os.path.basename(filename)
+        filename_base, file_extension = os.path.splitext(filename_wext)
+        newname = filename_base + "_subcube" + suffix + ".fits"
+        pathname = os.path.join(path_to_output, newname)
+        sub_cube.write(pathname, format="fits", overwrite=True)
+        if verbose:
+            print(
+                "\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(
+                    newname, path_to_output
+                )
+            )
+    if return_data:
+        return sub_cube
+
+
 def make_lv(
     filename, mode="avg", weights=None, noise=None, path_to_output=".", suffix=""
 ):
@@ -1394,11 +1476,11 @@ def spatial_smooth(
         Path to file to smooth.
     beam : `~radio_beam.Beam <https://radio-beam.readthedocs.io/en/latest/api/radio_beam.Beam.html#radio_beam.Beam>`__
         Beam of the target resolution.
-    major : float
-        The FWHM major axis in units of [arcsec]. Has to be specified if no `beam` is given.
-    minor : float
-        The FWHM minor axis in units of [arcsec]. If not specified, will be assumed to be equal to `major`.
-    pa : float
+    major : `~astropy.units.Quantity <https://docs.astropy.org/en/stable/api/astropy.units.Quantity.html#astropy.units.Quantity>`__
+        The FWHM major axis. Has to be specified if no `beam` is given.
+    minor : `~astropy.units.Quantity <https://docs.astropy.org/en/stable/api/astropy.units.Quantity.html#astropy.units.Quantity>`__
+        The FWHM minor axis. If not specified, will be assumed to be equal to `major`.
+    pa : `~astropy.units.Quantity <https://docs.astropy.org/en/stable/api/astropy.units.Quantity.html#astropy.units.Quantity>`__
         The beam position angle.
     path_to_output : str, optional
         Path to output where smoothed file will be saved. By default, the subcube will be saved in the working directory.
@@ -1407,7 +1489,7 @@ def spatial_smooth(
     allow_huge_operations : bool, optional
         Option to read in files of size >1gb. Default is False.
     datatype : str, optional
-        Allows the user to perform smoothing on whole file at once (`'regular'`) or to write file channel by channel (`'large'`). Default is 'regular'.
+        Allows the user to perform smoothing on whole file at once (`'regular'`) or to write file channel by channel (`'large'`). Default is `'regular'`.
     save_file : bool
         Option to write smoothcube to file. Only applies if `datatype='regular'`. If `datatype is set to 'large', the smoothcube will always be written to a file. Default is `True`.
     **kwargs
@@ -1430,9 +1512,7 @@ def spatial_smooth(
             raise ValueError("Need to specify beam size if no beam is given.")
         if minor is None:
             print("No minor beam size was given, will assume major=minor")
-        beam = radio_beam.Beam(
-            major=major * u.arcsec, minor=minor * u.arcsec, pa=pa * u.deg
-        )
+        beam = radio_beam.Beam(major=major, minor=minor, pa=pa)
     meanbeam = np.sqrt(beam.major * beam.minor)  # geometric mean
 
     filename_wext = os.path.basename(filename)
@@ -1501,7 +1581,7 @@ def spectral_smooth(
     allow_huge_operations : bool, optional
         Option to read in files of size >1gb. Default is False.
     datatype : str, optional
-        Allows the user to perform smoothing on whole file at once (`'regular'`) or to write file channel by channel (`'large'`). Default is 'regular'.
+        Allows the user to perform smoothing on whole file at once (`'regular'`) or to write file channel by channel (`'large'`). Default is `'regular'`.
     chunks : int
         Number of chunks data will be divided into if `datatype='large'`. Default is 20.
     save_file : bool
@@ -1635,12 +1715,6 @@ def reproject_cube(
         print(
             "\n\033[92mSAVED FILE:\033[0m '{}' in '{}'".format(newname, path_to_output)
         )
-
-
-# TODO
-"""
-subcube_from_region using spectral cube
-"""
 
 
 def smooth_1d(x, window_len=11, window="hanning"):  # smooth spectrum
