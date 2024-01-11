@@ -1265,7 +1265,7 @@ def make_lv(
         Mode to compute the value of collapsed latitude axis.
         `'avg'` is the arithmetic mean along the latitude axis.
         `'max'` gives the maximum value along the latitude axis.
-        `'sum'` gives thes sum along the latitude axis.
+        `'sum'` gives the sum along the latitude axis.
         `'weighted'` gives a weighted arithmetic mean along the latitude axis.
     weights : str, optional
         Path to file containing weights. Needs to be of same shape as data of filename.
