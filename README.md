@@ -16,10 +16,10 @@ You will need the following packages to run `astrojoni_tools`. We list the versi
 * [matplotlib (v3.8.0)](https://matplotlib.org/)
 * [tqdm (v4.66.1)](https://tqdm.github.io/)
 
-### Download astroSABER
+### Download astrojoni_tools
 Download `astrojoni_tools` using git `$ git clone https://github.com/astrojoni89/astrojoni_tools.git`
 
-### Installing astroSABER
+### Installing astrojoni_tools
 To install `astrojoni_tools`, make sure that all dependencies are already installed and properly linked to python. We recommend using anaconda and creating a new environment. Then cd to the local directory containing `astrojoni_tools` and install via
 ```
 pip install astrojoni_tools
