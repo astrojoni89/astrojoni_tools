@@ -1628,7 +1628,7 @@
 <span class="sd">        `&#39;max&#39;` gives the maximum value along the latitude axis.</span>
 <span class="sd">        `&#39;sum&#39;` gives the sum along the latitude axis.</span>
 <span class="sd">        `&#39;weighted&#39;` gives a weighted arithmetic mean along the latitude axis.</span>
-<span class="sd">        `&#39;freq&#39;` gives the most frequent value along the latitude axis. Useful for integer masks.</span>
+<span class="sd">        `&#39;freq&#39;` (experimental) gives the most frequent value along the latitude axis. Useful for integer masks.</span>
 <span class="sd">    weights : str, optional</span>
 <span class="sd">        Path to file containing weights. Needs to be of same shape as data of filename.</span>
 <span class="sd">    noise : float</span>
@@ -1639,7 +1639,7 @@
 <span class="sd">        Suffix that is appended to output filename.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">getting_ready</span><span class="p">(</span><span class="s2">&quot;Making l-v map&quot;</span><span class="p">)</span>
-    <span class="n">modes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;avg&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;sum&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;weighted&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+    <span class="n">modes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;avg&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;sum&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;weighted&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;freq&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}</span>
     <span class="k">if</span> <span class="n">mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">modes</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
         <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
             <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Unknown mode. Mode needs to be one of the following: </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
