@@ -1267,6 +1267,7 @@ def make_lv(
         `'max'` gives the maximum value along the latitude axis.
         `'sum'` gives the sum along the latitude axis.
         `'weighted'` gives a weighted arithmetic mean along the latitude axis.
+        `'freq'` gives the most frequent value along the latitude axis. Useful for integer masks.
     weights : str, optional
         Path to file containing weights. Needs to be of same shape as data of filename.
     noise : float
@@ -1331,6 +1332,8 @@ def make_lv(
         new_header.comments["BUNIT"] = "Sum of brightness pixels"
     elif mode == "weighted":
         new_header.comments["BUNIT"] = "Weighted mean of brightness (pixel) unit"
+    elif mode == "freq":
+        new_header.comments["BUNIT"] = "Most frequent value"
     else:
         pass
 
@@ -1352,6 +1355,14 @@ def make_lv(
                     np.absolute(weight[vel, :, lon])
                 )
                 avg = np.nansum(norm_weight * data[vel, :, lon])
+            # experimental
+            elif mode == "freq":
+                unique_vals, counts = np.unique(data[vel, :, lon], return_counts=True)
+                idx_mc = np.argmax(counts)
+                val_mc = unique_vals[idx_mc]
+                if val_mc == -1: # to account for masked vals -1
+                    val_mc = np.nan
+                avg = val_mc
             pv_array[vel, lon] = avg
 
     filename_wext = os.path.basename(filename)
