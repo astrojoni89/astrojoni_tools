@@ -1267,7 +1267,7 @@ def make_lv(
         `'max'` gives the maximum value along the latitude axis.
         `'sum'` gives the sum along the latitude axis.
         `'weighted'` gives a weighted arithmetic mean along the latitude axis.
-        `'freq'` gives the most frequent value along the latitude axis. Useful for integer masks.
+        `'freq'` (experimental) gives the most frequent value along the latitude axis. Useful for integer masks.
     weights : str, optional
         Path to file containing weights. Needs to be of same shape as data of filename.
     noise : float
@@ -1278,7 +1278,7 @@ def make_lv(
         Suffix that is appended to output filename.
     """
     getting_ready("Making l-v map")
-    modes = {"avg": 0, "max": 1, "sum": 2, "weighted": 3}
+    modes = {"avg": 0, "max": 1, "sum": 2, "weighted": 3, "freq": 4}
     if mode not in modes.keys():
         raise KeyError(
             "\nUnknown mode. Mode needs to be one of the following: {}.".format(
