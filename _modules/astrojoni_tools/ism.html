@@ -13,35 +13,39 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
   
-  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
-  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509" />
-  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=bd9e20870c6007c4c509"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="../../_static/documentation_options.js?v=01f34227"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/astrojoni_tools/ism';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.1.0" />
   </head>
   
   
@@ -49,32 +53,16 @@
 
   
   
-  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
   <div id="pst-scroll-pixel-helper"></div>
-
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>
-    Back to top
-  </button>
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../search.html"
       method="get">
@@ -82,7 +70,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -90,22 +77,27 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
-  <header>
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <div class="bd-header navbar navbar-expand-lg bd-navbar">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <label class="sidebar-toggle primary-toggle" for="__primary">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
-  </label>
+  </button>
   
   
   <div class="col-lg-3 navbar-header-items__start">
     
       <div class="navbar-item">
 
+  
+    
   
 
 <a class="navbar-brand logo" href="../../index.html">
@@ -126,15 +118,15 @@
     <div class="me-auto navbar-header-items__center">
       
         <div class="navbar-item">
-<nav class="navbar-nav">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../modules.html">
-                        astrojoni_tools
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../modules.html">
+    astrojoni_tools
+  </a>
+</li>
+
   </ul>
 </nav></div>
       
@@ -146,29 +138,21 @@
         <div class="navbar-item navbar-persistent--container">
           
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
         <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
       
     </div>
     
@@ -177,28 +161,19 @@ document.write(`
   
     <div class="navbar-persistent--mobile">
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
-  
-    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
-      <span class="fa-solid fa-outdent"></span>
-    </label>
   
 </div>
 
-    </div>
+    </header>
   
-  </header>
 
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
@@ -207,7 +182,8 @@ document.write(`
       
         
       
-      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
   
@@ -216,18 +192,21 @@ document.write(`
     
       <div class="sidebar-header-items__center">
         
-          <div class="navbar-item">
-<nav class="navbar-nav">
+          
+          
+            <div class="navbar-item">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../modules.html">
-                        astrojoni_tools
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../modules.html">
+    astrojoni_tools
+  </a>
+</li>
+
   </ul>
 </nav></div>
+          
         
       </div>
     
@@ -237,15 +216,11 @@ document.write(`
         
           <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
         
       </div>
     
@@ -253,29 +228,32 @@ document.write(`
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
         <div class="header-article-item">
 
-
-
-<nav aria-label="Breadcrumb">
+<nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
     <li class="breadcrumb-item breadcrumb-home">
@@ -289,7 +267,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="../astrojoni_tools.html" class="nav-link">astrojoni_tools</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">astrojoni_tools.ism</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">astrojoni_tools.ism</span></li>
   </ul>
 </nav>
 </div>
@@ -307,13 +285,13 @@ document.write(`
                 <article class="bd-article">
                   
   <h1>Source code for astrojoni_tools.ism</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">astropy</span> <span class="kn">import</span> <span class="n">constants</span> <span class="k">as</span> <span class="n">const</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy</span><span class="w"> </span><span class="kn">import</span> <span class="n">constants</span> <span class="k">as</span> <span class="n">const</span>
 
 
 <div class="viewcode-block" id="tau_hisa">
 <a class="viewcode-back" href="../../astrojoni_tools.html#astrojoni_tools.ism.tau_hisa">[docs]</a>
-<span class="k">def</span> <span class="nf">tau_hisa</span><span class="p">(</span><span class="n">t_hisa</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">t_on</span><span class="p">,</span> <span class="n">t_off</span><span class="p">,</span> <span class="n">t_cont</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">tau_hisa</span><span class="p">(</span><span class="n">t_hisa</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">t_on</span><span class="p">,</span> <span class="n">t_off</span><span class="p">,</span> <span class="n">t_cont</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the optical depth of HI self-absorption</span>
 <span class="sd">    given a HISA spin temperature, background fraction, on and off brightness,</span>
 <span class="sd">    and the continuum brightness.</span>
@@ -342,7 +320,7 @@ document.write(`
 
 <div class="viewcode-block" id="hi_coldens">
 <a class="viewcode-back" href="../../astrojoni_tools.html#astrojoni_tools.ism.hi_coldens">[docs]</a>
-<span class="k">def</span> <span class="nf">hi_coldens</span><span class="p">(</span><span class="n">t_s</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">dv</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">hi_coldens</span><span class="p">(</span><span class="n">t_s</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">dv</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the column density of atomic hydrogen (HI)</span>
 <span class="sd">    given a spin temperature, optical depth and velocity resolution element.</span>
 <span class="sd">    </span>
@@ -366,7 +344,7 @@ document.write(`
 
 <div class="viewcode-block" id="t_hisa_max">
 <a class="viewcode-back" href="../../astrojoni_tools.html#astrojoni_tools.ism.t_hisa_max">[docs]</a>
-<span class="k">def</span> <span class="nf">t_hisa_max</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">t_on</span><span class="p">,</span> <span class="n">t_off</span><span class="p">,</span> <span class="n">t_cont</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">t_hisa_max</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">t_on</span><span class="p">,</span> <span class="n">t_off</span><span class="p">,</span> <span class="n">t_cont</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the maximum spin temperature of HI self-absorbing gas</span>
 <span class="sd">    that would still give a solution to the optical depth computation.</span>
 <span class="sd">    This limit is reached if the optical depth is set to infty.</span>
@@ -393,7 +371,7 @@ document.write(`
 
 <div class="viewcode-block" id="calculate_gal_radius_from_distance">
 <a class="viewcode-back" href="../../astrojoni_tools.html#astrojoni_tools.ism.calculate_gal_radius_from_distance">[docs]</a>
-<span class="k">def</span> <span class="nf">calculate_gal_radius_from_distance</span><span class="p">(</span><span class="n">distance</span><span class="p">,</span><span class="n">longitude</span><span class="p">,</span><span class="n">latitude</span><span class="p">,</span><span class="n">R_sun</span><span class="o">=</span><span class="mf">8.15</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_gal_radius_from_distance</span><span class="p">(</span><span class="n">distance</span><span class="p">,</span><span class="n">longitude</span><span class="p">,</span><span class="n">latitude</span><span class="p">,</span><span class="n">R_sun</span><span class="o">=</span><span class="mf">8.15</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the Galactocentric distance of a source</span>
 <span class="sd">    given its distance from the sun, Galactic longitude, Galactic latitude,</span>
 <span class="sd">    and the Galactocentric distance of the sun.</span>
@@ -432,7 +410,7 @@ document.write(`
 
 <div class="viewcode-block" id="thermal_linewidth">
 <a class="viewcode-back" href="../../astrojoni_tools.html#astrojoni_tools.ism.thermal_linewidth">[docs]</a>
-<span class="k">def</span> <span class="nf">thermal_linewidth</span><span class="p">(</span><span class="n">t_kin</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mf">1.27</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">thermal_linewidth</span><span class="p">(</span><span class="n">t_kin</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mf">1.27</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the thermal linewidth of a chemical species.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
@@ -458,7 +436,7 @@ document.write(`
 
 <div class="viewcode-block" id="radial_velocity">
 <a class="viewcode-back" href="../../astrojoni_tools.html#astrojoni_tools.ism.radial_velocity">[docs]</a>
-<span class="k">def</span> <span class="nf">radial_velocity</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">rotvel</span><span class="o">=</span><span class="mf">220.</span><span class="p">,</span><span class="n">v0</span><span class="o">=</span><span class="mf">220.</span><span class="p">,</span><span class="n">r0</span><span class="o">=</span><span class="mf">8.5</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">radial_velocity</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">rotvel</span><span class="o">=</span><span class="mf">220.</span><span class="p">,</span><span class="n">v0</span><span class="o">=</span><span class="mf">220.</span><span class="p">,</span><span class="n">r0</span><span class="o">=</span><span class="mf">8.5</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the radial velocity of circular motion around the Galactic center.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
@@ -487,7 +465,7 @@ document.write(`
 
 <div class="viewcode-block" id="rotation_curve">
 <a class="viewcode-back" href="../../astrojoni_tools.html#astrojoni_tools.ism.rotation_curve">[docs]</a>
-<span class="k">def</span> <span class="nf">rotation_curve</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="n">r0</span><span class="o">=</span><span class="mf">8.5</span><span class="p">,</span><span class="n">a1</span><span class="o">=</span><span class="mf">1.00767</span><span class="p">,</span><span class="n">a2</span><span class="o">=</span><span class="mf">0.0394</span><span class="p">,</span><span class="n">a3</span><span class="o">=</span><span class="mf">0.00712</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">rotation_curve</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="n">r0</span><span class="o">=</span><span class="mf">8.5</span><span class="p">,</span><span class="n">a1</span><span class="o">=</span><span class="mf">1.00767</span><span class="p">,</span><span class="n">a2</span><span class="o">=</span><span class="mf">0.0394</span><span class="p">,</span><span class="n">a3</span><span class="o">=</span><span class="mf">0.00712</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the rotational velocity at distance r from the Galactic center.</span>
 <span class="sd">    This rotational velocity is computed according to the Brand&amp;Blitz (1993) rotation curve.</span>
 <span class="sd">    </span>
@@ -521,7 +499,7 @@ document.write(`
               
               
               
-                <footer class="prev-next-footer">
+                <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
 </div>
@@ -530,8 +508,6 @@ document.write(`
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"></div>
               
             
           </div>
@@ -544,8 +520,8 @@ document.write(`
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -556,7 +532,7 @@ document.write(`
 
   <p class="copyright">
     
-      © Copyright 2024, Jonas Syed.
+      © Copyright 2026, Jonas Syed.
       <br/>
     
   </p>
@@ -565,7 +541,7 @@ document.write(`
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
     <br/>
   </p>
 </div>
@@ -578,7 +554,8 @@ document.write(`
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.1.
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>
